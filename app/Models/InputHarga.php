@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class InputHarga extends Model
+{
+    //
+     use HasFactory;
+
+    protected $fillable = [
+        'kode_input_harga', 'komoditas_id', 'wilayah_id', 'pasar_id', 'pedagang_id', 'pegawai_id', 'harga', 'tanggal_input', 'sumber_data', 'keterangan'
+    ];
+
+    // Relasi dengan komoditas
+    public function komoditas()
+    {
+        return $this->belongsTo(Komoditas::class, 'komoditas_id');
+    }
+
+    // Relasi dengan wilayah
+    public function wilayah()
+    {
+        return $this->belongsTo(Wilayah::class, 'wilayah_id');
+    }
+
+    // Relasi dengan pasar
+    public function pasar()
+    {
+        return $this->belongsTo(Pasar::class, 'pasar_id');
+    }
+
+    // Relasi dengan pedagang
+    public function pedagang()
+    {
+        return $this->belongsTo(Pedagang::class, 'pedagang_id');
+    }
+
+    // Relasi dengan pegawai
+    public function pegawai()
+    {
+        return $this->belongsTo(Pegawai::class, 'pegawai_id');
+    }
+}
