@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class DetailEventsTable
@@ -14,7 +15,29 @@ class DetailEventsTable
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('event_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('kode_detail_event')
+                    ->searchable(),
+                TextColumn::make('anggaran_event')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('penyelenggara')
+                    ->searchable(),
+                TextColumn::make('narasumber')
+                    ->searchable(),
+                TextColumn::make('kuota_peserta')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

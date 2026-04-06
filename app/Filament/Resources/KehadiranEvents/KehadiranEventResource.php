@@ -25,15 +25,12 @@ class KehadiranEventResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    
-    protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
-
- protected static ?int $navigationSort = 2;
-
     public static function form(Schema $schema): Schema
     {
         return KehadiranEventForm::configure($schema);
     }
+    protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
+     protected static ?int $navigationSort = 2;
 
     public static function infolist(Schema $schema): Schema
     {

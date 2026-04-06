@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\InputHargas\Tables;
+namespace App\Filament\Resources\EventKegiatans\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -9,36 +9,30 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class InputHargasTable
+class EventKegiatansTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('kode_input_harga')
+                TextColumn::make('kode_event')
                     ->searchable(),
-                TextColumn::make('komoditas_id')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('nama_event')
+                    ->searchable(),
+                TextColumn::make('jenis_event')
+                    ->searchable(),
                 TextColumn::make('wilayah_id')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('pasar_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('pedagang_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('pegawai_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('harga')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('tanggal_input')
+                TextColumn::make('tanggal_mulai')
                     ->date()
                     ->sortable(),
-                TextColumn::make('sumber_data')
+                TextColumn::make('tanggal_selesai')
+                    ->date()
+                    ->sortable(),
+                TextColumn::make('lokasi_event')
+                    ->searchable(),
+                TextColumn::make('status_event')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

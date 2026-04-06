@@ -19,4 +19,5 @@ class KehadiranEvent extends Model
     {
         return $this->belongsTo(PesertaEvent::class, 'peserta_event_id');
     }
+
 }

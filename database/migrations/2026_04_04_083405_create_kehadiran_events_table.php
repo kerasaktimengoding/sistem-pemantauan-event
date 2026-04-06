@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('kehadiran_events', function (Blueprint $table) {
             $table->id();
+            $table->string('kode_kehadiran', 20);
+            $table->unsignedBigInteger('peserta_event_id');
+            $table->string('status_kehadiran', 20);
+            $table->dateTime('waktu_kehadiran');
+            $table->text('catatan');
             $table->timestamps();
         });
     }

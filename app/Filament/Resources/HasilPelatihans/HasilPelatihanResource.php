@@ -23,12 +23,10 @@ class HasilPelatihanResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    
-    protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
-
- protected static ?int $navigationSort = 3;
     protected static ?string $recordTitleAttribute = 'id';
 
+    protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
+     protected static ?int $navigationSort = 3;
     public static function form(Schema $schema): Schema
     {
         return HasilPelatihanForm::configure($schema);

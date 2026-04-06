@@ -25,15 +25,12 @@ class PesertaEventResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
-
- protected static ?int $navigationSort = 1;
-
-
     public static function form(Schema $schema): Schema
     {
         return PesertaEventForm::configure($schema);
     }
+    protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
+     protected static ?int $navigationSort = 1;
 
     public static function infolist(Schema $schema): Schema
     {

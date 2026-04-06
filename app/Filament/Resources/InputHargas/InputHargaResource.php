@@ -25,14 +25,14 @@ class InputHargaResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-
-    protected static string | UnitEnum | null $navigationGroup = 'DATA OPERASIONAL';
-     protected static ?int $navigationSort = 1;
     public static function form(Schema $schema): Schema
     {
         return InputHargaForm::configure($schema);
     }
 
+    
+    protected static string | UnitEnum | null $navigationGroup = 'DATA OPERASIONAL';
+     protected static ?int $navigationSort = 1;
     public static function infolist(Schema $schema): Schema
     {
         return InputHargaInfolist::configure($schema);
