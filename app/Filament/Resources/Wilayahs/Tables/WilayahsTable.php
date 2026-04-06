@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,21 +16,43 @@ class WilayahsTable
     {
         return $table
             ->columns([
+               TextColumn::make('No')
+                    ->rowIndex()
+                    ->label('No.')
+                    ->width('50px')
+                    ->alignment(Alignment::Center),
+
                 TextColumn::make('kode_wilayah')
-                    ->searchable(),
+                    ->label('Kode Wilayah')
+                    ->searchable()
+                    ->sortable()
+                    ->copyable() // Fitur tambahan: bisa diklik untuk copy kode
+                    ->weight('bold'),
+
                 TextColumn::make('nama_wilayah')
-                    ->searchable(),
+                    ->label('Nama Wilayah')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('tipe_wilayah')
-                    ->searchable(),
+                    ->label('Tipe Wilayah')
+                    ->searchable()
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Kecamatan' => 'info',
+                        'Desa' => 'success',
+                        'Kelurahan' => 'warning',
+                        default => 'secondary',
+                    }),
+
                 TextColumn::make('kode_pos')
-                    ->searchable(),
+                    ->label('Kode Pos')
+                    ->searchable()
+                    ->alignment(Alignment::Center),
+
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
+                    ->label('Dibuat Pada')
+                    ->dateTime('d M Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

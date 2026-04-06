@@ -22,7 +22,7 @@ class WilayahForm
                             TextInput::make('kode_wilayah')
                                 ->label('Kode Wilayah')
                                 ->required()
-                                ->unique('wilayah', 'kode_wilayah', ignoreRecord: true)
+                                ->unique('wilayahs', 'kode_wilayah', ignoreRecord: true)
                                 ->placeholder('Contoh: 63.03.xx.xxxx')
                                 ->validationMessages([
                                     'unique' => 'Kode wilayah ini sudah terdaftar.',

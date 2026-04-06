@@ -21,7 +21,7 @@ class SatuanForm
                                 ->label('Kode Satuan')
                                 ->required()
                                 ->maxLength(20) 
-                                ->unique('satuan', 'kode_satuan', ignoreRecord: true)
+                                ->unique('satuans', 'kode_satuan', ignoreRecord: true)
                                 ->placeholder('Contoh: KG, LTR, PCS')
                                 ->validationMessages([
                                     'unique' => 'Kode satuan ini sudah ada dalam sistem.',

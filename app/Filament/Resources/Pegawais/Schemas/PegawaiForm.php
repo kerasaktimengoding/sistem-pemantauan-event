@@ -25,7 +25,7 @@ class PegawaiForm
                                 ->label('NIP')
                                 ->required()
                                 ->numeric()
-                                ->unique('pegawai', 'nip', ignoreRecord: true)
+                                ->unique('pegawais', 'nip', ignoreRecord: true)
                                 ->placeholder('Masukkan NIP'),
 
                             TextInput::make('nik')

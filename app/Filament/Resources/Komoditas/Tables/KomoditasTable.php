@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,25 +16,52 @@ class KomoditasTable
     {
         return $table
             ->columns([
+                TextColumn::make('No')
+                    ->rowIndex()
+                    ->label('No.')
+                    ->width('50px')
+                    ->alignment(Alignment::Center),
+
                 TextColumn::make('kode_komoditas')
-                    ->searchable(),
+                    ->label('Kode')
+                    ->searchable()
+                    ->sortable()
+                    ->copyable()
+                    ->weight('bold'),
+
                 TextColumn::make('nama_komoditas')
-                    ->searchable(),
-                TextColumn::make('kategori_id')
-                    ->numeric()
+                    ->label('Nama Komoditas')
+                    ->searchable()
+                    ->sortable()
+                    ->description(fn ($record) => $record->deskripsi), // Menampilkan deskripsi singkat di bawah nama
+
+                // Menampilkan Nama Kategori hasil relasi
+                TextColumn::make('kategori.nama_kategori')
+                    ->label('Kategori')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('info'),
+
+                // Menampilkan Nama Satuan hasil relasi
+                TextColumn::make('satuan.nama_satuan')
+                    ->label('Satuan')
+                    ->searchable()
                     ->sortable(),
-                TextColumn::make('satuan_id')
-                    ->numeric()
-                    ->sortable(),
+
                 TextColumn::make('status_komoditas')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Aktif' => 'success',
+                        'Non-Aktif' => 'danger',
+                        'Terbatas' => 'warning',
+                        default => 'secondary',
+                    }),
+
                 TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
+                    ->label('Update Terakhir')
+                    ->dateTime('d M Y')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

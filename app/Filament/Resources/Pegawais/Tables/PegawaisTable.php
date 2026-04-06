@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,43 +16,65 @@ class PegawaisTable
     {
         return $table
             ->columns([
-                TextColumn::make('nip')
-                    ->searchable(),
-                TextColumn::make('nik')
-                    ->searchable(),
+             
+                TextColumn::make('No')
+                    ->rowIndex()
+                    ->label('No.')
+                    ->width('50px')
+                    ->alignment(Alignment::Center),
+
                 TextColumn::make('nama_pegawai')
-                    ->searchable(),
-                TextColumn::make('jenis_kelamin')
-                    ->searchable(),
-                TextColumn::make('tempat_lahir')
-                    ->searchable(),
-                TextColumn::make('tanggal_lahir')
-                    ->date()
+                    ->label('Nama Pegawai')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold')
+                    ->description(fn ($record) => "NIP: " . $record->nip),
+
+                TextColumn::make('nik')
+                    ->label('NIK')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                // Menampilkan Jabatan (Relasi)
+                TextColumn::make('jabatan.nama_jabatan')
+                    ->label('Jabatan')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('info'),
+
+                // Menampilkan Wilayah Tugas (Relasi)
+                TextColumn::make('wilayah.nama_wilayah')
+                    ->label('Wilayah Tugas')
+                    ->searchable()
                     ->sortable(),
-                TextColumn::make('no_hp')
-                    ->searchable(),
+
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label('Email')
+                    ->icon('heroicon-m-envelope')
+                    ->iconColor('primary')
                     ->searchable(),
-                TextColumn::make('jabatan_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('wilayah_id')
-                    ->numeric()
-                    ->sortable(),
+
+                TextColumn::make('no_hp')
+                    ->label('No. Kontak')
+                    ->copyable()
+                    ->searchable(),
+
                 TextColumn::make('status_pegawai')
-                    ->searchable(),
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Aktif' => 'success',
+                        'Non-Aktif' => 'danger',
+                        'Cuti' => 'warning',
+                        default => 'secondary',
+                    }),
+
                 TextColumn::make('tanggal_masuk')
-                    ->date()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Tgl Masuk')
+                    ->date('d M Y')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
             ])
             ->filters([
                 //
