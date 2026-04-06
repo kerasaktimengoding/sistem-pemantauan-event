@@ -25,12 +25,13 @@ class PedagangResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
+        protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
+    protected static ?int $navigationSort = 7;
     public static function form(Schema $schema): Schema
     {
         return PedagangForm::configure($schema);
     }
-    protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
-    protected static ?int $navigationSort = 8;
+
     public static function infolist(Schema $schema): Schema
     {
         return PedagangInfolist::configure($schema);

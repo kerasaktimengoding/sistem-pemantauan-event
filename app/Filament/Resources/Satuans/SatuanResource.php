@@ -22,9 +22,11 @@ class SatuanResource extends Resource
     protected static ?string $model = Satuan::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-     protected static ?int $navigationSort = 3;
-    protected static ?string $recordTitleAttribute = 'id';
-    protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
+
+    protected static ?string $recordTitleAttribute = 'yes';
+        protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
+    protected static ?int $navigationSort = 2;
+
     public static function form(Schema $schema): Schema
     {
         return SatuanForm::configure($schema);

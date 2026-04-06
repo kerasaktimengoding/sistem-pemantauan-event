@@ -2,8 +2,11 @@
 
 namespace App\Filament\Resources\Jabatans\Schemas;
 
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class JabatanForm
@@ -12,15 +15,61 @@ class JabatanForm
     {
         return $schema
             ->components([
-                TextInput::make('kode_jabatan')
-                    ->required(),
-                TextInput::make('nama_jabatan')
-                    ->required(),
-                Textarea::make('tugas_pokok')
-                    ->required()
-                    ->columnSpanFull(),
-                TextInput::make('status_jabatan')
-                    ->required(),
+             
+                Section::make('Informasi Jabatan')
+                    ->description('Masukan detail identitas jabatan struktural atau fungsional.') 
+                    ->schema([
+                        Group::make([
+                            TextInput::make('kode_jabatan')
+                                ->label('Kode Jabatan')
+                                ->required() 
+                                ->maxLength(20) 
+                                ->unique('jabatans', 'kode_jabatan', ignoreRecord: true)
+                                ->placeholder('Contoh: JAB-001')
+                                ->validationMessages([
+                                    'unique' => 'Kode jabatan ini sudah terdaftar.',
+                                ]),
+
+                            TextInput::make('nama_jabatan')
+                                ->label('Nama Jabatan')
+                                ->required() 
+                                ->maxLength(100) 
+                                ->placeholder('Contoh: Kepala Bidang Perdagangan'),
+                        ])->columns(2),
+                    ]),
+
+                // Section Tugas & Tanggung Jawab
+                Section::make('Uraian Tugas')
+                    ->description('Jelaskan tugas pokok dan fungsi dari jabatan ini.') 
+                    ->schema([
+                        Textarea::make('tugas_pokok')
+                            ->label('Tugas Pokok')
+                            ->required() 
+                            ->rows(5)
+                            ->placeholder('Sebutkan poin-poin tugas utama jabatan...')
+                            ->columnSpanFull(),
+                    ]),
+
+                // Section Status
+                Section::make('Status Jabatan')
+                    ->schema([
+                        ToggleButtons::make('status_jabatan')
+                            ->label('Status Aktif')
+                            ->options([
+                                'Aktif' => 'Aktif',
+                                'Non-Aktif' => 'Non-Aktif',
+                            ]) 
+                            ->colors([
+                                'Aktif' => 'success',
+                                'Non-Aktif' => 'danger',
+                            ])
+                            ->icons([
+                                'Aktif' => 'heroicon-o-check-badge',
+                                'Non-Aktif' => 'heroicon-o-x-circle',
+                            ])
+                            ->default('Aktif') 
+                            ->inline(),
+                    ]),
             ]);
     }
 }

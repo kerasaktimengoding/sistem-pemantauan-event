@@ -25,11 +25,11 @@ class PegawaiResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
     protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
+    protected static ?int $navigationSort = 6;
     public static function form(Schema $schema): Schema
     {
         return PegawaiForm::configure($schema);
     }
- protected static ?int $navigationSort = 6;
     public static function infolist(Schema $schema): Schema
     {
         return PegawaiInfolist::configure($schema);

@@ -15,6 +15,10 @@ class SatuansTable
     {
         return $table
             ->columns([
+                TextColumn::make('kode_satuan')
+                    ->searchable(),
+                TextColumn::make('nama_satuan')
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

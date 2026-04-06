@@ -11,6 +11,8 @@ class SatuanInfolist
     {
         return $schema
             ->components([
+                TextEntry::make('kode_satuan'),
+                TextEntry::make('nama_satuan'),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),
