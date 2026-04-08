@@ -9,6 +9,7 @@ use Filament\Actions\ViewAction;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Actions\DeleteAction;
 
 class KehadiranEventsTable
 {
@@ -72,6 +73,7 @@ class KehadiranEventsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                 DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

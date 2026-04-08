@@ -9,6 +9,7 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Support\Enums\Alignment;
+use Filament\Actions\DeleteAction;
 
 class PerbandinganWilayahsTable
 {
@@ -66,6 +67,7 @@ class PerbandinganWilayahsTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
+                 DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
