@@ -20,8 +20,7 @@ use UnitEnum;
 class SatuanResource extends Resource
 {
     protected static ?string $model = Satuan::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+protected static string|BackedEnum|null $navigationIcon = Heroicon::Scale;
 
     protected static ?string $recordTitleAttribute = 'yes';
         protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';

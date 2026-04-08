@@ -21,10 +21,14 @@ class KategoriKomoditasResource extends Resource
 {
     protected static ?string $model = KategoriKomoditas::class;
 protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Tag;
      protected static ?int $navigationSort = 2;
     protected static ?string $recordTitleAttribute = 'id';
 
+      public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
     public static function form(Schema $schema): Schema
     {
         return KategoriKomoditasForm::configure($schema);

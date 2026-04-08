@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,29 +16,62 @@ class HasilPelatihansTable
     {
         return $table
             ->columns([
-                TextColumn::make('kode_hasil_pelatihan')
-                    ->searchable(),
-                TextColumn::make('peserta_event_id')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('No')
+                    ->rowIndex()
+                    ->label('No.')
+                    ->width('50px')
+                    ->alignment(Alignment::Center),
+
+                // Informasi Peserta
+                TextColumn::make('pesertaevent.nama_peserta')
+                    ->label('Nama Peserta')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold')
+                    ->description(fn ($record) => "ID: " . $record->kode_hasil_pelatihan),
+
+                // Nilai-Nilai (Dibuat berdampingan untuk komparasi)
                 TextColumn::make('nilai_pretest')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Pre-Test')
+                    ->numeric(decimalPlaces: 2)
+                    ->sortable()
+                    ->alignment(Alignment::Center),
+
                 TextColumn::make('nilai_posttest')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Post-Test')
+                    ->numeric(decimalPlaces: 2)
+                    ->sortable()
+                    ->alignment(Alignment::Center)
+                    ->color('primary'),
+
                 TextColumn::make('nilai_akhir')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Nilai Akhir')
+                    ->numeric(decimalPlaces: 2)
+                    ->sortable()
+                    ->alignment(Alignment::Center)
+                    ->weight('bold')
+                    ->color(fn ($state) => $state >= 75 ? 'success' : 'danger'),
+
+                // Status Kelulusan dengan Badge
                 TextColumn::make('status_kelulusan')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
+                    ->label('Hasil Akhir')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Lulus' => 'success',
+                        'Tidak Lulus' => 'danger',
+                        'Remedial' => 'warning',
+                        default => 'secondary',
+                    })
+                    ->icon(fn (string $state): string => match ($state) {
+                        'Lulus' => 'heroicon-o-academic-cap',
+                        'Tidak Lulus' => 'heroicon-o-x-circle',
+                        'Remedial' => 'heroicon-o-arrow-path',
+                        default => 'heroicon-o-minus',
+                    }),
+
+                TextColumn::make('catatan')
+                    ->label('Catatan')
+                    ->limit(20)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

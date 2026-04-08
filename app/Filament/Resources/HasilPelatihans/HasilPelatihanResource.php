@@ -21,16 +21,21 @@ class HasilPelatihanResource extends Resource
 {
     protected static ?string $model = HasilPelatihan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'id';
 
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::AcademicCap;
     protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
-     protected static ?int $navigationSort = 3;
+     protected static ?int $navigationSort = 14;
     public static function form(Schema $schema): Schema
     {
         return HasilPelatihanForm::configure($schema);
     }
+
+      public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
 
     public static function infolist(Schema $schema): Schema
     {

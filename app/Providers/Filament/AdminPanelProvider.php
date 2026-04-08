@@ -34,13 +34,14 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->sidebarFullyCollapsibleOnDesktop()
             ->colors([
-    'primary' => Color::Teal,       // Lebih elegan dan profesional
-    'info' => Color::Blue,     // Memberikan kesan tegas dan resmi
-    'success' => Color::Green,      // Warna yang melambangkan keberhasilan dan positif
-    'warning' => Color::Amber,      // Warna yang lebih lembut dan masih memberikan peringatan
-    'danger' => Color::Red,         // Klasik untuk peringatan yang lebih serius
-    'gray' => Color::Zinc,     // Warna netral yang cocok untuk latar belakang atau teks
-])
+                'primary' => Color::Teal,       // Lebih elegan dan profesional
+                'info' => Color::Blue,     // Memberikan kesan tegas dan resmi
+                'success' => Color::Green,      // Warna yang melambangkan keberhasilan dan positif
+                'warning' => Color::Amber,      // Warna yang lebih lembut dan masih memberikan peringatan
+                'danger' => Color::Red,         // Klasik untuk peringatan yang lebih serius
+                'gray' => Color::Zinc,     // Warna netral yang cocok untuk latar belakang atau teks
+            ])
+
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([

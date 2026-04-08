@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,35 +16,56 @@ class RekapHargasTable
     {
         return $table
             ->columns([
-                TextColumn::make('kode_rekap_harga')
-                    ->searchable(),
-                TextColumn::make('komoditas_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('wilayah_id')
-                    ->numeric()
-                    ->sortable(),
+               TextColumn::make('No')
+                    ->rowIndex()
+                    ->label('No.')
+                    ->width('50px')
+                    ->alignment(Alignment::Center),
+
                 TextColumn::make('periode_rekap')
-                    ->date()
-                    ->sortable(),
+                    ->label('Periode')
+                    ->date('F Y') // Contoh: April 2026
+                    ->sortable()
+                    ->weight('bold')
+                    ->description(fn ($record) => "ID: " . $record->kode_rekap_harga),
+
+                TextColumn::make('komoditas.nama_komoditas')
+                    ->label('Komoditas')
+                    ->searchable()
+                    ->sortable()
+                    ->description(fn ($record) => "Wilayah: " . ($record->wilayah->nama_wilayah ?? '-')),
+
+                // Statistik Harga (Rata-rata)
                 TextColumn::make('harga_rata_rata')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Rata-rata')
+                    ->money('IDR', locale: 'id_ID')
+                    ->sortable()
+                    ->alignment(Alignment::Right)
+                    ->color('primary')
+                    ->weight('bold'),
+
+                // Batas Harga Atas
                 TextColumn::make('harga_maksimum')
-                    ->numeric()
-                    ->sortable(),
+                    ->label('Tertinggi')
+                    ->money('IDR', locale: 'id_ID')
+                    ->sortable()
+                    ->alignment(Alignment::Right)
+                    ->color('danger'),
+
+                // Batas Harga Bawah
                 TextColumn::make('harga_minimum')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Terendah')
+                    ->money('IDR', locale: 'id_ID')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->alignment(Alignment::Right)
+                    ->color('success'),
+
                 TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
+                    ->label('Terakhir Update')
+                    ->dateTime('d/m/Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('periode_rekap', 'desc')
             ->filters([
                 //
             ])

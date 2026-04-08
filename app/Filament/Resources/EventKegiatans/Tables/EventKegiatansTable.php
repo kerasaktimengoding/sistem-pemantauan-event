@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -15,34 +16,61 @@ class EventKegiatansTable
     {
         return $table
             ->columns([
-                TextColumn::make('kode_event')
-                    ->searchable(),
+               TextColumn::make('No')
+                    ->rowIndex()
+                    ->label('No.')
+                    ->width('50px')
+                    ->alignment(Alignment::Center),
+
                 TextColumn::make('nama_event')
-                    ->searchable(),
+                    ->label('Nama Kegiatan')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold')
+                    ->description(fn ($record) => "Kode: " . $record->kode_event),
+
                 TextColumn::make('jenis_event')
+                    ->label('Jenis')
+                    ->badge()
+                    ->color('gray')
                     ->searchable(),
-                TextColumn::make('wilayah_id')
-                    ->numeric()
-                    ->sortable(),
+
+                // Menampilkan rentang tanggal kegiatan
                 TextColumn::make('tanggal_mulai')
-                    ->date()
+                    ->label('Pelaksanaan')
+                    ->date('d M Y')
+                    ->sortable()
+                    ->description(fn ($record) => "s/d " . \Carbon\Carbon::parse($record->tanggal_selesai)->format('d M Y')),
+
+                TextColumn::make('wilayah.nama_wilayah')
+                    ->label('Wilayah')
+                    ->searchable()
                     ->sortable(),
-                TextColumn::make('tanggal_selesai')
-                    ->date()
-                    ->sortable(),
+
                 TextColumn::make('lokasi_event')
+                    ->label('Lokasi Detail')
+                    ->limit(30)
                     ->searchable(),
+
                 TextColumn::make('status_event')
-                    ->searchable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Terjadwal' => 'info',
+                        'Berlangsung' => 'warning',
+                        'Selesai' => 'success',
+                        'Dibatalkan' => 'danger',
+                        default => 'secondary',
+                    })
+                    ->icon(fn (string $state): string => match ($state) {
+                        'Terjadwal' => 'heroicon-o-calendar',
+                        'Berlangsung' => 'heroicon-o-play-circle',
+                        'Selesai' => 'heroicon-o-check-badge',
+                        'Dibatalkan' => 'heroicon-o-x-circle',
+                        default => 'heroicon-o-clock',
+                    }),
             ])
+            ->defaultSort('tanggal_mulai', 'desc')
             ->filters([
                 //
             ])

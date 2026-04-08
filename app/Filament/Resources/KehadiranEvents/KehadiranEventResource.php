@@ -21,21 +21,27 @@ class KehadiranEventResource extends Resource
 {
     protected static ?string $model = KehadiranEvent::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
+  
     protected static ?string $recordTitleAttribute = 'id';
 
     public static function form(Schema $schema): Schema
     {
         return KehadiranEventForm::configure($schema);
     }
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::CheckBadge;
     protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
-     protected static ?int $navigationSort = 2;
+     protected static ?int $navigationSort = 13;
 
     public static function infolist(Schema $schema): Schema
     {
         return KehadiranEventInfolist::configure($schema);
     }
+
+      public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
 
     public static function table(Table $table): Table
     {

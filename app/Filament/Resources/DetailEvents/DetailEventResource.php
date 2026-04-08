@@ -21,16 +21,20 @@ class DetailEventResource extends Resource
 {
     protected static ?string $model = DetailEvent::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'id';
-    
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ListBullet;
     protected static string | UnitEnum | null $navigationGroup = 'DATA OPERASIONAL';
-     protected static ?int $navigationSort = 3;
+     protected static ?int $navigationSort = 11;
     public static function form(Schema $schema): Schema
     {
         return DetailEventForm::configure($schema);
     }
+
+      public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
 
     public static function infolist(Schema $schema): Schema
     {

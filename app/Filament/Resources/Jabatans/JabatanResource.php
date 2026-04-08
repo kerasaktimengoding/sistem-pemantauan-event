@@ -21,11 +21,16 @@ class JabatanResource extends Resource
 {
     protected static ?string $model = Jabatan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
+protected static string|BackedEnum|null $navigationIcon = Heroicon::Identification;
     protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
     protected static ?string $recordTitleAttribute = 'id';
      protected static ?int $navigationSort = 5;
+
+       public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
+
     public static function form(Schema $schema): Schema
     {
         return JabatanForm::configure($schema);

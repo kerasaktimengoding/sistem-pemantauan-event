@@ -21,17 +21,23 @@ class EventKegiatanResource extends Resource
 {
     protected static ?string $model = EventKegiatan::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'id';
 
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::CalendarDays;
+
     
     protected static string | UnitEnum | null $navigationGroup = 'DATA OPERASIONAL';
-     protected static ?int $navigationSort = 2;
+     protected static ?int $navigationSort = 10;
     public static function form(Schema $schema): Schema
     {
         return EventKegiatanForm::configure($schema);
     }
+
+      public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
 
     public static function infolist(Schema $schema): Schema
     {

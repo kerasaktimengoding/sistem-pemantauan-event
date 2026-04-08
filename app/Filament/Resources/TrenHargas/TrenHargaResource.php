@@ -21,16 +21,22 @@ class TrenHargaResource extends Resource
 {
     protected static ?string $model = TrenHarga::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'id';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ChartBarSquare;
       protected static string | UnitEnum | null $navigationGroup = 'DATA ANALISIS';
- protected static ?int $navigationSort = 2;
+ protected static ?int $navigationSort = 16;
 
     public static function form(Schema $schema): Schema
     {
         return TrenHargaForm::configure($schema);
     }
+
+      public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
 
     public static function infolist(Schema $schema): Schema
     {

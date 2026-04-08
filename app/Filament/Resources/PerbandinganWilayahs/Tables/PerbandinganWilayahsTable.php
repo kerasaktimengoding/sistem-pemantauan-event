@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Support\Enums\Alignment;
 
 class PerbandinganWilayahsTable
 {
@@ -15,34 +16,49 @@ class PerbandinganWilayahsTable
     {
         return $table
             ->columns([
+               TextColumn::make('No')
+                    ->rowIndex()
+                    ->label('No.')
+                    ->width('50px')
+                    ->alignment(Alignment::Center),
+
                 TextColumn::make('kode_perbandingan')
-                    ->searchable(),
-                TextColumn::make('komoditas_id')
-                    ->numeric()
+                    ->label('Kode')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold')
+                    ->fontFamily('mono'),
+
+                TextColumn::make('komoditas.nama_komoditas')
+                    ->label('Komoditas')
+                    ->searchable()
                     ->sortable(),
-                TextColumn::make('wilayah_1_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('wilayah_2_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('harga_wilayah_1')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('harga_wilayah_2')
-                    ->numeric()
-                    ->sortable(),
+
+                // Kolom Perbandingan Wilayah 1
+                TextColumn::make('wilayah1.nama_wilayah')
+                    ->label('Wilayah 1')
+                    ,
+
+                // Kolom Perbandingan Wilayah 2
+                TextColumn::make('wilayah2.nama_wilayah')
+                    ->label('Wilayah 2')
+                    ,
+
+                // Indikator Selisih (Disparitas)
                 TextColumn::make('selisih_harga')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Selisih Harga')
+                    ->money('IDR', locale: 'id_ID')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->alignment(Alignment::Right)
+                    ->color(fn ($state) => $state > 5000 ? 'danger' : 'warning')
+                    ->weight('bold'),
+
+                // Status Disparitas Berdasarkan Persentase (Opsional jika ada di kolom lain)
+                TextColumn::make('keterangan')
+                    ->label('Analisis Keterangan')
+                    ->limit(30)
+                    ->tooltip(fn ($state) => $state) // Munculkan teks lengkap saat hover
+                    ->toggleable(),
             ])
             ->filters([
                 //

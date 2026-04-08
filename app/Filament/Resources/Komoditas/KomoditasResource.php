@@ -21,7 +21,7 @@ class KomoditasResource extends Resource
 {
     protected static ?string $model = Komoditas::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+   protected static string|BackedEnum|null $navigationIcon = Heroicon::ShoppingBag;
 
     protected static ?string $recordTitleAttribute = 'id';
 protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
@@ -40,6 +40,11 @@ protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
         return KomoditasTable::configure($table);
     }
      protected static ?int $navigationSort = 4;
+     
+       public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
     public static function getRelations(): array
     {
         return [

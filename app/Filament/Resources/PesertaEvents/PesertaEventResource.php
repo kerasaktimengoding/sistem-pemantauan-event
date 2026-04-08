@@ -21,7 +21,7 @@ class PesertaEventResource extends Resource
 {
     protected static ?string $model = PesertaEvent::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::UserPlus;
 
     protected static ?string $recordTitleAttribute = 'id';
 
@@ -30,12 +30,19 @@ class PesertaEventResource extends Resource
         return PesertaEventForm::configure($schema);
     }
     protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
-     protected static ?int $navigationSort = 1;
+     protected static ?int $navigationSort = 12;
+
+     
 
     public static function infolist(Schema $schema): Schema
     {
         return PesertaEventInfolist::configure($schema);
     }
+
+      public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
 
     public static function table(Table $table): Table
     {

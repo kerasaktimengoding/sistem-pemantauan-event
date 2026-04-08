@@ -21,8 +21,7 @@ class PedagangResource extends Resource
 {
     protected static ?string $model = Pedagang::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-
+protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
     protected static ?string $recordTitleAttribute = 'id';
 
         protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
@@ -31,6 +30,13 @@ class PedagangResource extends Resource
     {
         return PedagangForm::configure($schema);
     }
+
+    
+
+      public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
 
     public static function infolist(Schema $schema): Schema
     {

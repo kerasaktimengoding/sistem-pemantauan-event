@@ -21,19 +21,22 @@ class PerbandinganWilayahResource extends Resource
 {
     protected static ?string $model = PerbandinganWilayah::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'id';
 
-      protected static string | UnitEnum | null $navigationGroup = 'DATA ANALISIS';
-
- protected static ?int $navigationSort = 3;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ArrowsUpDown;
+          protected static string | UnitEnum | null $navigationGroup = 'DATA ANALISIS';
+ protected static ?int $navigationSort = 17;
 
     public static function form(Schema $schema): Schema
     {
         return PerbandinganWilayahForm::configure($schema);
     }
 
+      public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
     public static function infolist(Schema $schema): Schema
     {
         return PerbandinganWilayahInfolist::configure($schema);

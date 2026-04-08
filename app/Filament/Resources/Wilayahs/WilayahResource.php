@@ -21,7 +21,7 @@ class WilayahResource extends Resource
 {
     protected static ?string $model = Wilayah::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+   
 
     protected static ?string $recordTitleAttribute = 'id';
     protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
@@ -29,12 +29,17 @@ class WilayahResource extends Resource
     {
         return WilayahForm::configure($schema);
     }
+      public static function getNavigationBadge(): ?string
+{
+    return static::getModel()::count();
+}
+protected static string|BackedEnum|null $navigationIcon = Heroicon::MapPin;
  protected static ?int $navigationSort = 1;
     public static function infolist(Schema $schema): Schema
     {
         return WilayahInfolist::configure($schema);
     }
-   
+
     public static function table(Table $table): Table
     {
         return WilayahsTable::configure($table);
