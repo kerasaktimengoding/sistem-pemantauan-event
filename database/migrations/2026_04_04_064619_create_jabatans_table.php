@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,8 +15,10 @@ return new class extends Migration
             $table->string('kode_jabatan', 20);
             $table->string('nama_jabatan', 100);
             $table->text('tugas_pokok');
-            $table->string('status_jabatan', 20);
+            $table->text('wewenang'); // Wewenang yang dimiliki oleh pejabat
+            $table->enum('status_jabatan', ['aktif', 'non-aktif'])->default('aktif'); // Status jabatan
             $table->timestamps();
+
         });
     }
 

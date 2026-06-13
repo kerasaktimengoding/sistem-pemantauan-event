@@ -40,27 +40,44 @@ class KomoditasForm
                     ->description('Tentukan pengelompokan dan satuan ukur komoditas.') 
                     ->schema([
                         Group::make([
-                            Select::make('kategori_id')
-                                ->label('Kategori')
-                                ->relationship('kategori', 'nama_kategori') 
-                                ->searchable()
-                                ->preload()
-                                ->required()
-                                ->createOptionForm([
-                                    TextInput::make('kode_kategori')->required(),
-                                    TextInput::make('nama_kategori')->required(),
-                                ]),
+                            Select::make('kategori')
+                                ->label('Kategori Komoditas')
+                                ->options([ 
+                                    'beras' => 'Beras',
+                                    'bahan_pokok' => 'Bahan Pokok',
+                                    'sayur' => 'Sayur',
+                                    'buah' => 'Buah',
+                                    'bumbu_dapur' => 'Bumbu Dapur',
+                                    'protein_hewani' => 'Protein Hewani',
+                                    'protein_nabati' => 'Protein Nabati',
+                                    'minyak_lemak' => 'Minyak & Lemak',
+                                    'gula' => 'Gula',
+                                    'olahan_pangan' => 'Olahan Pangan',
+                                    'sembako_lain' => 'Sembako Lainnya',
+                                    'non_pangan' => 'Non-Pangan',
+                                ])
+                                ->default('bahan_pokok')
+                                ->required(),
+                                 
 
-                            Select::make('satuan_id')
-                                ->label('Satuan')
-                                ->relationship('satuan', 'nama_satuan') 
-                                ->searchable()
-                                ->preload()
-                                ->required()
-                                ->createOptionForm([
-                                    TextInput::make('kode_satuan')->required(),
-                                    TextInput::make('nama_satuan')->required(),
-                                ]),
+                            Select::make('satuan')
+                                ->label('Satuan Default')
+                                ->options([
+                                    'Kg' => 'Kg',
+                                    'Gram' => 'Gram',
+                                    'Liter' => 'Liter',
+                                    'Ml' => 'Ml',
+                                    'Pcs' => 'Pcs',
+                                    'Ikat' => 'Ikat',
+                                    'Biji' => 'Biji',
+                                    'Karung' => 'Karung',
+                                    'Pack' => 'Pack',
+                                    'Botol' => 'Botol',
+                                    'Box' => 'Box',
+                                    'Tray' => 'Tray',
+                                ])
+                                ->default('Kg')
+                                ->required(),
                         ])->columns(2),
                     ]),
 

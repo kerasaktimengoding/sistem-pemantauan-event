@@ -31,8 +31,8 @@ class InputHargaResource extends Resource
     }
 
     
-    protected static string | UnitEnum | null $navigationGroup = 'DATA OPERASIONAL';
-     protected static ?int $navigationSort = 9;
+    protected static string | UnitEnum | null $navigationGroup = 'Aktivitas Pemantauan Harga';
+    protected static ?int $navigationSort = 11;
     public static function infolist(Schema $schema): Schema
     {
         return InputHargaInfolist::configure($schema);

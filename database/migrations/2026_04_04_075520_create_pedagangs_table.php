@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('nama_pedagang', 100);
             $table->string('jenis_tempat', 50);
             $table->string('no_hp', 15);
+            $table->unsignedBigInteger('kecamatan_id')->nullable(); // 4. ID Induk Kecamatan
+            $table->unsignedBigInteger('desa_id')->nullable();      // 5. ID Anak Desa
             $table->text('alamat');
-            $table->unsignedBigInteger('wilayah_id');
+            // $table->unsignedBigInteger('wilayah_id');
             $table->string('status_pedagang', 20);
             $table->timestamps();
         });

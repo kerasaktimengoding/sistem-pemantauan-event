@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
               $table->string('kode_perbandingan', 20);
             $table->unsignedBigInteger('komoditas_id');
-            $table->unsignedBigInteger('wilayah_1_id');
-            $table->unsignedBigInteger('wilayah_2_id');
-            $table->decimal('harga_wilayah_1', 12, 2);
-            $table->decimal('harga_wilayah_2', 12, 2);
+            $table->unsignedBigInteger('desa_id');
+            $table->unsignedBigInteger('desa_2_id');
+            $table->decimal('harga_desa_1', 12, 2);
+            $table->decimal('harga_desa_2', 12, 2);
             $table->decimal('selisih_harga', 12, 2);
             $table->text('keterangan');
             $table->timestamps();

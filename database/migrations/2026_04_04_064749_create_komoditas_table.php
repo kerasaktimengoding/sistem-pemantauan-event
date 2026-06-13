@@ -15,8 +15,36 @@ return new class extends Migration
             $table->id();
             $table->string('kode_komoditas', 20);
             $table->string('nama_komoditas', 100);
-            $table->unsignedBigInteger('kategori_id');
-            $table->unsignedBigInteger('satuan_id');
+             $table->enum('kategori', [
+                'beras',
+                'bahan_pokok',
+                'sayur',
+                'buah',
+                'bumbu_dapur',
+                'protein_hewani',
+                'protein_nabati',
+                'minyak_lemak',
+                'gula',
+                'olahan_pangan',
+                'sembako_lain',
+                'non_pangan'
+            ])->default('sembako_lain');
+            // kategori dijadikan satu dan juga satuan 
+             $table->enum('satuan', [
+                'Kg',
+                'Gram',
+                'Liter',
+                'Ml',
+                'Pcs',
+                'Ikat',
+                'Biji',
+                'Karung',
+                'Pack',
+                'Botol',
+                'Box',
+                'Tray'
+            ])->default('Kg');
+           
             $table->text('deskripsi');
             $table->string('status_komoditas', 20);
             $table->timestamps();

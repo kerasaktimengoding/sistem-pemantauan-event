@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Filament\Widgets\MyCalenderWidget;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -32,7 +33,12 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->brandName('APLIKASI MONITORING HARGA KOMODITAS DAN MANAJEMEN KEGIATAN BERBASIS WEB PADA DKUMPP KABUPATEN BANJAR')
+            // ->brandLogo("https://www.banjarkab.go.id/assets/images/logo.png")
+            ->favicon("https://www.banjarkab.go.id/assets/images/logo.png")
             ->sidebarFullyCollapsibleOnDesktop()
+            ->spa()
+            //  ->topNavigation()
             ->colors([
                 'primary' => Color::Teal,       // Lebih elegan dan profesional
                 'info' => Color::Blue,     // Memberikan kesan tegas dan resmi
@@ -42,16 +48,21 @@ class AdminPanelProvider extends PanelProvider
                 'gray' => Color::Zinc,     // Warna netral yang cocok untuk latar belakang atau teks
             ])
 
+            ->brandLogoHeight('3rem')
+
+
+        // Atau cara termudah dengan Custom CSS
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
-                Dashboard::class,
+                // Dashboard::class,
             ])
-            ->spa()
+            //   ->spa(hasPrefetching: true)
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
+                // AccountWidget::class,
+                // FilamentInfoWidget::class,
+                MyCalenderWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,

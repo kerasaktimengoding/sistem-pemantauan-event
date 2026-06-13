@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Guava\Calendar\Contracts\Eventable;
+use Guava\Calendar\ValueObjects\CalendarEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EventKegiatan extends Model
+class EventKegiatan extends Model implements Eventable
 {
     //
     use HasFactory;
@@ -24,5 +26,14 @@ class EventKegiatan extends Model
     public function detailEvent()
     {
         return $this->hasMany(DetailEvent::class);
-    }   
+    }
+
+    public function toCalendarEvent(): CalendarEvent
+    {
+        return CalendarEvent::make($this)
+            ->title($this->nama_event)
+            ->start($this->tanggal_mulai)
+            ->end($this->tanggal_selesai ?? $this->tanggal_mulai)
+            ->backgroundColor($this->status_event === 'Aktif' ? '#071f10ff' : '#2563eb');
+    }
 }

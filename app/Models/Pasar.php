@@ -11,12 +11,19 @@ class Pasar extends Model
         use HasFactory;
 
     protected $fillable = [
-        'kode_pasar', 'nama_pasar', 'wilayah_id', 'alamat_pasar', 'status_pasar'
+        'kode_pasar', 'nama_pasar', 'kecamatan_id', 'desa_id', 'alamat_pasar', 'status_pasar'
     ];
 
     // Relasi dengan wilayah
-    public function wilayah()
-    {
-        return $this->belongsTo(Wilayah::class, 'wilayah_id');
-    }
+   
+    // masukan dulu input desa nya
+
+        public function kecamatan()
+        {
+            return $this->belongsTo(kecamatan::class, 'kecamatan_id');
+        }
+        public function desa()
+        {
+            return $this->belongsTo(desa::class, 'desa_id');
+        }
 }

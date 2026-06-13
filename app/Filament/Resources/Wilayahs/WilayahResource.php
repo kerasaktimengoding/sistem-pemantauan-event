@@ -16,25 +16,29 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
+use App\Filament\Resources\Wilayahs\Widgets\WilayahWidget;
 
 class WilayahResource extends Resource
 {
     protected static ?string $model = Wilayah::class;
 
-   
+protected static ?string $recordTitleAttribute = 'kode_wilayah';
+protected static string | UnitEnum | null $navigationGroup = 'Wilayah & Kepegawaian';
+protected static ?string $navigationLabel = 'Zonasi Wilayah Kab Banjar';
+protected static ?string $pluralModelLabel = 'Zonasi Wilayah Kab Banjar';
 
-    protected static ?string $recordTitleAttribute = 'id';
-    protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
+protected static ?int $navigationSort = 3;
+
+   
     public static function form(Schema $schema): Schema
     {
         return WilayahForm::configure($schema);
     }
-      public static function getNavigationBadge(): ?string
-{
-    return static::getModel()::count();
-}
-protected static string|BackedEnum|null $navigationIcon = Heroicon::MapPin;
- protected static ?int $navigationSort = 1;
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::MapPin;
     public static function infolist(Schema $schema): Schema
     {
         return WilayahInfolist::configure($schema);
@@ -43,6 +47,13 @@ protected static string|BackedEnum|null $navigationIcon = Heroicon::MapPin;
     public static function table(Table $table): Table
     {
         return WilayahsTable::configure($table);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            WilayahWidget::class,
+        ];
     }
 
     public static function getRelations(): array

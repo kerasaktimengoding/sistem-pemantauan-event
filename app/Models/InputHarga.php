@@ -26,6 +26,16 @@ class InputHarga extends Model
         return $this->belongsTo(Wilayah::class, 'wilayah_id');
     }
 
+    public function kecamatan()
+    {
+        return $this->belongsTo(kecamatan::class, 'kecamatan_id');
+    }
+
+    public function desa()
+    {
+        return $this->belongsTo(Desa::class, 'desa_id');
+    }
+
     // Relasi dengan pasar
     public function pasar()
     {

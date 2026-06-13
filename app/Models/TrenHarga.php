@@ -25,4 +25,13 @@ class TrenHarga extends Model
     {
         return $this->belongsTo(Wilayah::class, 'wilayah_id');
     }
+
+    public function desa()
+    {
+        return $this->belongsTo(desa::class, 'wilayah_id', 'kecamatan_id');
+    }
+    public function kecamatan()
+    {
+        return $this->belongsTo(kecamatan::class, 'wilayah_id', 'kecamatan_id');
+    }
 }

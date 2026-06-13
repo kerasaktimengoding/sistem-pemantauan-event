@@ -30,8 +30,8 @@ class KehadiranEventResource extends Resource
     }
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CheckBadge;
-    protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
-     protected static ?int $navigationSort = 13;
+    protected static string | UnitEnum | null $navigationGroup = 'Kegiatan & Pemberdayaan UMKM';
+     protected static ?int $navigationSort = 14;
 
     public static function infolist(Schema $schema): Schema
     {

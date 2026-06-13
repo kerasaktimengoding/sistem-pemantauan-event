@@ -21,10 +21,14 @@ class PegawaiResource extends Resource
 {
     protected static ?string $model = Pegawai::class;
 
-protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
-    protected static ?string $recordTitleAttribute = 'id';
-    protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
-    protected static ?int $navigationSort = 6;
+
+    
+    protected static ?string $recordTitleAttribute = 'nama_pegawai';
+protected static string | UnitEnum | null $navigationGroup = 'Wilayah & Kepegawaian';
+protected static ?string $navigationLabel = 'Profil Kepegawaian';
+protected static ?string $pluralModelLabel = 'Profil Kepegawaian';
+protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
+protected static ?int $navigationSort = 5;
     public static function form(Schema $schema): Schema
     {
         return PegawaiForm::configure($schema);

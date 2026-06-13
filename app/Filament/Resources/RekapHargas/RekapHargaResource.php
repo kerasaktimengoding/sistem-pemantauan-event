@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class RekapHargaResource extends Resource
@@ -24,7 +25,7 @@ class RekapHargaResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
-    protected static string | UnitEnum | null $navigationGroup = 'DATA ANALISIS';
+    protected static string | UnitEnum | null $navigationGroup = 'Laporan & Analisis Pasar';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Calculator;
 
@@ -47,6 +48,11 @@ class RekapHargaResource extends Resource
     public static function table(Table $table): Table
     {
         return RekapHargasTable::configure($table);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->with(['desa', 'komoditas']);
     }
 
     public static function getRelations(): array

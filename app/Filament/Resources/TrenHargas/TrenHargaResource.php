@@ -25,7 +25,7 @@ class TrenHargaResource extends Resource
     protected static ?string $recordTitleAttribute = 'id';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChartBarSquare;
-      protected static string | UnitEnum | null $navigationGroup = 'DATA ANALISIS';
+      protected static string | UnitEnum | null $navigationGroup = 'Laporan & Analisis Pasar';
  protected static ?int $navigationSort = 16;
 
     public static function form(Schema $schema): Schema

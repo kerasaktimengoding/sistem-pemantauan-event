@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('peserta_events', function (Blueprint $table) {
             $table->id();
-            $table->string('kode_peserta_event', 20);
+           $table->string('kode_peserta_event', 20);
             $table->unsignedBigInteger('event_id');
             $table->string('nik', 20);
             $table->string('nama_peserta', 100);
@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('jenis_kelamin', 10);
             $table->string('no_hp', 15);
             $table->text('alamat');
-            $table->unsignedBigInteger('wilayah_id');
+            $table->unsignedBigInteger('kecamatan_id')->nullable(); // 4. ID Induk Kecamatan
+            $table->unsignedBigInteger('desa_id')->nullable();      // 5. ID Anak Desa
             $table->date('tanggal_registrasi');
             $table->string('status_partisipasi', 20);
             $table->timestamps();

@@ -22,9 +22,11 @@ class JabatanResource extends Resource
     protected static ?string $model = Jabatan::class;
 
 protected static string|BackedEnum|null $navigationIcon = Heroicon::Identification;
-    protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
-    protected static ?string $recordTitleAttribute = 'id';
-     protected static ?int $navigationSort = 5;
+   protected static ?string $recordTitleAttribute = 'nama_jabatan';
+protected static string | UnitEnum | null $navigationGroup = 'Wilayah & Kepegawaian';
+protected static ?string $navigationLabel = 'Struktur Jabatan';
+protected static ?string $pluralModelLabel = 'Struktur Jabatan';protected static ?int $navigationSort = 4;
+   
 
        public static function getNavigationBadge(): ?string
 {

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('kode_rekap_harga', 20);
             $table->unsignedBigInteger('komoditas_id');
-            $table->unsignedBigInteger('wilayah_id');
+            $table->unsignedBigInteger('kecamatan_id')->nullable(); // 4. ID Induk Kecamatan
+            $table->unsignedBigInteger('desa_id')->nullable();      // 5. ID Anak Desa
             $table->date('periode_rekap');
             $table->decimal('harga_rata_rata', 12, 2);
             $table->decimal('harga_maksimum', 12, 2);

@@ -21,18 +21,23 @@ class PasarResource extends Resource
 {
     protected static ?string $model = Pasar::class;
 
-protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingStorefront;
-    protected static ?string $recordTitleAttribute = 'id';
+    protected static ?string $recordTitleAttribute = 'nama_pasar';
+    protected static string|UnitEnum|null $navigationGroup = 'Pengelolaan Pasar & Mitra';
+    protected static ?string $navigationLabel = 'Daftar Pasar Rakyat';
+    protected static ?string $pluralModelLabel = 'Daftar Pasar Rakyat';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::HomeModern;
+    // protected static ?int $navigationSort = 2;
 
-     protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
 
-     
-    protected static ?int $navigationSort = 7;
 
-  public static function getNavigationBadge(): ?string
-{
-    return static::getModel()::count();
-}
+
+
+    protected static ?int $navigationSort = 8;
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
     public static function form(Schema $schema): Schema
     {
         return PasarForm::configure($schema);

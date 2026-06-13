@@ -28,7 +28,7 @@ class TrenHargaForm
                                 ->required(),
 
                             Select::make('wilayah_id')
-                                ->label('Wilayah (Kecamatan)')
+                                ->label('Wilayah (Kecamatan & Desa)')
                                 ->relationship('wilayah', 'nama_wilayah')
                                 ->searchable()
                                 ->preload()

@@ -11,17 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tren_hargas', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('komoditas_id');
-            $table->unsignedBigInteger('wilayah_id');
-            $table->date('periode_tren');
-            $table->decimal('harga_awal', 12, 2);
-            $table->decimal('harga_akhir', 12, 2);
-            $table->string('arah_tren', 20);
-            $table->decimal('persentase_perubahan', 6, 2);
-            $table->timestamps();
-        });
+            Schema::create('tren_hargas', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('komoditas_id');
+                $table->unsignedBigInteger('kecamatan_id')->nullable(); // 4. ID Induk Kecamatan
+                $table->unsignedBigInteger('desa_id')->nullable();      // 5. ID Anak Desa
+                $table->date('periode_tren');
+                $table->decimal('harga_awal', 12, 2);
+                $table->decimal('harga_akhir', 12, 2);
+                $table->string('arah_tren', 20);
+                $table->decimal('persentase_perubahan', 6, 2);
+                $table->timestamps();
+            });
     }
 
     /**

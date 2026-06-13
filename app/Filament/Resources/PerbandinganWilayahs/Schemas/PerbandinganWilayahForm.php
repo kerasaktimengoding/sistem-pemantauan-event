@@ -39,36 +39,37 @@ class PerbandinganWilayahForm
                     ->schema([
                         // --- Wilayah 1 ---
                         Group::make([
-                            Select::make('wilayah_1_id')
-                                ->label('Wilayah Pertama')
-                                ->relationship('wilayah1', 'nama_wilayah')
+                            Select::make('desa_id')
+                                ->label('desa Pertama')
+                                ->relationship('desa1', 'nama_desa')
                                 ->required()
                                 ->live()
+                                ->helperText('Otomatis terisi jika desa & komoditas tersedia')
                                 ->afterStateUpdated(function ($state, Set $set, Get $get) {
                                     $komoditasId = $get('komoditas_id');
                                     if (!$state || !$komoditasId)
                                         return;
 
-                                    $rekap = RekapHarga::where('wilayah_id', $state)
+                                    $rekap = RekapHarga::where('desa_id', $state)
                                         ->where('komoditas_id', $komoditasId)
                                         ->latest()->first();
 
                                     if ($rekap) {
-                                        $set('harga_wilayah_1', $rekap->harga_rata_rata);
+                                        $set('harga_desa_1', $rekap->harga_rata_rata);
                                         $set('pesan_error_1', null); // Hapus pesan jika ada
                                     } else {
-                                        $set('harga_wilayah_1', 0);
-                                        $set('pesan_error_1', '⚠️ Data harga belum tersedia untuk wilayah & komoditas ini.');
+                                        $set('harga_desa_1', 0);
+                                        $set('pesan_error_1', '⚠️ Data harga belum tersedia untuk desa & komoditas ini.');
                                     }
 
                                     // Update Selisih
                                     $h1 = (float) ($rekap->harga_rata_rata ?? 0);
-                                    $h2 = (float) ($get('harga_wilayah_2') ?? 0);
+                                    $h2 = (float) ($get('harga_desa_2') ?? 0);
                                     $set('selisih_harga', abs($h1 - $h2));
                                 }),
 
-                            TextInput::make('harga_wilayah_1')
-                                ->label('Harga Wilayah 1')
+                            TextInput::make('harga_desa_1')
+                                ->label('Harga desa 1')
                                 ->numeric()
                                 ->prefix('Rp')
                                 ->live(onBlur: true)
@@ -78,43 +79,44 @@ class PerbandinganWilayahForm
                                 })
                                 // PENTING: Jangan masukkan logika Closure di atribut yang tidak mendukungnya
                                 ->afterStateUpdated(function ($state, Set $set, Get $get) {
-                                    $h2 = (float) ($get('harga_wilayah_2') ?? 0);
+                                    $h2 = (float) ($get('harga_desa_2') ?? 0);
                                     $set('selisih_harga', abs((float) $state - $h2));
                                 }),
                         ])->columns(2),
 
-                        // --- Wilayah 2 ---
+                        // --- desa 2 ---
                         Group::make([
-                            Select::make('wilayah_2_id')
-                                ->label('Wilayah Kedua')
-                                ->relationship('wilayah2', 'nama_wilayah')
+                            Select::make('desa_2_id')
+                                ->label('desa Kedua')
+                                ->relationship('desa2', 'nama_desa')
                                 ->required()
                                 ->live()
+                                ->helperText('Otomatis terisi jika desa & komoditas tersedia')
                                 ->afterStateUpdated(function ($state, Set $set, Get $get) {
                                     $komoditasId = $get('komoditas_id');
                                     if (!$state || !$komoditasId)
                                         return;
 
-                                    $rekap = RekapHarga::where('wilayah_id', $state)
+                                    $rekap = RekapHarga::where('desa_id', $state)
                                         ->where('komoditas_id', $komoditasId)
                                         ->latest()->first();
 
                                     if ($rekap) {
-                                        $set('harga_wilayah_2', $rekap->harga_rata_rata);
+                                        $set('harga_desa_2', $rekap->harga_rata_rata);
                                         $set('pesan_error_2', null);
                                     } else {
-                                        $set('harga_wilayah_2', 0);
-                                        $set('pesan_error_2', '⚠️ Data harga belum tersedia untuk wilayah & komoditas ini.');
+                                        $set('harga_desa_2', 0);
+                                        $set('pesan_error_2', '⚠️ Data harga belum tersedia untuk desa & komoditas ini.');
                                     }
 
                                     // Update Selisih
-                                    $h1 = (float) ($get('harga_wilayah_1') ?? 0);
+                                    $h1 = (float) ($get('harga_desa_1') ?? 0);
                                     $h2 = (float) ($rekap->harga_rata_rata ?? 0);
                                     $set('selisih_harga', abs($h1 - $h2));
                                 }),
 
-                            TextInput::make('harga_wilayah_2')
-                                ->label('Harga Wilayah 2')
+                            TextInput::make('harga_desa_2')
+                                ->label('Harga desa 2')
                                 ->numeric()->prefix('Rp')
                                 ->helperText(function (Get $get) {
                                     return $get('pesan_error_1') ?? 'Masukkan harga manual jika data tidak ditemukan.';
@@ -129,7 +131,8 @@ class PerbandinganWilayahForm
                     ->schema([
                         TextInput::make('selisih_harga')
                             ->label('Selisih / Disparitas Harga')
-                            ->numeric()->prefix('Rp')->readOnly()->columnSpanFull(),
+                            ->numeric()->prefix('Rp')->readOnly()->columnSpanFull()
+                            ->helperText('Otomatis terisi jika kedua harga desa tersedia'),
 
                         Textarea::make('keterangan')
                             ->label('Analisis / Keterangan')

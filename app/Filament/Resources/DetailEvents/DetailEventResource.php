@@ -24,8 +24,8 @@ class DetailEventResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ListBullet;
-    protected static string | UnitEnum | null $navigationGroup = 'DATA OPERASIONAL';
-     protected static ?int $navigationSort = 11;
+    protected static string | UnitEnum | null $navigationGroup = 'Kegiatan & Pemberdayaan UMKM';
+     protected static ?int $navigationSort = 16;
     public static function form(Schema $schema): Schema
     {
         return DetailEventForm::configure($schema);

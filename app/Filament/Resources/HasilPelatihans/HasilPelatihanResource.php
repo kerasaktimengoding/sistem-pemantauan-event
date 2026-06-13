@@ -25,8 +25,8 @@ class HasilPelatihanResource extends Resource
     protected static ?string $recordTitleAttribute = 'id';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::AcademicCap;
-    protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
-     protected static ?int $navigationSort = 14;
+    protected static string | UnitEnum | null $navigationGroup = 'Kegiatan & Pemberdayaan UMKM';
+     protected static ?int $navigationSort = 15;
     public static function form(Schema $schema): Schema
     {
         return HasilPelatihanForm::configure($schema);

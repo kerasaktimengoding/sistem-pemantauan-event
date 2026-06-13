@@ -21,14 +21,24 @@ class PerbandinganWilayah extends Model
     }
 
     // Relasi dengan wilayah 1
-    public function wilayah1()
+
+    public function desa1()
     {
-        return $this->belongsTo(Wilayah::class, 'wilayah_1_id');
+        return $this->belongsTo(desa::class, 'desa_id');
     }
 
-    // Relasi dengan wilayah 2
-    public function wilayah2()
+    public function desa2()
     {
-        return $this->belongsTo(Wilayah::class, 'wilayah_2_id');
+        return $this->belongsTo(desa::class, 'desa_2_id');
     }
+    // public function wilayah1()
+    // {
+    //     return $this->belongsTo(Wilayah::class, 'wilayah_1_id');
+    // }
+
+    // // Relasi dengan wilayah 2
+    // public function wilayah2()
+    // {
+    //     return $this->belongsTo(Wilayah::class, 'wilayah_2_id');
+    // }
 }

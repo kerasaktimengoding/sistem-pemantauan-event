@@ -58,12 +58,32 @@ class InputHargaForm
                                 ->preload()
                                 ->required(),
 
-                            Select::make('wilayah_id')
-                                ->label('Wilayah (Kecamatan)')
-                                ->relationship('wilayah', 'nama_wilayah')
-                                ->searchable()
-                                ->preload()
-                                ->required(),
+                            Select::make('desa_id')
+                            ->label('Pilih Desa')
+                            ->relationship('desa', 'nama_desa')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->live() // Memantau perubahan input secara real-time
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                // Mencari data desa berdasarkan ID yang dipilih
+                                $desa = \App\Models\Desa::find($state);
+                                if ($desa) {
+                                    // Otomatis mengisi kolom kecamatan_id
+                                    $set('kecamatan_id', $desa->kecamatan_id);
+                                }
+                            }),
+
+                        // 2. Kecamatan Terisi Otomatis
+                        Select::make('kecamatan_id')
+                            ->label('Kecamatan Induk')
+                            ->relationship('kecamatan', 'nama_kecamatan')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->disabled() // Dimatikan agar tidak diubah manual (sesuai permintaan)
+                            ->dehydrated() // Tetap mengirim data ke database saat simpan
+                            ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
                         ])->columns(2),
                     ]),
 

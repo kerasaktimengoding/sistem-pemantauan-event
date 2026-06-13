@@ -16,15 +16,19 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
+use App\Filament\Resources\Komoditas\Widgets\KomoditasWidget;
 
 class KomoditasResource extends Resource
 {
     protected static ?string $model = Komoditas::class;
 
-   protected static string|BackedEnum|null $navigationIcon = Heroicon::ShoppingBag;
+    protected static ?string $recordTitleAttribute = 'nama_komoditas';
+protected static string | UnitEnum | null $navigationGroup = 'Pengelolaan Pasar & Mitra';
+protected static ?string $navigationLabel = 'Katalog Bahan Pokok';
+protected static ?string $pluralModelLabel = 'Katalog Bahan Pokok';
+protected static string|BackedEnum|null $navigationIcon = Heroicon::ShoppingBag;
+protected static ?int $navigationSort = 7;
 
-    protected static ?string $recordTitleAttribute = 'id';
-protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
     public static function form(Schema $schema): Schema
     {
         return KomoditasForm::configure($schema);
@@ -39,7 +43,6 @@ protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
     {
         return KomoditasTable::configure($table);
     }
-     protected static ?int $navigationSort = 4;
      
        public static function getNavigationBadge(): ?string
 {
@@ -49,6 +52,13 @@ protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
     {
         return [
             //
+        ];
+    }
+
+       public static function getWidgets(): array
+    {
+        return [
+            KomoditasWidget::class,
         ];
     }
 

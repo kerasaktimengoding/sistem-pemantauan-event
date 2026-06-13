@@ -54,25 +54,35 @@ class PedagangForm
                                 ->required()
                                 ->maxLength(15),
 
-                            Select::make('jenis_tempat')
-                                ->label('Jenis Tempat Usaha')
-                                ->options([
-                                    'Kios' => 'Kios',
-                                    'Lapak' => 'Lapak',
-                                    'Toko' => 'Toko',
-                                    'Tenda' => 'Tenda',
-                                ])
-                                ->required()
-                                ->native(false),
+                         
                         ])->columns(2),
 
-                        Select::make('wilayah_id')
-                            ->label('Wilayah Asal/Usaha')
-                            ->relationship('wilayah', 'nama_wilayah')
+                       Select::make('desa_id')
+                            ->label('Pilih Desa')
+                            ->relationship('desa', 'nama_desa')
                             ->searchable()
                             ->preload()
-                            ->required(),
+                            ->required()
+                            ->live() // Memantau perubahan input secara real-time
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                // Mencari data desa berdasarkan ID yang dipilih
+                                $desa = \App\Models\Desa::find($state);
+                                if ($desa) {
+                                    // Otomatis mengisi kolom kecamatan_id
+                                    $set('kecamatan_id', $desa->kecamatan_id);
+                                }
+                            }),
 
+                        // 2. Kecamatan Terisi Otomatis
+                        Select::make('kecamatan_id')
+                            ->label('Kecamatan Induk')
+                            ->relationship('kecamatan', 'nama_kecamatan')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->disabled() // Dimatikan agar tidak diubah manual (sesuai permintaan)
+                            ->dehydrated() // Tetap mengirim data ke database saat simpan
+                            ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
                         Textarea::make('alamat')
                             ->label('Alamat Lengkap')
                             ->required()

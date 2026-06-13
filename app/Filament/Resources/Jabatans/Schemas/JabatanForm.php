@@ -49,6 +49,16 @@ class JabatanForm
                             ->placeholder('Sebutkan poin-poin tugas utama jabatan...')
                             ->columnSpanFull(),
                     ]),
+                Section::make('Wewenang')
+                    ->description('Jelaskan wewenang yang dimiliki oleh pejabat pada jabatan ini.') 
+                    ->schema([
+                        Textarea::make('wewenang')
+                            ->label('Wewenang')
+                            ->required() 
+                            ->rows(5)
+                            ->placeholder('Sebutkan wewenang yang dimiliki oleh pejabat...')
+                            ->columnSpanFull(),
+                    ]),
 
                 // Section Status
                 Section::make('Status Jabatan')

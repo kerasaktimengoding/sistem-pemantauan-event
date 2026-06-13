@@ -22,15 +22,16 @@ class PedagangResource extends Resource
     protected static ?string $model = Pedagang::class;
 
 protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
-    protected static ?string $recordTitleAttribute = 'id';
+    protected static ?string $recordTitleAttribute = 'nama_pedagang';
 
-        protected static string | UnitEnum | null $navigationGroup = 'DATA MASTER';
-    protected static ?int $navigationSort = 8;
+    protected static string | UnitEnum | null $navigationGroup = 'Pengelolaan Pasar & Mitra';
+    protected static ?int $navigationSort = 9;
     public static function form(Schema $schema): Schema
     {
         return PedagangForm::configure($schema);
     }
-
+protected static ?string $navigationLabel = 'Data Pedagang';
+protected static ?string $pluralModelLabel = 'Data Pedagang';
     
 
       public static function getNavigationBadge(): ?string

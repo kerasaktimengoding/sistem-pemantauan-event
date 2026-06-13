@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string('no_hp', 15);
             $table->string('email', 100);
             $table->unsignedBigInteger('jabatan_id');
-            $table->unsignedBigInteger('wilayah_id');
+            $table->unsignedBigInteger('kecamatan_id'); // wilayah kerja kecamatan dan desa didalam kabupaten banjar dan diluar 
+            $table->unsignedBigInteger('desa_id'); // wilayah kerja kecamatan dan desa didalam kabupaten banjar dan diluar 
             $table->string('status_pegawai', 20);
             $table->date('tanggal_masuk');
             $table->timestamps();

@@ -11,7 +11,7 @@ class Pedagang extends Model
      use HasFactory;
 
     protected $fillable = [
-        'nik', 'kode_pedagang', 'nama_pedagang', 'jenis_tempat', 'no_hp', 'alamat', 'wilayah_id', 'status_pedagang'
+        'nik', 'kode_pedagang', 'nama_pedagang', 'no_hp', 'alamat', 'kecamatan_id', 'desa_id','status_pedagang'
     ];
 
     // Relasi dengan wilayah
@@ -19,4 +19,19 @@ class Pedagang extends Model
     {
         return $this->belongsTo(Wilayah::class, 'wilayah_id');
     }
+
+    // public function kecamatan()
+    // {
+    //     return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
+    // }
+     public function kecamatan()
+    {
+        return $this->belongsTo(kecamatan::class, 'kecamatan_id');
+    }
+
+    public function desa()
+    {
+        return $this->belongsTo(desa::class, 'desa_id');
+    }
+
 }

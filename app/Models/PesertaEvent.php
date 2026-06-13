@@ -11,7 +11,7 @@ class PesertaEvent extends Model
 use HasFactory;
 
     protected $fillable = [
-        'kode_peserta_event', 'event_id', 'nik', 'nama_peserta', 'nama_usaha', 'jenis_produk', 'jenis_kelamin', 'no_hp', 'alamat', 'wilayah_id', 'tanggal_registrasi', 'status_partisipasi'
+        'kode_peserta_event', 'event_id', 'nik', 'nama_peserta', 'nama_usaha', 'jenis_produk', 'jenis_kelamin', 'no_hp', 'alamat', 'kecamatan_id', 'desa_id', 'tanggal_registrasi', 'status_partisipasi'
     ];
 
     // Relasi dengan event
@@ -21,8 +21,13 @@ use HasFactory;
     }
 
     // Relasi dengan wilayah
-    public function wilayah()
+   public function kecamatan()
     {
-        return $this->belongsTo(Wilayah::class, 'wilayah_id');
+        return $this->belongsTo(kecamatan::class, 'kecamatan_id');
+    }
+
+    public function desa()
+    {
+        return $this->belongsTo(desa::class, 'desa_id');
     }
 }

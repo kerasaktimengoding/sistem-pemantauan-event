@@ -29,8 +29,8 @@ class PesertaEventResource extends Resource
     {
         return PesertaEventForm::configure($schema);
     }
-    protected static string | UnitEnum | null $navigationGroup = 'DATA PARTISIPASI';
-     protected static ?int $navigationSort = 12;
+    protected static string | UnitEnum | null $navigationGroup = 'Kegiatan & Pemberdayaan UMKM';
+     protected static ?int $navigationSort = 13;
 
      
 

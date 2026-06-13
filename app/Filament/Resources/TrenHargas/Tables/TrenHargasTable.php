@@ -10,6 +10,7 @@ use Filament\Support\Enums\Alignment;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Actions\DeleteAction;
+use Filament\Support\Enums\FontWeight;
 
 class TrenHargasTable
 {
@@ -17,67 +18,76 @@ class TrenHargasTable
     {
         return $table
             ->columns([
-               
+
                 TextColumn::make('No')
                     ->rowIndex()
                     ->label('No.')
                     ->width('50px')
                     ->alignment(Alignment::Center),
 
+                // 2. Periode Tren dengan Modifikasi Tipografi Tebal
                 TextColumn::make('periode_tren')
                     ->label('Periode')
-                    ->date('M Y') // Contoh: Apr 2026
+                    ->date('M Y') // Menampilkan contoh: "Jun 2026"
                     ->sortable()
-                    ->weight('bold'),
+                    ->weight(FontWeight::Bold)
+                    ->color('primary'),
 
+                // 3. Penyatuan Komoditas & Lokasi Wilayah (Smart Search)
                 TextColumn::make('komoditas.nama_komoditas')
-                    ->label('Komoditas')
-                    ->searchable()
+                    ->label('Komoditas & Wilayah')
+                    ->weight(FontWeight::Bold)
+                    ->searchable(query: function ($query, string $search) {
+                        $query->whereHas('komoditas', fn($q) => $q->where('nama_komoditas', 'like', "%{$search}%"))
+                            ->orWhereHas('desa', fn($q) => $q->where('nama_desa', 'like', "%{$search}%"));
+                    })
                     ->sortable()
-                    ->description(fn ($record) => "Wilayah: " . ($record->wilayah->nama_wilayah ?? '-')),
+                    ->description(fn($record) => '📍 Wilayah: ' . ($record->desa->nama_desa ?? '-')),
 
-                // Perbandingan Harga
-                TextColumn::make('harga_awal')
-                    ->label('Harga Awal')
-                    ->money('IDR', locale: 'id_ID')
-                    ->alignment(Alignment::Right),
-                
-
+                // 4. Transformasi Finansial: Penggabungan Harga Awal & Harga Akhir
                 TextColumn::make('harga_akhir')
-                    ->label('Harga Akhir')
+                    ->label('Informasi Harga')
                     ->money('IDR', locale: 'id_ID')
+                    ->fontFamily('mono') // Angka sejajar lurus ke bawah secara profesional
+                    ->weight(FontWeight::Bold)
                     ->alignment(Alignment::Right)
-                    ->weight('bold'),
+                    ->color('primary')
+                    ->description(fn($record) => 'Semula: Rp ' . number_format($record->harga_awal, 0, ',', '.'), position: 'above'),
 
-                // Indikator Arah Tren (Logika Warna & Ikon)
+                // 5. Visualisasi Kondisi Tren Menggunakan Solid Badge & Ikon Mikro
                 TextColumn::make('arah_tren')
                     ->label('Kondisi')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->alignment(Alignment::Center)
+                    ->color(fn(string $state): string => match ($state) {
                         'Naik' => 'danger',
                         'Turun' => 'success',
                         'Stabil' => 'info',
                         default => 'gray',
                     })
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         'Naik' => 'heroicon-m-arrow-trending-up',
                         'Turun' => 'heroicon-m-arrow-trending-down',
                         'Stabil' => 'heroicon-m-minus',
                         default => 'heroicon-m-question-mark-circle',
                     }),
 
-                // Persentase Perubahan
+                // 6. Selisih Persentase dengan Indikator Geometris UX (Accessibility-Friendly)
                 TextColumn::make('persentase_perubahan')
                     ->label('Selisih (%)')
-                    ->suffix('%')
-                    ->alignment(Alignment::Center)
-                    ->color(fn ($record) => $record->arah_tren === 'Naik' ? 'danger' : ($record->arah_tren === 'Turun' ? 'success' : 'gray'))
-                    ->weight('bold'),
-
-                TextColumn::make('updated_at')
-                    ->label('Update')
-                    ->dateTime('d/m/Y')
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->alignment(Alignment::Right)
+                    ->fontFamily('mono')
+                    ->weight(FontWeight::Bold)
+                    ->color(fn($record) => match ($record->arah_tren) {
+                        'Naik' => 'danger',
+                        'Turun' => 'success',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn($state, $record) => match ($record->arah_tren) {
+                        'Naik' => "▲ {$state}%",
+                        'Turun' => "▼ {$state}%",
+                        default => "• {$state}%",
+                    }),
             ])
             ->defaultSort('periode_tren', 'desc')
             ->filters([
@@ -86,7 +96,7 @@ class TrenHargasTable
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                 DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -17,63 +17,102 @@ class RekapHargasTable
     {
         return $table
             ->columns([
-               TextColumn::make('No')
+                // 1. Nomor Urut Otomatis (Rapi & Sejajar)
+                TextColumn::make('No')
                     ->rowIndex()
                     ->label('No.')
                     ->width('50px')
                     ->alignment(Alignment::Center),
 
-                TextColumn::make('periode_rekap')
-                    ->label('Periode')
-                    ->date('F Y') // Contoh: April 2026
+                // 2. Periode Rekapitulasi dengan Penanda Dokumen Struktural
+                TextColumn::make('periode_rekap') // Sesuaikan dengan nama kolom Anda
+                    ->label('Periode Rekap')
+                    ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->isoFormat('MMMM YYYY'))
                     ->sortable()
+                    ->searchable()
                     ->weight('bold')
-                    ->description(fn ($record) => "ID: " . $record->kode_rekap_harga),
+                    ->color('primary')
+                    ->icon('heroicon-m-calendar-days'),
 
+                // 3. Komoditas (Standout Visual dengan Badge Atraktif)
                 TextColumn::make('komoditas.nama_komoditas')
                     ->label('Komoditas')
                     ->searchable()
                     ->sortable()
-                    ->description(fn ($record) => "Wilayah: " . ($record->wilayah->nama_wilayah ?? '-')),
+                    ->weight('semibold')
+                    ->color('gray.700')
+                    ->icon('heroicon-m-shopping-bag')
+                    ->iconColor('primary'),
 
-                // Statistik Harga (Rata-rata)
+                // 4. Integrasi Hierarki Wilayah Pintar (Kecamatan + Sub-Deskripsi Desa)
+                TextColumn::make('kecamatan.nama_kecamatan')
+                    ->label('Cakupan Wilayah')
+                    ->sortable()
+                    // Fitur Pencarian Pintar: Cari berdasarkan nama kecamatan ATAU nama desa sekaligus
+                    ->searchable(query: function ($query, string $search) {
+                        $query->whereHas('kecamatan', function ($q) use ($search) {
+                            $q->where('nama_kecamatan', 'like', "%{$search}%");
+                        })->orWhereHas('desa', function ($q) use ($search) {
+                            $q->where('nama_desa', 'like', "%{$search}%");
+                        });
+                    })
+                    ->weight('medium')
+                    ->color('gray.800')
+                    // Menyusun visual hierarki: Kecamatan sebagai judul utama, Desa sebagai keterangan tipis di bawahnya
+                    ->description(fn($record) => $record->desa ? "📍 Desa: " . $record->desa->nama_desa : "🏢 Seluruh Kecamatan"),
+
+                // 5. Statistik Harga Rata-rata (Standout Finansial Utama)
                 TextColumn::make('harga_rata_rata')
-                    ->label('Rata-rata')
+                    ->label('Harga Rata-Rata')
                     ->money('IDR', locale: 'id_ID')
                     ->sortable()
                     ->alignment(Alignment::Right)
+                    ->fontFamily('mono') // Font berjarak sama agar digit nominal uang sejajar vertikal
+                    ->weight('bold')
                     ->color('primary')
-                    ->weight('bold'),
+                    // Menampilkan informasi "Spread / Selisih" harga tertinggi dan terendah secara dinamis
+                    ->description(function ($record) {
+                        $spread = $record->harga_maksimum - $record->harga_minimum;
+                        return "Selisih: Rp " . number_format($spread, 0, ',', '.');
+                    }),
 
-                // Batas Harga Atas
+                // 6. Batas Harga Atas (Tertinggi)
                 TextColumn::make('harga_maksimum')
                     ->label('Tertinggi')
                     ->money('IDR', locale: 'id_ID')
                     ->sortable()
                     ->alignment(Alignment::Right)
-                    ->color('danger'),
+                    ->fontFamily('mono')
+                    ->color('danger')
+                    ->description(fn() => "Batas Atas", position: 'above'),
 
-                // Batas Harga Bawah
+                // 7. Batas Harga Bawah (Terendah)
                 TextColumn::make('harga_minimum')
                     ->label('Terendah')
                     ->money('IDR', locale: 'id_ID')
                     ->sortable()
                     ->alignment(Alignment::Right)
-                    ->color('success'),
+                    ->fontFamily('mono')
+                    ->color('success')
+                    ->description(fn() => "Batas Bawah", position: 'above'),
 
+                // 8. Audit Log Waktu Sinkronisasi Sistem
                 TextColumn::make('updated_at')
-                    ->label('Terakhir Update')
-                    ->dateTime('d/m/Y H:i')
+                    ->label('Terakhir Sinkron')
+                    ->dateTime('d M Y, H:i') // Format: 04 Jun 2026, 11:38
+                    ->fontFamily('mono')
+                    ->color('gray.400')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('periode_rekap', 'desc')
             ->filters([
                 //
+                    
             ])
             ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
-                 DeleteAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
