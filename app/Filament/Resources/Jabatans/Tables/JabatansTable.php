@@ -95,7 +95,7 @@ class JabatansTable
             ])
             ->filters([
 
-                
+
                 //
                 SelectFilter::make('status_jabatan')
                     ->label('Status Jabatan')

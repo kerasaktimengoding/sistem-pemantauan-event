@@ -6,6 +6,7 @@ use App\Filament\Resources\Pegawais\PegawaiResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ListPegawais extends ListRecords
 {
@@ -15,16 +16,23 @@ class ListPegawais extends ListRecords
     {
         return [
             Action::make('download pdf')
-            ->label('Export PDF')
-            ->icon('heroicon-o-document')
-            ->url(fn () => route('download5.tes5', [
-                // Mengambil kata kunci pencarian yang sedang aktif
-                'search' => $this->tableSearch,
-                // Mengambil filter yang sedang aktif
-                'filters' => $this->tableFilters,
-            ]))
-            ->openUrlInNewTab(),
-             CreateAction::make()->
+                ->label('Export PDF')
+                ->icon('heroicon-o-document')
+                ->action(function ($livewire) {
+                    $records = $livewire->getFilteredTableQuery()->get();
+
+                    $pdf = Pdf::loadView("filament.PegawaiPDF", ["pegawais" => $records]);
+
+                    $tanggal = now()->format('d-m-Y');
+                    $namaFile = "Laporan-Pegawai-{$tanggal}.pdf";
+
+                    return response()->streamDownload(
+                        fn() => print ($pdf->output()),
+                        $namaFile
+                    );
+                })
+                ->openUrlInNewTab(),
+            CreateAction::make()->
                 label('Tambah Pegawai')
                 ->color('primary')
                 ->icon('heroicon-o-plus-circle'),

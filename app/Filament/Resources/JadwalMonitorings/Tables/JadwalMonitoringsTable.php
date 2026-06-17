@@ -87,15 +87,15 @@ class JadwalMonitoringsTable
                     ->iconColor('info-500')
                     ->placeholder('Belum Ditunjuk')
                     ->description(
-                        fn($record) => $record->pegawai?->nip_pegawai
-                        ? "🪪 NIP. {$record->pegawai->nip_pegawai}"
+                        fn($record) => $record->pegawai?->nip
+                        ? "🪪 NIP. {$record->pegawai->nip}"
                         : "🪪 NIP: -"
                     )
                     // Smart Deep Search: Cari nama petugas atau NIP langsung dari kolom pencarian utama
                     ->searchable(query: function ($query, string $search) {
                         $query->whereHas('pegawai', function ($q) use ($search) {
                             $q->where('nama_pegawai', 'like', "%{$search}%")
-                                ->orWhere('nip_pegawai', 'like', "%{$search}%");
+                                ->orWhere('nip', 'like', "%{$search}%");
                         });
                     }),
 

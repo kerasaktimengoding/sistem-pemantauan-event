@@ -57,7 +57,7 @@ class TempatsTable
                     ->searchable()
                     ->sortable()
                     ->weight(FontWeight::SemiBold)
-                    ->description(fn($record) => "Wilayah: " . ($record->wilayah->nama_desa ?? '-')),
+                    ->description(fn($record) => "Wilayah: " . ($record->desa->nama_desa ?? '-')),
 
                 // 6. Penyatuan Data Pedagang & Kontak WhatsApp Interaktif
                 TextColumn::make('pedagang.nama_pedagang')

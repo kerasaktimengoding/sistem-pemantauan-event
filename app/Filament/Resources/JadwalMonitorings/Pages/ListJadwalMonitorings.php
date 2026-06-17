@@ -6,6 +6,7 @@ use App\Filament\Resources\JadwalMonitorings\JadwalMonitoringResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ListJadwalMonitorings extends ListRecords
 {
@@ -17,12 +18,19 @@ class ListJadwalMonitorings extends ListRecords
             Action::make('download pdf')
                 ->label('Export PDF')
                 ->icon('heroicon-o-document')
-                ->url(fn() => route('download10.tes10', [
-                    // Mengambil kata kunci pencarian yang sedang aktif
-                    'search' => $this->tableSearch,
-                    // Mengambil filter yang sedang aktif
-                    'filters' => $this->tableFilters,
-                ]))
+                ->action(function ($livewire) {
+                    $records = $livewire->getFilteredTableQuery()->get();
+
+                    $pdf = Pdf::loadView("filament.JadwalPDF", ["jadwals" => $records]);
+
+                    $tanggal = now()->format('d-m-Y');
+                    $namaFile = "Laporan-Jadwal-Monitoring-{$tanggal}.pdf";
+
+                    return response()->streamDownload(
+                        fn() => print ($pdf->output()),
+                        $namaFile
+                    );
+                })
                 ->openUrlInNewTab(),
             CreateAction::make()->
                 label('Tambah Jadwal Monitoring')

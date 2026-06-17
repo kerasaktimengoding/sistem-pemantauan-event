@@ -9,25 +9,32 @@ use Filament\Resources\Pages\ListRecords;
 use App\Filament\Resources\Wilayahs\Widgets\WilayahWidget;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ListWilayahs extends ListRecords
 {
     protected static string $resource = WilayahResource::class;
-     protected ?string $heading = 'DATA WILAYAH';
+    protected ?string $heading = 'DATA WILAYAH';
 
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('Laporan')
-                ->label('Laporan PDF')
-                ->icon('heroicon-o-printer')
-                ->color('primary')
-                ->url(fn () => route('download1.tes3', [
-                    // Mengambil kata kunci pencarian yang sedang aktif
-                    'search' => $this->tableSearch,
-                    // Mengambil filter yang sedang aktif
-                    'filters' => $this->tableFilters,
-                ]))
+            Action::make('download pdf')
+                ->label('Export PDF')
+                ->icon('heroicon-o-document')
+                ->action(function ($livewire) {
+                    $records = $livewire->getFilteredTableQuery()->get();
+
+                    $pdf = Pdf::loadView("filament.WilayahPDF", ["wilayahs" => $records]);
+
+                    $tanggal = now()->format('d-m-Y');
+                    $namaFile = "Laporan-Wilayah-{$tanggal}.pdf";
+
+                    return response()->streamDownload(
+                        fn() => print ($pdf->output()),
+                        $namaFile
+                    );
+                })
                 ->openUrlInNewTab(),
             CreateAction::make()->
                 label('Tambah Wilayah')
@@ -40,6 +47,6 @@ class ListWilayahs extends ListRecords
         return [
             WilayahWidget::class,
         ];
-        
+
     }
 }

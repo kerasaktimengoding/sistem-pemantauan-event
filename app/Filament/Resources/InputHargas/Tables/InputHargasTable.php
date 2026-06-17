@@ -64,7 +64,10 @@ class InputHargasTable
                     ->alignment(Alignment::Right) // Rata kanan wajib untuk data numerik/keuangan
                     ->color('success') // Hijau segar melambangkan angka komersial
                     ->weight(FontWeight::ExtraBold) // Ketebalan maksimal agar langsung memikat mata admin
-                    ->fontFamily('mono'), // Karakter angka sejajar vertikal memudahkan komparasi harga antar baris
+                    ->fontFamily('mono')
+                    ->description(fn($record) => $record->pedagang ? " Pedagang: " . $record->pedagang->nama_pedagang : ""),
+                    
+                    // Karakter angka sejajar vertikal memudahkan komparasi harga antar baris
 
                 // 5. Lokasi Pasar & Wilayah (Pencarian Lintas Relasi)
                 TextColumn::make('pasar.nama_pasar')
@@ -81,7 +84,7 @@ class InputHargasTable
                     ->weight(FontWeight::Medium)
                     ->icon('heroicon-m-map-pin')
                     ->iconColor('danger')
-                    ->description(fn($record) => "Wilayah: " . ($record->wilayah->nama_wilayah ?? '-')),
+                    ->description(fn($record) => $record->desa ? "📍 Desa: " . $record->desa->nama_desa : "🏢 Seluruh Kecamatan"),
 
                 // 6. Petugas Enumerator (Fleksibel & Informatif)
                 TextColumn::make('pegawai.nama_pegawai')
