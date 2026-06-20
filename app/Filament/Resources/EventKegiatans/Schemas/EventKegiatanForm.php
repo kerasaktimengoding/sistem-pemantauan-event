@@ -9,6 +9,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class EventKegiatanForm
 {
@@ -25,6 +26,7 @@ Section::make('Detail Kegiatan')
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('event_kegiatans', 'kode_event', ignoreRecord: true)
+                                ->default(fn() => 'EVE-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->validationMessages([
                                     'unique' => 'Kode event ini sudah terdaftar',
                                 ])
