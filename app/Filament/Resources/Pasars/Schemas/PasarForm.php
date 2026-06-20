@@ -9,6 +9,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class PasarForm
 {
@@ -26,6 +27,7 @@ class PasarForm
                                 ->maxLength(20)
                                 ->unique('pasars', 'kode_pasar', ignoreRecord: true)
                                 ->placeholder('Contoh: PSR-001')
+                                ->default(fn() => 'PSR-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->validationMessages([
                                     'unique' => 'Kode pasar ini sudah terdaftar.',
                                 ]),
