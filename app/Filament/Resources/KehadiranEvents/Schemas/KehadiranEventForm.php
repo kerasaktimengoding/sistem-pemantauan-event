@@ -30,6 +30,7 @@ class KehadiranEventForm
                                     'unique' => 'Kode Kehadiran ini sudah ada',
                                     'required' => 'Kode Kehadiran wajib diisi',
                                 ])
+                                ->default(fn() => 'PRS-' . date('d') . '.' . date('m') . '.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->placeholder('Contoh: PRS-202403-001'),
 
                             Select::make('peserta_event_id')
