@@ -9,6 +9,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class KomoditasForm
 {
@@ -24,6 +25,7 @@ class KomoditasForm
                                 ->label('Kode Komoditas')
                                 ->required()
                                 ->maxLength(20)
+                                ->default(fn() => 'KOM-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->unique('komoditas', 'kode_komoditas', ignoreRecord: true)
                                 ->validationMessages([
                                     'unique' => 'Kode komoditas ini sudah terdaftar',

@@ -9,6 +9,7 @@ use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Grid;
 use Filament\Forms\Components\ToggleButtons;
+use Illuminate\Support\Str;
 
 class TempatForm
 {
@@ -25,6 +26,7 @@ class TempatForm
                                 ->label('Kode Tempat Usaha')
                                 ->placeholder('Contoh: KIOS-A01')
                                 ->required()
+                                ->default(fn() => 'KOS-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->unique('tempats', 'kode_tempat_usaha', ignoreRecord: true)
                                 ->validationMessages([
                                     'unique' => 'Kode tempat usaha sudah terdaftar di sistem.',
