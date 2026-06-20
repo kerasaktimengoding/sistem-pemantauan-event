@@ -8,6 +8,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class JabatanForm
 {
@@ -26,6 +27,7 @@ class JabatanForm
                                 ->maxLength(20) 
                                 ->unique('jabatans', 'kode_jabatan', ignoreRecord: true)
                                 ->placeholder('Contoh: JAB-001')
+                                ->default(fn() => 'JAB-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->validationMessages([
                                     'unique' => 'Kode jabatan ini sudah terdaftar.',
                                 ]),
