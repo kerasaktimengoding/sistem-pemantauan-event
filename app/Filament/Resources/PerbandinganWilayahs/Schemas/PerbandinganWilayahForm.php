@@ -25,7 +25,7 @@ class PerbandinganWilayahForm
                             TextInput::make('kode_perbandingan')
                                 ->label('Kode Perbandingan')
                                 ->required()
-                                ->default(fn() => 'CMP-' . date('Y') . '-' . strtoupper(Str::random(5)))
+                                ->default(fn() => 'CMP-' . date('d') . '.' . date('m') . '.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->maxLength(20)
                                 ->unique('perbandingan_wilayahs', 'kode_perbandingan', ignoreRecord: true)
                                 ->validationMessages([
