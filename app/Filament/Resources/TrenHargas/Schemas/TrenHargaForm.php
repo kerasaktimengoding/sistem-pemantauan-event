@@ -19,7 +19,19 @@ class TrenHargaForm
                Section::make('Parameter Tren Harga')
                     ->description('Tentukan komoditas, wilayah, dan periode waktu yang dianalisis.')
                     ->schema([
+                        
                         Group::make([
+                            // TextInput::make('kode_tren')
+                            //     ->label('Kode Tren Harga')
+                            //     ->required()
+                            //     ->maxLength(20)
+                            //     ->unique('tren_hargas', 'kode_tren', ignoreRecord: true)
+                            //     ->validationMessages([
+                            //         'unique' => 'Kode Tren Harga ini sudah ada',
+                            //         'required' => 'Kode Kehadiran wajib diisi',
+                            //     ])
+                            //     ->placeholder('Contoh: PRS-202403-001'),
+
                             Select::make('komoditas_id')
                                 ->label('Komoditas')
                                 ->relationship('komoditas', 'nama_komoditas')
@@ -33,6 +45,34 @@ class TrenHargaForm
                                 ->searchable()
                                 ->preload()
                                 ->required(),
+
+                        //         Select::make('desa_id')
+                        //     ->label('Pilih Desa')
+                        //     ->relationship('desa', 'nama_desa')
+                        //     ->searchable()
+                        //     ->preload()
+                        //     ->required()
+                        //     ->live() // Memantau perubahan input secara real-time
+                        //     ->afterStateUpdated(function ($state, callable $set) {
+                        //         // Mencari data desa berdasarkan ID yang dipilih
+                        //         $desa = \App\Models\Desa::find($state);
+                        //         if ($desa) {
+                        //             // Otomatis mengisi kolom kecamatan_id
+                        //             $set('kecamatan_id', $desa->kecamatan_id);
+                        //         }
+                        //     }),
+
+                        // // 2. Kecamatan Terisi Otomatis
+                        // Select::make('kecamatan_id')
+                        //     ->label('Kecamatan Induk')
+                        //     ->relationship('kecamatan', 'nama_kecamatan')
+                        //     ->searchable()
+                        //     ->preload()
+                        //     ->required()
+                        //     ->disabled() // Dimatikan agar tidak diubah manual (sesuai permintaan)
+                        //     ->dehydrated() // Tetap mengirim data ke database saat simpan
+                        //     ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
+                        // ])->columns(2),
                         ])->columns(2),
 
                         DatePicker::make('periode_tren')

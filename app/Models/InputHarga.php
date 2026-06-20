@@ -11,7 +11,7 @@ class InputHarga extends Model
      use HasFactory;
 
     protected $fillable = [
-        'kode_input_harga', 'komoditas_id', 'wilayah_id', 'pasar_id', 'pedagang_id', 'pegawai_id', 'harga', 'tanggal_input', 'sumber_data', 'keterangan'
+        'kode_input_harga', 'komoditas_id', 'kecamatan_id', 'desa_id', 'pasar_id', 'pedagang_id', 'pegawai_id', 'harga', 'tanggal_input', 'sumber_data', 'keterangan'
     ];
 
     // Relasi dengan komoditas
@@ -33,7 +33,7 @@ class InputHarga extends Model
 
     public function desa()
     {
-        return $this->belongsTo(Desa::class, 'desa_id');
+        return $this->belongsTo(desa::class, 'desa_id');
     }
 
     // Relasi dengan pasar

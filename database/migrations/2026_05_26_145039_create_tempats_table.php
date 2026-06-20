@@ -22,8 +22,17 @@ return new class extends Migration {
 
             // Status Operasional Lapak/Kios/Toko
             $table->enum('status_tempat', ['Buka', 'Tutup', 'Kosong', 'Dijual', 'Disewakan'])->default('Kosong');
-            $table->enum('jenis_tempat', ['Kios', 'Lapak', 'Ruko', 'Tenda'])->default('Lapak');
-        // Catatan tambahan mengenai kondisi fisik atau histori tempat
+            $table->enum('jenis_tempat', [
+                'Toko',
+                'Kios',
+                'Los',
+                'Kaki Lima',
+                'Lapak',
+                'Grosir / Agen',
+                'Swalayan',
+                'Tenda'
+            ])->default('Kios'); // Default diset ke Kios jika tidak diisi
+            // Catatan tambahan mengenai kondisi fisik atau histori tempat
             $table->text('keterangan')->nullable();
             $table->unsignedBigInteger('pasar_id');
             $table->unsignedBigInteger('pedagang_id');

@@ -16,8 +16,9 @@ return new class extends Migration
              $table->string('nik', 20);
             $table->string('kode_pedagang', 20);
             $table->string('nama_pedagang', 100);
-            $table->string('jenis_tempat', 50);
+            $table->string('tempat_id', 50);
             $table->string('no_hp', 15);
+            $table->unsignedBigInteger('pasar_id')->nullable(); // 4. ID Induk Kecamatan
             $table->unsignedBigInteger('kecamatan_id')->nullable(); // 4. ID Induk Kecamatan
             $table->unsignedBigInteger('desa_id')->nullable();      // 5. ID Anak Desa
             $table->text('alamat');
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pedagangs');
+        Schema::dropIfExiqsts('pedagangs');
     }
 };

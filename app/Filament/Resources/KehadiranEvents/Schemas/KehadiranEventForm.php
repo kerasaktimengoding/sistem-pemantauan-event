@@ -26,6 +26,10 @@ class KehadiranEventForm
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('kehadiran_events', 'kode_kehadiran', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'Kode Kehadiran ini sudah ada',
+                                    'required' => 'Kode Kehadiran wajib diisi',
+                                ])
                                 ->placeholder('Contoh: PRS-202403-001'),
 
                             Select::make('peserta_event_id')

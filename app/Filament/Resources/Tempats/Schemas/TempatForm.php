@@ -25,7 +25,7 @@ class TempatForm
                                 ->label('Kode Tempat Usaha')
                                 ->placeholder('Contoh: KIOS-A01')
                                 ->required()
-                                ->unique(ignoreRecord: true)
+                                ->unique('tempats', 'kode_tempat_usaha', ignoreRecord: true)
                                 ->validationMessages([
                                     'unique' => 'Kode tempat usaha sudah terdaftar di sistem.',
                                     'required' => 'Kode tempat usaha wajib diisi.',
@@ -51,9 +51,12 @@ class TempatForm
                             Select::make('jenis_tempat')
                                 ->label('Jenis Tempat Usaha')
                                 ->options([
-                                    'Kios' => 'Kios',
-                                    'Lapak' => 'Lapak',
                                     'Toko' => 'Toko',
+                                    'Kios' => 'Kios',
+                                    'Los' => 'Los',
+                                    'Lapak' => 'Lapak',
+                                    'Grosir / Agen' => 'Grosir / Agen',
+                                    'Swalayan' => 'Swalayan',
                                     'Tenda' => 'Tenda',
                                 ])
                                 ->native(false)
@@ -162,7 +165,7 @@ class TempatForm
                                 ->disabled()
                                 ->dehydrated()
                                 ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
-                               
+
 
                             TextInput::make('nomor_hp')
                                 ->label('Nomor HP / WhatsApp Operasional')

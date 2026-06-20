@@ -41,7 +41,8 @@ class TempatsTable
                     ->label('No. Tempat / Blok')
                     ->searchable()
                     ->sortable()
-                    ->alignment(Alignment::Center),
+                    ->alignment(Alignment::Center)
+                    ->description(fn($record) => "Jenis Tempat: " . $record->jenis_tempat),
 
                 // 4. Luas Tempat dengan Suffix Satuan Metrik
                 TextColumn::make('luas_tempat')
@@ -110,7 +111,7 @@ class TempatsTable
                         'Renovasi' => 'Renovasi',
                         'Booking' => 'Booking',
                         'Dipesan' => 'Dipesan',
-                      
+
                     ]),
 
 

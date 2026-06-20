@@ -25,6 +25,10 @@ class HasilPelatihanForm
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('hasil_pelatihans', 'kode_hasil_pelatihan', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'Kode Hasil Pelatihan ini sudah ada',
+                                    'required' => 'Kode Hasil Pelatihan wajib diisi',
+                                ])  
                                 ->placeholder('Contoh: HSL-2024-001'),
 
                             Select::make('peserta_event_id')

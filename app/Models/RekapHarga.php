@@ -16,6 +16,9 @@ class RekapHarga extends Model
         'wilayah_id',
         'kecamatan_id',
         'desa_id',
+        'pasar_id',
+        'tempat_id',
+        'pedagang_id',
         'periode_rekap',
         'harga_rata_rata',
         'harga_maksimum',
@@ -42,5 +45,20 @@ class RekapHarga extends Model
     public function kecamatan()
     {
         return $this->belongsTo(kecamatan::class, 'kecamatan_id');
+    }
+
+    public function pasar()
+    {
+        return $this->belongsTo(Pasar::class, 'pasar_id');
+    }
+
+    public function tempat()
+    {
+        return $this->belongsTo(Tempat::class, 'tempat_id');
+    }
+
+    public function pedagang()
+    {
+        return $this->belongsTo(Pedagang::class, 'pedagang_id');
     }
 }

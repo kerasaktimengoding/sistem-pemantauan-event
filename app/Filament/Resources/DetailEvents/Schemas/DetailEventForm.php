@@ -31,6 +31,10 @@ class DetailEventForm
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('detail_events', 'kode_detail_event', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'Kode Detail Event ini sudah ada',
+                                    'required' => 'Kode Detail Event wajib diisi',
+                                ])
                                 ->placeholder('Contoh: DET-EVT-001'),
                         ])->columns(2),
                     ]),

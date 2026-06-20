@@ -16,7 +16,7 @@ class PedagangForm
     {
         return $schema
             ->components([
-               Section::make('Identitas Pedagang')
+                Section::make('Identitas Pedagang')
                     ->description('Informasi dasar dan legalitas pedagang.')
                     ->schema([
                         Group::make([
@@ -26,7 +26,10 @@ class PedagangForm
                                 ->numeric()
                                 ->length(16)
                                 ->placeholder('Masukkan 16 digit NIK')
-                                ->unique('pedagangs', 'nik', ignoreRecord: true),
+                                ->unique('pedagangs', 'nik', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'NIK ini sudah terdaftar',
+                                ]),
 
                             TextInput::make('kode_pedagang')
                                 ->label('Kode Pedagang')
@@ -54,24 +57,54 @@ class PedagangForm
                                 ->required()
                                 ->maxLength(15),
 
-                         
+
                         ])->columns(2),
 
-                       Select::make('desa_id')
-                            ->label('Pilih Desa')
+
+
+                        //    Select::make('pasar_id')
+                        //         ->label('Pilih Pasar')
+                        //         ->relationship('pasar', 'nama_pasar')
+                        //         ->searchable()
+                        //         ->preload()
+                        //         ->required()
+                        //         ->live() // Memantau perubahan input secara real-time
+                        //         ->afterStateUpdated(function ($state, callable $set) {
+                        //             // Mencari data pasar berdasarkan ID yang dipilih
+                        //             $pasar = \App\Models\Pasar::find($state);
+                        //             if ($pasar) {
+                        //                 // Otomatis mengisi kolom desa_id
+                        //                 $set('desa_id', $pasar->desa_id);
+                        //             }
+                        //         }),
+
+
+                        // Select::make('tempat_id')
+                        // ->label('Pilih Tempat')
+                        // ->relationship('tempat', 'nama_tempat')
+                        // ->searchable()
+                        // ->preload()
+                        // ->required()
+                        // ->live() // Memantau perubahan input secara real-time
+                        // ->afterStateUpdated(function ($state, callable $set) {
+                        //     // Mencari data tempat berdasarkan ID yang dipilih
+                        //     $tempat = \App\Models\Tempat::find($state);
+                        //     if ($tempat) {
+                        //         // Otomatis mengisi kolom desa_id
+                        //         $set('desa_id', $tempat->desa_id);
+                        //     }
+                        // }),
+
+                        Select::make('desa_id')
+                            ->label('Desa')
                             ->relationship('desa', 'nama_desa')
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->live() // Memantau perubahan input secara real-time
-                            ->afterStateUpdated(function ($state, callable $set) {
-                                // Mencari data desa berdasarkan ID yang dipilih
-                                $desa = \App\Models\Desa::find($state);
-                                if ($desa) {
-                                    // Otomatis mengisi kolom kecamatan_id
-                                    $set('kecamatan_id', $desa->kecamatan_id);
-                                }
-                            }),
+                            ->disabled()
+                            ->dehydrated()
+                            ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
+                         
 
                         // 2. Kecamatan Terisi Otomatis
                         Select::make('kecamatan_id')
@@ -80,8 +113,8 @@ class PedagangForm
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->disabled() // Dimatikan agar tidak diubah manual (sesuai permintaan)
-                            ->dehydrated() // Tetap mengirim data ke database saat simpan
+                            ->disabled()
+                            ->dehydrated()
                             ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
                         Textarea::make('alamat')
                             ->label('Alamat Lengkap')

@@ -32,6 +32,10 @@ class PesertaEventForm
                                 ->maxLength(20)
                                 // PERBAIKAN 2: Gunakan unique yang benar mengarah ke kolom kode_peserta_event
                                 ->unique('peserta_events', 'kode_peserta_event', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'Kode Peserta Event  ini sudah ada',
+                                    'required' => 'Kode Peserta Event wajib diisi',
+                                ])
                                 ->default(fn() => 'REG-' . strtoupper(Str::random(6)))
                                 ->placeholder('Contoh: REG-EVT-001'),
 

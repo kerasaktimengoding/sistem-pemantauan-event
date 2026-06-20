@@ -11,7 +11,7 @@ class Pedagang extends Model
      use HasFactory;
 
     protected $fillable = [
-        'nik', 'kode_pedagang', 'nama_pedagang', 'no_hp', 'alamat', 'kecamatan_id', 'desa_id','status_pedagang'
+        'nik', 'kode_pedagang', 'nama_pedagang', 'no_hp', 'pasar_id', 'tempat_id', 'alamat', 'kecamatan_id', 'desa_id','status_pedagang'
     ];
 
     // Relasi dengan wilayah

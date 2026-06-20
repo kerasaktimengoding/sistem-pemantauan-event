@@ -8,6 +8,7 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Forms\Components\Textarea;
+use Illuminate\Support\Str;
 
 class WilayahForm
 {
@@ -23,6 +24,10 @@ class WilayahForm
                         ->label('Kode BPS / Kemendagri')
                         ->required()
                         ->unique(ignoreRecord: true)
+                        ->validationMessages([
+                            'unique' => 'Kode wilayah ini sudah terdaftar',
+                        ])
+                        ->default(fn() => 'WIL-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
                         ->placeholder('Contoh: 63.03.xx.xxxx'),
 
                     Group::make([

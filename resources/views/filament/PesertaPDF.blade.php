@@ -136,7 +136,7 @@
 
                     {{-- 6. Lokasi Wilayah Asal --}}
                     <td>
-                        <span>📍 {{ $peserta->wilayah->nama_wilayah ?? 'Luar Wilayah' }}</span>
+                        <span>📍 {{ $peserta->desa->nama_desa ?? 'Wilayah' }}</span>
                     </td>
 
                     {{-- 7. Status Partisipasi --}}

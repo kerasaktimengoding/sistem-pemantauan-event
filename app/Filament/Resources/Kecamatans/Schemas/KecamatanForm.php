@@ -7,6 +7,7 @@ use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Group;
 use Filament\Forms\Components\Textarea;
+use Illuminate\Support\Str;
 
 class KecamatanForm
 {
@@ -28,6 +29,7 @@ class KecamatanForm
                                 ->validationMessages([
                                     'unique' => 'Kode wilayah/kecamatan ini sudah terdaftar.',
                                 ])
+                                ->default(fn() => 'KEC-' . date('d') . date('m') . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->placeholder('Contoh: 63.03.01')
                                 ->columnSpan(2),
 

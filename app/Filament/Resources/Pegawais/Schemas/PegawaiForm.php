@@ -25,13 +25,21 @@ class PegawaiForm
                                 ->label('NIP')
                                 ->required()
                                 ->numeric()
+                                ->length(16)
                                 ->unique('pegawais', 'nip', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'NIP ini sudah terdaftar',
+                                ])
                                 ->placeholder('Masukkan NIP'),
 
                             TextInput::make('nik')
                                 ->label('NIK')
                                 ->required()
                                 ->numeric()
+                                ->unique('pegawais', 'nik', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'NIK ini sudah terdaftar',
+                                ])
                                 ->length(16)
                                 ->placeholder('Masukkan 16 digit NIK'),
                         ])->columns(2),

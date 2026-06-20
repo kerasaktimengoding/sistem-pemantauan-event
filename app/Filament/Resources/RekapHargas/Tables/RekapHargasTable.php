@@ -61,6 +61,20 @@ class RekapHargasTable
                     // Menyusun visual hierarki: Kecamatan sebagai judul utama, Desa sebagai keterangan tipis di bawahnya
                     ->description(fn($record) => $record->desa ? "📍 Desa: " . $record->desa->nama_desa : "🏢 Seluruh Kecamatan"),
 
+
+                // TextColumn('pedagang.nama_pedagang')
+                //     ->label('Pedagang')
+                //     ->searchable()
+                //     ->sortable()
+                //     ->weight('semibold')
+                //     ->color('gray.700')
+                //     ->icon('heroicon-m-shopping-bag')
+                //     ->badge()
+                //     ->description(fn($record) => $record->pedagang ? "📍 Tempat: " . $record->pedagang->tempat()->nomor_tempat.' - '.$record->pedagang->tempat()->nama_tempat : "🏢 Pedagang: ")
+                //     ->description(fn($record) => $record->pedagang ? "🏢 Pedagang: " . $record->pedagang->pasar_id->nama_pesar : "📍 Tempat: ")
+                //     ->iconColor('primary'), 
+
+
                 // 5. Statistik Harga Rata-rata (Standout Finansial Utama)
                 TextColumn::make('harga_rata_rata')
                     ->label('Harga Rata-Rata')

@@ -25,6 +25,9 @@ class InputHargaForm
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('input_hargas', 'kode_input_harga', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'Kode Input Harga ini sudah ada',
+                                ])
                                 ->placeholder('Contoh: TRK-20240301-01'),
 
                             DatePicker::make('tanggal_input')

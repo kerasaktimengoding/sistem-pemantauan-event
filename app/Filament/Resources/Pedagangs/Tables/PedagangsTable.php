@@ -66,6 +66,7 @@ class PedagangsTable
                     // Baris Pertama Deskripsi: Nama Desa
                     ->description(fn($record) => "🏡 Desa: " . ($record->desa?->nama_desa ?? '-'))
                     // Baris Kedua Deskripsi: Detail Alamat Jalan diletakkan tipis di bawahnya agar menghemat tempat
+                    ->description(fn($record) => $record->pasar_id ? "Pasar " . str($record->pasar->nama_pasar)->limit(45) : 'Tidak ada detail alamat', position: 'above')
                     ->description(fn($record) => $record->alamat ? "📍 " . str($record->alamat)->limit(45) : 'Tidak ada detail alamat', position: 'below'),
 
                 // 4. No. WhatsApp Interaktif (Bisa Diklik Langsung Menuju Chat)
@@ -85,9 +86,23 @@ class PedagangsTable
                         ? "https://wa.me/" . preg_replace('/[^0-9]/', '', $record->no_hp)
                         : null,
                         shouldOpenInNewTab: true
-                    ),
+                    )
+                    ->description(fn($record) => $record->tempat ? "Tempat: " . $record->tempat->nama_tempat : 'Tidak ada detail tempat', position: 'above'),
 
                 // 5. Status Akun dengan Badge Solid Kontras & Ikon Dinamis
+
+                TextColumn::make('tempat_id')
+                    ->label('Detail Tempat')
+                    ->formatStateUsing(fn($state) => $state ? $state->nama_tempat : 'Tidak ada detail tempat')
+                    ->badge()
+                    ->color('primary')
+                    ->weight(FontWeight::SemiBold)
+                    ->icon('heroicon-m-map-pin')
+                    ->iconColor('danger')
+                    ->sortable()
+                    ->searchable()
+                    ->description(fn($record) => $record->tempat->nomor_tempat ? "Nomor : " . $record->tempat->nomor_tempat : 'Tidak ada nomor tempat', position: 'above')
+                    ->description(fn($record) => $record->tempat->jenis_tempat ? "Jenis Tempat: " . $record->tempat->jenis_tempat : 'Tidak ada jenis tempat', position: 'below'),
                 TextColumn::make('status_pedagang')
                     ->label('Status')
                     ->badge()

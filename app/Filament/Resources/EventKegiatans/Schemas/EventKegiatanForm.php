@@ -25,6 +25,9 @@ Section::make('Detail Kegiatan')
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('event_kegiatans', 'kode_event', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'Kode event ini sudah terdaftar',
+                                ])
                                 ->placeholder('Contoh: EVT-2024-001'),
 
                             TextInput::make('nama_event')

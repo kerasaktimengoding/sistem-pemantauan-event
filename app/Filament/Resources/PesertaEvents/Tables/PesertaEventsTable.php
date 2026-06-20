@@ -76,15 +76,21 @@ class PesertaEventsTable
                     ->copyMessageDuration(1500),
 
                 // 6. Lokasi Wilayah Geografis (Hemat Kolom dengan Fitur Gabungan Alamat)
-                TextColumn::make('wilayah.nama_wilayah')
-                    ->label('Wilayah Asal')
-                    ->searchable()
+                TextColumn::make('kecamatan.nama_kecamatan')
+                    ->label('Cakupan Wilayah')
                     ->sortable()
+                    // Fitur Pencarian Pintar: Cari berdasarkan nama kecamatan ATAU nama desa sekaligus
+                    ->searchable(query: function ($query, string $search) {
+                        $query->whereHas('kecamatan', function ($q) use ($search) {
+                            $q->where('nama_kecamatan', 'like', "%{$search}%");
+                        })->orWhereHas('desa', function ($q) use ($search) {
+                            $q->where('nama_desa', 'like', "%{$search}%");
+                        });
+                    })
                     ->weight('medium')
-                    ->icon('heroicon-m-map-pin')
-                    ->iconColor('danger')
-                    ->placeholder('Luar Wilayah')
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->color('gray.800')
+                    // Menyusun visual hierarki: Kecamatan sebagai judul utama, Desa sebagai keterangan tipis di bawahnya
+                    ->description(fn($record) => $record->desa ? "📍 Desa: " . $record->desa->nama_desa : "🏢 Seluruh Kecamatan"),
 
                 // 7. Status Partisipasi Berwarna Dinamis + Ikon Indikator Kehadiran
                 TextColumn::make('status_partisipasi')

@@ -25,6 +25,9 @@ class KomoditasForm
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('komoditas', 'kode_komoditas', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'Kode komoditas ini sudah terdaftar',
+                                ])
                                 ->placeholder('Contoh: BAPOK-001'),
 
                             TextInput::make('nama_komoditas')

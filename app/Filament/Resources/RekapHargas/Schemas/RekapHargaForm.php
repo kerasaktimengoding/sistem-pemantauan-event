@@ -24,6 +24,10 @@ class RekapHargaForm
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('rekap_hargas', 'kode_rekap_harga', ignoreRecord: true)
+                                ->validationMessages([
+                                    'unique' => 'Kode Rekap Harga ini sudah ada',
+                                    'required' => 'Kode Rekap Harga wajib diisi',
+                                ])
                                 ->placeholder('Contoh: RKP-202403-01'),
 
                             DatePicker::make('periode_rekap')
@@ -68,6 +72,33 @@ class RekapHargaForm
                                 ->dehydrated() // Tetap mengirim data ke database saat simpan
                                 ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
                         ])->columns(2),
+
+                        
+                                // BUAT AGAR BISA SELAIN DESA YAITU TEMPAT, PEDAGANG
+                                
+                        // Select::make('pasar_id')
+                        // ->label('Pilih Pasar')
+                        // ->options(function (callable $get) {
+                        //     // Ambil desa_id dari input "Pilih Desa"
+                        //     $desaId = $get('desa_id');
+                        //     $tempatId = $get('tempat_id');
+
+                            
+                        //     // Jika tidak ada desa_id, kembalikan array kosong
+                        //     if (!$desaId) {
+                        //         return [];
+                        //     }
+                            
+                        //     // Ambil pasar berdasarkan desa_id
+                        //     return \App\Models\Pasar::where('desa_id', $desaId)
+                        //         ->pluck('nama_pasar', 'id')
+                        //         ->toArray();
+                        // })
+                        // ->required()
+                        // ->live(), // Tambahkan live() agar dropdown update saat desa berubah
+
+
+                
 
 
 
