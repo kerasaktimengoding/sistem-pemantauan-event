@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\PesertaEvents\Schemas;
 
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Radio;    
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -32,11 +32,12 @@ class PesertaEventForm
                                 ->maxLength(20)
                                 // PERBAIKAN 2: Gunakan unique yang benar mengarah ke kolom kode_peserta_event
                                 ->unique('peserta_events', 'kode_peserta_event', ignoreRecord: true)
+
                                 ->validationMessages([
                                     'unique' => 'Kode Peserta Event  ini sudah ada',
                                     'required' => 'Kode Peserta Event wajib diisi',
                                 ])
-                                ->default(fn() => 'REG-' . strtoupper(Str::random(6)))
+                                ->default(fn() => 'REG-' . date('d') . '.' . date('m') . '.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->placeholder('Contoh: REG-EVT-001'),
 
                             Select::make('event_id')
