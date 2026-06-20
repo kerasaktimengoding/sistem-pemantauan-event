@@ -9,6 +9,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class PedagangForm
 {
@@ -36,6 +37,7 @@ class PedagangForm
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('pedagangs', 'kode_pedagang', ignoreRecord: true)
+                                ->default(fn() => 'PDG-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->placeholder('Contoh: PDG-001'),
                         ])->columns(2),
 

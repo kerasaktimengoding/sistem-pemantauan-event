@@ -9,6 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class InputHargaForm
 {
@@ -25,6 +26,7 @@ class InputHargaForm
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('input_hargas', 'kode_input_harga', ignoreRecord: true)
+                                ->default(fn() => 'TRK-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->validationMessages([
                                     'unique' => 'Kode Input Harga ini sudah ada',
                                 ])

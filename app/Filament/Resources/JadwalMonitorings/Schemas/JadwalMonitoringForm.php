@@ -10,6 +10,7 @@ use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Group;
 use Filament\Forms\Components\ToggleButtons;
+use Illuminate\Support\Str;
 
 class JadwalMonitoringForm
 {
@@ -31,6 +32,7 @@ class JadwalMonitoringForm
                                 ->validationMessages([
                                     'unique' => 'Kode jadwal sudah terdaftar, gunakan kode lain.',
                                 ])
+                                ->default(fn() => 'JMW-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->placeholder('Contoh: JMW-2026-001')
                                 ->columnSpan(2),
 
