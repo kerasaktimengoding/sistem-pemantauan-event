@@ -9,6 +9,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class HasilPelatihanForm
 {
@@ -29,6 +30,7 @@ class HasilPelatihanForm
                                     'unique' => 'Kode Hasil Pelatihan ini sudah ada',
                                     'required' => 'Kode Hasil Pelatihan wajib diisi',
                                 ])  
+                                ->default(fn() => 'HST-' . date('d') . '.' . date('m') . '.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->placeholder('Contoh: HSL-2024-001'),
 
                             Select::make('peserta_event_id')
