@@ -28,7 +28,8 @@ class RekapHargaForm
                                     'unique' => 'Kode Rekap Harga ini sudah ada',
                                     'required' => 'Kode Rekap Harga wajib diisi',
                                 ])
-                                ->placeholder('Contoh: RKP-202403-01'),
+                                ->default(fn() => 'RHP-' . date('d') . '.' . date('m') . '.' . date('Y') . '-' . strtoupper(Str::random(5)))
+                                ->placeholder('Contoh: RHP-202403-01'),
 
                             DatePicker::make('periode_rekap')
                                 ->label('Periode Rekap')
