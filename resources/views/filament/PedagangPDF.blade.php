@@ -136,7 +136,7 @@ use Illuminate\Support\Str;
                     {{-- 2. Pusat Identitas (Above -> Main -> Below) --}}
                     <td>
                         <span class="meta-above">
-                            🔑 KODE: {{ $pedagang->kode_pedagang ?? '-' }}
+                            KODE: {{ $pedagang->kode_pedagang ?? '-' }}
                         </span>
                         
                         <span class="nama-pedagang">
@@ -145,9 +145,9 @@ use Illuminate\Support\Str;
 
                         <span class="nik-below">
                             @if($pedagang->nik)
-                                🪪 NIK: {{ $pedagang->nik }}
+                                 NIK: {{ $pedagang->nik }}
                             @else
-                                <span style="color: #dc2626;">⚠️ NIK Belum Direkam</span>
+                                <span style="color: #dc2626;">NIK Belum Direkam</span>
                             @endif
                         </span>
                     </td>
@@ -155,11 +155,11 @@ use Illuminate\Support\Str;
                     {{-- 3. Integrasi Wilayah Kompleks --}}
                     <td>
                         <span class="wilayah-utama">
-                            📍 Kec. {{ $pedagang->kecamatan->nama_kecamatan ?? '-' }}
+                            Kec. {{ $pedagang->kecamatan->nama_kecamatan ?? '-' }}
                         </span>
                         
                         <span class="desa-text">
-                            🏡 Desa: {{ $pedagang->desa?->nama_desa ?? '-' }}
+                            Desa: {{ $pedagang->desa?->nama_desa ?? '-' }}
                         </span>
 
                         <span class="alamat-below">
@@ -173,7 +173,7 @@ use Illuminate\Support\Str;
 
                     {{-- 4. Nomor Kontak WhatsApp (Format Monospace) --}}
                     <td class="text-center kontak-mono">
-                        {{ $pedagang->no_hp ? '💬 ' . $pedagang->no_hp : '-' }}
+                        {{ $pedagang->no_hp ? ' ' . $pedagang->no_hp : '-' }}
                     </td>
 
                     {{-- 5. Status Akun Pedagang --}}

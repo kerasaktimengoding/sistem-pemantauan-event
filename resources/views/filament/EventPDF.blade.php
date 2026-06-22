@@ -127,17 +127,17 @@
                     {{-- 3. Detail Nama Kegiatan & Penyelenggara --}}
                     <td>
                         <span class="nama-event">
-                            🎉 {{ $event->nama_event ?? $event->nama_kegiatan ?? '-' }}
+                             {{ $event->nama_event ?? $event->nama_kegiatan ?? '-' }}
                         </span>
                         <span class="sub-info">
-                            🏛️ Bidang/Penyelenggara: {{ $event->penyelenggara ?? 'DKUMPP Kab. Banjar' }}
+                             Bidang/Penyelenggara: {{ $event->penyelenggara ?? 'DKUMPP Kab. Banjar' }}
                         </span>
                     </td>
 
                     {{-- 4. Rentang Waktu Pelaksanaan --}}
                     <td>
                         <span class="waktu-pelaksanaan">
-                            📅 {{ $event->tanggal_mulai ? \Carbon\Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y') : '-' }}
+                             {{ $event->tanggal_mulai ? \Carbon\Carbon::parse($event->tanggal_mulai)->translatedFormat('d M Y') : '-' }}
                         </span>
                         @if($event->tanggal_selesai && $event->tanggal_mulai != $event->tanggal_selesai)
                             <span class="sub-info" style="margin-top: 1px;">
@@ -149,7 +149,7 @@
                     {{-- 5. Tempat / Lokasi Pelaksanaan --}}
                     <td>
                         <span class="lokasi-text">
-                            📍 {{ $event->lokasi ?? $event->tempat_pelaksanaan ?? 'Tempat Belum Ditentukan' }}
+                             {{ $event->lokasi ?? $event->tempat_pelaksanaan ?? 'Tempat Belum Ditentukan' }}
                         </span>
                     </td>
 

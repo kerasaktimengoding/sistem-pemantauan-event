@@ -122,20 +122,20 @@
                     </td>
 
                     {{-- 4. Luas Tempat --}}
-                    <td class="text-right" style="font-weight: 500;">
+                    <td class="text-center" style="font-weight: 500; width: 100px;">
                         {{ $tempat->luas_tempat ?? '0' }} m²
                     </td>
 
                     {{-- 5. Data Pasar & Wilayah Desa --}}
                     <td>
                         <span class="nama-utama">{{ $tempat->pasar->nama_pasar ?? '-' }}</span>
-                        <span class="sub-info">📍 Wilayah: {{ $tempat->desa->nama_desa ?? '-' }}</span>
+                        <span class="sub-info"> Wilayah: {{ $tempat->desa->nama_desa ?? '-' }}</span>
                     </td>
 
                     {{-- 6. Data Pedagang & Kontak HP --}}
                     <td>
                         <span class="nama-utama">{{ $tempat->pedagang->nama_pedagang ?? 'Belum Terisi' }}</span>
-                        <span class="sub-info">📞 {{ $tempat->nomor_hp ?? ($tempat->pedagang->nomor_hp ?? '-') }}</span>
+                        <span class="sub-info">{{ $tempat->nomor_hp ?? ($tempat->pedagang->nomor_hp ?? '-') }}</span>
                     </td>
 
                     {{-- 7. Badge Status Dinamis --}}

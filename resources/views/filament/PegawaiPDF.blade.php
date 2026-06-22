@@ -6,59 +6,59 @@
     /* Ukuran teks disesuaikan agar muat banyak informasi gabungan dalam satu baris */
     .table-pegawai th,
     .table-pegawai td {
-        font-size: 7px;
-        padding: 4px 3px;
+    font-size: 7px;
+    padding: 4px 3px;
     }
 
     .nama-pegawai {
-        font-weight: bold;
-        color: #1f2937;
+    font-weight: bold;
+    color: #1f2937;
     }
 
     .sub-info {
-        display: block;
-        margin-top: 1px;
-        font-size: 6.3px;
-        color: #4b5563;
+    display: block;
+    margin-top: 1px;
+    font-size: 6.3px;
+    color: #4b5563;
     }
 
     .text-gender {
-        font-weight: bold;
-        color: #374151;
+    font-weight: bold;
+    color: #374151;
     }
 
     .jabatan-text {
-        font-weight: bold;
-        color: #1e40af;
+    font-weight: bold;
+    color: #1e40af;
     }
 
     .kontak-text {
-        color: #111827;
-        font-weight: 500;
+    color: #111827;
+    font-weight: 500;
     }
 
     /* Badge Status Pegawai */
     .status-aktif {
-        color: #16a34a;
-        font-weight: bold;
+    color: #16a34a;
+    font-weight: bold;
     }
     .status-tidak-aktif {
-        color: #dc2626;
-        font-weight: bold;
+    color: #dc2626;
+    font-weight: bold;
     }
     .status-cuti {
-        color: #d97706;
-        font-weight: bold;
+    color: #d97706;
+    font-weight: bold;
     }
     .status-default {
-        color: #6b7280;
+    color: #6b7280;
     }
 
     .no-data {
-        padding: 15px !important;
-        text-align: center;
-        font-style: italic;
-        color: #6b7280;
+    padding: 15px !important;
+    text-align: center;
+    font-style: italic;
+    color: #6b7280;
     }
 @endsection
 
@@ -111,7 +111,7 @@
                     {{-- 2. Nama Pegawai & NIP --}}
                     <td>
                         <span class="nama-pegawai">{{ $pegawai->nama_pegawai ?? '-' }}</span>
-                        <span class="sub-info">🪪 NIP: {{ $pegawai->nip ?? '-' }}</span>
+                        <span class="sub-info">{{ $pegawai->nip ?? '-' }}</span>
                     </td>
 
                     {{-- 3. Jenis Kelamin --}}
@@ -121,18 +121,18 @@
 
                     {{-- 4. Jabatan & Penugasan Wilayah --}}
                     <td>
-                        <span class="jabatan-text">💼 {{ $pegawai->jabatan->nama_jabatan ?? '-' }}</span>
+                        <span class="jabatan-text">{{ $pegawai->jabatan->nama_jabatan ?? '-' }}</span>
                         <span class="sub-info">
-                            📍 {{ $pegawai->kecamatan->nama_kecamatan ?? '-' }} 
-                            (🏡 Desa: {{ $pegawai->desa?->nama_desa ?? '-' }})
+                            {{ $pegawai->kecamatan->nama_kecamatan ?? '-' }}
+                            (Desa: {{ $pegawai->desa?->nama_desa ?? '-' }})
                         </span>
                     </td>
 
                     {{-- 5. Data Kontak --}}
                     <td>
-                        <span class="kontak-text">📞 {{ $pegawai->no_hp ?? '-' }}</span>
+                        <span class="kontak-text"> {{ $pegawai->no_hp ?? '-' }}</span>
                         @if($pegawai->email)
-                            <span class="sub-info">✉️ {{ $pegawai->email }}</span>
+                            <span class="sub-info">{{ $pegawai->email }}</span>
                         @endif
                     </td>
 
@@ -145,10 +145,10 @@
 
                     {{-- 7. Tanggal Masuk Kerja --}}
                     <td class="text-center">
-                        {{ $pegawai->tanggal_masuk 
-                            ? \Carbon\Carbon::parse($pegawai->tanggal_masuk)->translatedFormat('d F Y') 
-                            : '-' 
-                        }}
+                        {{ $pegawai->tanggal_masuk
+                ? \Carbon\Carbon::parse($pegawai->tanggal_masuk)->translatedFormat('d F Y')
+                : '-' 
+                                }}
                     </td>
                 </tr>
             @empty

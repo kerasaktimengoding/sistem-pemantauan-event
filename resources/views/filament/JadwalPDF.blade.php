@@ -135,10 +135,10 @@ use Illuminate\Support\Str;
                     {{-- 3. Rencana Pelaksanaan & No Surat Tugas --}}
                     <td>
                         <span class="text-rencana">
-                            📅 {{ $jadwal->tanggal_rencana ? \Carbon\Carbon::parse($jadwal->tanggal_rencana)->translatedFormat('d M Y') : '-' }}
+                            {{ $jadwal->tanggal_rencana ? \Carbon\Carbon::parse($jadwal->tanggal_rencana)->translatedFormat('d M Y') : '-' }}
                         </span>
                         <span class="sub-info">
-                            {{ $jadwal->nomor_surat_tugas ? '📄 No. Surat: '.$jadwal->nomor_surat_tugas : '⚠️ Surat Tugas: Belum Diterbitkan' }}
+                            {{ $jadwal->nomor_surat_tugas ? ' No. Surat: '.$jadwal->nomor_surat_tugas : '⚠️ Surat Tugas: Belum Diterbitkan' }}
                         </span>
                     </td>
 
@@ -146,7 +146,7 @@ use Illuminate\Support\Str;
                     <td>
                         @if($jadwal->pasar)
                             <span class="nama-utama">📍 {{ $jadwal->pasar->nama_pasar }}</span>
-                            <span class="sub-info">🗺️ Wilayah: {{ $jadwal->pasar->kecamatan->nama_kecamatan ?? '-' }}</span>
+                            <span class="sub-info"> Wilayah: {{ $jadwal->pasar->kecamatan->nama_kecamatan ?? '-' }}</span>
                         @else
                             <span class="text-muted" style="font-style: italic; color: #9ca3af;">Pasar Tidak Terdaftar</span>
                         @endif
@@ -155,8 +155,8 @@ use Illuminate\Support\Str;
                     {{-- 5. Petugas Lapangan & NIP --}}
                     <td>
                         @if($jadwal->pegawai)
-                            <span class="nama-utama">👤 {{ $jadwal->pegawai->nama_pegawai }}</span>
-                            <span class="sub-info">🪪 NIP. {{ $jadwal->pegawai->nip ?? '-' }}</span>
+                            <span class="nama-utama"> {{ $jadwal->pegawai->nama_pegawai }}</span>
+                            <span class="sub-info"> NIP. {{ $jadwal->pegawai->nip ?? '-' }}</span>
                         @else
                             <span class="text-muted" style="font-style: italic; color: #9ca3af;">Belum Ditunjuk</span>
                         @endif

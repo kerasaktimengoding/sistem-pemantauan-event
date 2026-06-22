@@ -116,7 +116,7 @@ use Illuminate\Support\Str;
                     {{-- 2. Waktu & Kode Transaksi --}}
                     <td>
                         <span class="text-primary text-mono">
-                            📅
+                            
                             {{ $input->tanggal_input ? \Carbon\Carbon::parse($input->tanggal_input)->translatedFormat('d M Y') : '-' }}
                         </span>
                         <span class="sub-info text-mono">
@@ -126,7 +126,7 @@ use Illuminate\Support\Str;
 
                     {{-- 3. Komoditas Produk + Satuan --}}
                     <td>
-                        <span class="nama-komoditas">🛍️ {{ $input->komoditas->nama_komoditas ?? '-' }}</span>
+                        <span class="nama-komoditas"> {{ $input->komoditas->nama_komoditas ?? '-' }}</span>
                         <span class="sub-info">Satuan Takaran: {{ $input->komoditas->satuan ?? '-' }}</span>
                     </td>
 

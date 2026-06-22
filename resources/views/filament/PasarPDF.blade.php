@@ -121,7 +121,7 @@ use Illuminate\Support\Str;
                     <td>
                         {{-- Baris Atas: Kode Pasar --}}
                         <span class="meta-above">
-                            🔑 KODE: {{ $pasar->kode_pasar ?? '-' }}
+                             KODE: {{ $pasar->kode_pasar ?? '-' }}
                         </span>
 
                         {{-- Tengah: Nama Pasar --}}
@@ -132,7 +132,7 @@ use Illuminate\Support\Str;
                         {{-- Baris Bawah: Alamat Lengkap --}}
                         <span class="alamat-below">
                             @if($pasar->alamat_pasar)
-                                📍 {{ Str::limit($pasar->alamat_pasar, 100, '...') }}
+                                 {{ Str::limit($pasar->alamat_pasar, 100, '...') }}
                             @else
                                 Belum ada alamat lengkap
                             @endif
@@ -145,7 +145,7 @@ use Illuminate\Support\Str;
                             {{ $pasar->kecamatan->nama_kecamatan ?? '-' }}
                         </span>
                         <span class="sub-desa">
-                            🏡 Desa: {{ $pasar->desa?->nama_desa ?? '-' }}
+                             Desa: {{ $pasar->desa?->nama_desa ?? '-' }}
                         </span>
                     </td>
 

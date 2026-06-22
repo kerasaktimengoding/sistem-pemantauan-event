@@ -7,58 +7,58 @@ use Illuminate\Support\Str;
     /* Ukuran tabel khusus laporan data jabatan agar pas landscape A4 */
     .table-jabatan th,
     .table-jabatan td {
-        font-size: 7.5px;
-        padding: 5px 4px;
+    font-size: 7.5px;
+    padding: 5px 4px;
     }
 
     .kode-jabatan {
-        display: inline-block;
-        padding: 3px 5px;
-        background-color: #eff6ff;
-        border-radius: 4px;
-        font-weight: bold;
-        color: #1d4ed8;
+    display: inline-block;
+    padding: 3px 5px;
+    background-color: #eff6ff;
+    border-radius: 4px;
+    font-weight: bold;
+    color: #1d4ed8;
     }
 
     .nama-jabatan {
-        font-weight: bold;
-        color: #374151;
+    font-weight: bold;
+    color: #374151;
     }
 
     .sub-text {
-        display: block;
-        margin-top: 2px;
-        font-size: 6.5px;
-        color: #4b5563;
-        line-height: 1.2;
+    display: block;
+    margin-top: 2px;
+    font-size: 6.5px;
+    color: #4b5563;
+    line-height: 1.2;
     }
 
     .wewenang-text {
-        color: #6b7280;
-        line-height: 1.3;
+    color: #6b7280;
+    line-height: 1.3;
     }
 
     /* Status Jabatan warna kontras tinggi */
     .status-aktif {
-        color: #16a34a;
-        font-weight: bold;
+    color: #16a34a;
+    font-weight: bold;
     }
 
     .status-tidak-aktif {
-        color: #dc2626;
-        font-weight: bold;
+    color: #dc2626;
+    font-weight: bold;
     }
 
     .status-default {
-        color: #d97706;
-        font-weight: bold;
+    color: #d97706;
+    font-weight: bold;
     }
 
     .no-data {
-        padding: 15px !important;
-        text-align: center;
-        font-style: italic;
-        color: #6b7280;
+    padding: 15px !important;
+    text-align: center;
+    font-style: italic;
+    color: #6b7280;
     }
 @endsection
 
@@ -72,12 +72,12 @@ use Illuminate\Support\Str;
     <table class="table-data table-jabatan">
         <thead>
             <tr>
-                <th style="width: 30px;">No.</th>
-                <th style="width: 85px;">Kode Jabatan</th>
+                <th style="width: 20px;">No.</th>
+                <th style="width: 50px;">Kode Jabatan</th>
                 <th style="width: 180px;">Nama & Tugas Jabatan</th>
-                <th style="width: 240px;">Wewenang Utama</th>
+                <th style="width: 300px;">Wewenang Utama</th>
                 <th style="width: 75px;">Status</th>
-                <th style="width: 90px;">Sistem Dibuat</th>
+            
             </tr>
         </thead>
 
@@ -117,7 +117,7 @@ use Illuminate\Support\Str;
                         </span>
                         @if($jabatan->tugas_pokok)
                             <span class="sub-text">
-                                📝 Tugas: {{ Str::limit($jabatan->tugas_pokok, 80, '...') }}
+                                {{ Str::limit($jabatan->tugas_pokok, 80, '...') }}
                             </span>
                         @endif
                     </td>
@@ -135,12 +135,7 @@ use Illuminate\Support\Str;
                     </td>
 
                     {{-- 6. Waktu Data Dibuat --}}
-                    <td class="text-center">
-                        {{ $jabatan->created_at 
-                            ? $jabatan->created_at->format('d/m/Y H:i') 
-                            : '-' 
-                        }}
-                    </td>
+
                 </tr>
             @empty
                 <tr>

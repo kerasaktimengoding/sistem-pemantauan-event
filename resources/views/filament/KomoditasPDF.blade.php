@@ -125,7 +125,7 @@ use Illuminate\Support\Str;
                     <td>
                         {{-- Atas (Kategori & Satuan) --}}
                         <span class="meta-above">
-                            📦 Kategori: {{ $item->kategori ?? '-' }} | ⚖️ Satuan: {{ $item->satuan ?? '-' }}
+                             Kategori: {{ $item->kategori ?? '-' }} |  Satuan: {{ $item->satuan ?? '-' }}
                         </span>
 
                         {{-- Tengah (Nama Utama) --}}
@@ -136,7 +136,7 @@ use Illuminate\Support\Str;
                         {{-- Bawah (Deskripsi Panjang Terbatasi) --}}
                         <span class="deskripsi-below">
                             @if($item->deskripsi)
-                                💡 {{ Str::limit($item->deskripsi, 120, '...') }}
+                                 {{ Str::limit($item->deskripsi, 120, '...') }}
                             @else
                                 Tidak ada deskripsi tambahan
                             @endif

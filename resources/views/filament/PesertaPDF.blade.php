@@ -112,31 +112,31 @@
 
                     {{-- 2. Nama Peserta + NIK --}}
                     <td>
-                        <span class="nama-peserta">👤 {{ $peserta->nama_peserta ?? '-' }}</span>
+                        <span class="nama-peserta"> {{ $peserta->nama_peserta ?? '-' }}</span>
                         <span class="sub-info text-mono">NIK: {{ $peserta->nik ?? '-' }}</span>
                     </td>
 
                     {{-- 3. Nama Usaha + Jenis Produk --}}
                     <td>
-                        <span class="nama-usaha">🏢 {{ $peserta->nama_usaha ?? '-' }}</span>
+                        <span class="nama-usaha"> {{ $peserta->nama_usaha ?? '-' }}</span>
                         <span class="sub-info">Produk: {{ $peserta->jenis_produk ?? '-' }}</span>
                     </td>
 
                     {{-- 4. Agenda Kegiatan (Kapital Berwarna Info) --}}
                     <td>
                         <span class="agenda-badge">
-                            ✨ {{ $peserta->event?->nama_event ? strtoupper($peserta->event->nama_event) : '-' }}
+                             {{ $peserta->event?->nama_event ? strtoupper($peserta->event->nama_event) : '-' }}
                         </span>
                     </td>
 
                     {{-- 5. Kontak WhatsApp (Monospace) --}}
                     <td class="text-center text-mono kontak-wa">
-                        {{ $peserta->no_hp ? '💬 ' . $peserta->no_hp : '-' }}
+                        {{ $peserta->no_hp ? ' ' . $peserta->no_hp : '-' }}
                     </td>
 
                     {{-- 6. Lokasi Wilayah Asal --}}
                     <td>
-                        <span>📍 {{ $peserta->desa->nama_desa ?? 'Wilayah' }}</span>
+                        <span> {{ $peserta->desa->nama_desa ?? 'Wilayah' }}</span>
                     </td>
 
                     {{-- 7. Status Partisipasi --}}
