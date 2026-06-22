@@ -17,7 +17,6 @@ use App\Models\Wilayah;
 class ListWilayahs extends ListRecords
 {
     protected static string $resource = WilayahResource::class;
-    protected ?string $heading = 'DATA WILAYAH';
 
     protected function getHeaderActions(): array
     {
