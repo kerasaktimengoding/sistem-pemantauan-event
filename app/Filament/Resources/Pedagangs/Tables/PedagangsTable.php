@@ -91,7 +91,7 @@ class PedagangsTable
 
                 // 5. Status Akun dengan Badge Solid Kontras & Ikon Dinamis
 
-                TextColumn::make('tempat_id')
+                TextColumn::make('tempat.nomor_tempat')
                     ->label('Detail Tempat')
                     ->formatStateUsing(fn($state) => $state ? $state->nama_tempat : 'Tidak ada detail tempat')
                     ->badge()

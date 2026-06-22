@@ -24,7 +24,7 @@ class KecamatanResource extends Resource
     protected static ?string $recordTitleAttribute = 'nama_kecamatan';
     protected static string|UnitEnum|null $navigationGroup = 'Wilayah & Kepegawaian';
     protected static ?string $navigationLabel = 'Kecamatan Kab Banjar';
-
+    protected static ?string $pluralModelLabel = 'Kecamatan Kab Banjar';
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Map;
 
     public static function getNavigationBadge(): ?string
