@@ -9,6 +9,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
 
 class TrenHargaForm
 {
@@ -21,16 +22,17 @@ class TrenHargaForm
                     ->schema([
                         
                         Group::make([
-                            // TextInput::make('kode_tren')
-                            //     ->label('Kode Tren Harga')
-                            //     ->required()
-                            //     ->maxLength(20)
-                            //     ->unique('tren_hargas', 'kode_tren', ignoreRecord: true)
-                            //     ->validationMessages([
-                            //         'unique' => 'Kode Tren Harga ini sudah ada',
-                            //         'required' => 'Kode Kehadiran wajib diisi',
-                            //     ])
-                            //     ->placeholder('Contoh: PRS-202403-001'),
+                            TextInput::make('kode_tren')
+                                ->label('Kode Tren Harga')
+                                ->required()
+                                ->maxLength(20)
+                                ->unique('tren_hargas', 'kode_tren', ignoreRecord: true)
+                                ->default(fn() => 'TRN-' . date('d') . date('m') . date('Y') . '-' . strtoupper(Str::random(5)))
+                                ->validationMessages([
+                                    'unique' => 'Kode Tren Harga ini sudah ada',
+                                    'required' => 'Kode Kehadiran wajib diisi',
+                                ])
+                                ->placeholder('Contoh: PRS-202403-001'),
 
                             Select::make('komoditas_id')
                                 ->label('Komoditas')

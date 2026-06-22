@@ -68,7 +68,12 @@ class PedagangsTable
                     // Baris Kedua Deskripsi: Detail Alamat Jalan diletakkan tipis di bawahnya agar menghemat tempat
                     ->description(fn($record) => $record->nama_pasar ? "Pasar " . str($record->nama_pasar)->limit(45) : 'Tidak ada detail alamat', position: 'above')
                     ->description(fn($record) => $record->alamat ? "📍 " . str($record->alamat)->limit(45) : 'Tidak ada detail alamat', position: 'below'),
-
+                TextColumn::make('pasar.nama_pasar')
+                    ->label('Lokasi Pasar')
+                    ->searchable()
+                    ->sortable()
+                    ->weight(FontWeight::SemiBold)
+                    ->description(fn($record) => "Wilayah: " . ($record->desa->nama_desa ?? '-')),    
                 // 4. No. WhatsApp Interaktif (Bisa Diklik Langsung Menuju Chat)
                 TextColumn::make('no_hp')
                     ->label('Kontak WhatsApp')

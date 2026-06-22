@@ -25,6 +25,13 @@ class TrenHargasTable
                     ->width('50px')
                     ->alignment(Alignment::Center),
 
+                 TextColumn::make('kode_tren')
+                    ->label('Kode Tren')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('gray')
+                    ->weight('bold'),
                 // 2. Periode Tren dengan Modifikasi Tipografi Tebal
                 TextColumn::make('periode_tren')
                     ->label('Periode')
