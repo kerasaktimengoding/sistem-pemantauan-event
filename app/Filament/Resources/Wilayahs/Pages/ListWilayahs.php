@@ -10,6 +10,7 @@ use App\Filament\Resources\Wilayahs\Widgets\WilayahWidget;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Wilayah;
 
 class ListWilayahs extends ListRecords
 {
@@ -38,6 +39,7 @@ class ListWilayahs extends ListRecords
                 ->openUrlInNewTab(),
             CreateAction::make()->
                 label('Tambah Wilayah')
+                ->model(Wilayah::class)
                 ->color('primary')
                 ->icon('heroicon-o-plus-circle'),
         ];

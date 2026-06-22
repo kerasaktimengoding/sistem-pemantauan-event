@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Jabatan;
 
 class ListJabatans extends ListRecords
 {
@@ -34,6 +35,7 @@ class ListJabatans extends ListRecords
                 ->openUrlInNewTab(),
             CreateAction::make()->
                 label('Tambah Jabatan')
+                ->model(Jabatan::class)
                 ->color('primary')
                 ->icon('heroicon-o-plus-circle'),
         ];
