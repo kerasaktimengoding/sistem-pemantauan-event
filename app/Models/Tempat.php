@@ -13,7 +13,7 @@ class Tempat extends Model
     protected $table = 'tempats';
 
     protected $fillable = [
-        'kode_tempat',
+        'kode_tempat_usaha',
         'nomor_tempat',
         'luas_tempat',
         'status_tempat',

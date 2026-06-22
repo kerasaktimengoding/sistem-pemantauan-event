@@ -35,7 +35,7 @@ class ListTempats extends ListRecords
                 ->openUrlInNewTab(),
             CreateAction::make()->
                 label('Tambah Tempat')
-                ->model(Tempat::class)
+                ->modal(Tempat::class)
                 ->color('primary')
                 ->icon('heroicon-o-plus-circle'),
         ];

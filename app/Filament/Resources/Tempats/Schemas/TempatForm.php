@@ -26,8 +26,9 @@ class TempatForm
                                 ->label('Kode Tempat Usaha')
                                 ->placeholder('Contoh: KIOS-A01')
                                 ->required()
-                                ->default(fn() => 'KOS-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
+                                ->default(fn() => 'KOS-' . date('d') . '.' . date('m') . '.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->unique('tempats', 'kode_tempat_usaha', ignoreRecord: true)
+                                ->dehydrated()
                                 ->validationMessages([
                                     'unique' => 'Kode tempat usaha sudah terdaftar di sistem.',
                                     'required' => 'Kode tempat usaha wajib diisi.',
@@ -57,7 +58,7 @@ class TempatForm
                                     'Kios' => 'Kios',
                                     'Los' => 'Los',
                                     'Lapak' => 'Lapak',
-                                    'Grosir / Agen' => 'Grosir / Agen',
+                                    'Grosir_Agen' => 'Grosir / Agen',
                                     'Swalayan' => 'Swalayan',
                                     'Tenda' => 'Tenda',
                                 ])
@@ -105,14 +106,26 @@ class TempatForm
                         Grid::make(2)->schema([
                             Select::make('pasar_id')
                                 ->label('Lokasi Pasar Induk')
-                                ->relationship('pasar', 'nama_pasar') // Asumsi field nama pasar adalah nama_pasar
+                                ->relationship('pasar', 'nama_pasar') // Menghubungkan ke relasi 'pasar' dan mengambil kolom 'nama_pasar'
                                 ->searchable()
                                 ->preload()
                                 ->required()
-                                ->createOptionForm([ // Fitur pop-up tambah pasar instan tanpa pindah halaman
-                                    TextInput::make('nama_pasar')->required(),
-                                    TextInput::make('alamat_pasar')->required(),
+
+                                // Pilihan Terbaik: Menggunakan createOptionForm langsung di dalam Select
+                                ->createOptionForm([
+                                    TextInput::make('nama_pasar')
+                                        ->label('Nama Pasar')
+                                        ->placeholder('Contoh: Pasar Bauntung')
+                                        ->required()
+                                        ->maxLength(255),
+
+                                    TextInput::make('alamat_pasar')
+                                        ->label('Alamat Pasar')
+                                        ->placeholder('Contoh: Jl. Pangeran Suriansyah')
+                                        ->required()
+                                        ->maxLength(255),
                                 ])
+
                                 ->validationMessages([
                                     'required' => 'Lokasi pasar induk wajib ditentukan.',
                                 ]),

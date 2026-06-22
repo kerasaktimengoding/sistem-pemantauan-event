@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Komoditas;
 
 class ListKomoditas extends ListRecords
 {
@@ -35,7 +36,8 @@ class ListKomoditas extends ListRecords
             CreateAction::make()->
                 label('Tambah Bahan Pokok')
                 ->color('primary')
-                ->icon('heroicon-o-plus-circle'),
+                ->icon('heroicon-o-plus-circle')
+                ->modal(Komoditas::class),
         ];
     }
 }

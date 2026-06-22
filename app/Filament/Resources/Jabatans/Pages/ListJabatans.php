@@ -37,10 +37,8 @@ class ListJabatans extends ListRecords
                 ->label('Tambah Jabatan')
                 ->color('primary')
                 ->icon('heroicon-o-plus-circle')
-                ->modal(Jabatan::class)
-                // Mengambil komponen form dari JabatanResource secara otomatis
-                ->form(fn($form) => JabatanResource::form($form)->getComponents())
-                ->modalWidth('lg'),
+                ->modal(Jabatan::class),
+                
         ];
     }
 }

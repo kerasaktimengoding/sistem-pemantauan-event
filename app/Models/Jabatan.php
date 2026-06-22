@@ -11,7 +11,11 @@ class Jabatan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'kode_jabatan', 'nama_jabatan', 'tugas_pokok', 'wewenang', 'status_jabatan'
+        'kode_jabatan',
+        'nama_jabatan',
+        'tugas_pokok',
+        'wewenang',
+        'status_jabatan'
     ];
 
     // Relasi dengan pegawai

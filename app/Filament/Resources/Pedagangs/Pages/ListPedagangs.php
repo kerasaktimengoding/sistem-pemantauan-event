@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Pedagang;
 
 class ListPedagangs extends ListRecords
 {
@@ -35,7 +36,8 @@ class ListPedagangs extends ListRecords
             CreateAction::make()->
                 label('Tambah Pedagang')
                 ->color('primary')
-                ->icon('heroicon-o-plus-circle'),
+                ->icon('heroicon-o-plus-circle')
+                ->modal(Pedagang::class),
         ];
     }
 }

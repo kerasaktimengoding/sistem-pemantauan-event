@@ -28,7 +28,7 @@ return new class extends Migration {
                 'Los',
                 'Kaki Lima',
                 'Lapak',
-                'Grosir / Agen',
+                'Grosir_Agen',
                 'Swalayan',
                 'Tenda'
             ])->default('Kios'); // Default diset ke Kios jika tidak diisi

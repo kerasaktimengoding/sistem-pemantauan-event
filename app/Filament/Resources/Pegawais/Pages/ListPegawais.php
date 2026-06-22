@@ -35,7 +35,7 @@ class ListPegawais extends ListRecords
                 ->openUrlInNewTab(),
             CreateAction::make()->
                 label('Tambah Pegawai')
-                ->model(Pegawai::class)
+                ->modal(Pegawai::class)
                 ->color('primary')
                 ->icon('heroicon-o-plus-circle'),
         ];

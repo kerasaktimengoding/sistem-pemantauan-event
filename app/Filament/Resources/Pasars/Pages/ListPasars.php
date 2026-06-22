@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Pasar;
 
 class ListPasars extends ListRecords
 {
@@ -35,7 +36,8 @@ class ListPasars extends ListRecords
             CreateAction::make()->
                 label('Tambah Pasar')
                 ->color('primary')
-                ->icon('heroicon-o-plus-circle'),
+                ->icon('heroicon-o-plus-circle')
+                ->modal(Pasar::class),
         ];
     }
 }

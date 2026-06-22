@@ -9,7 +9,10 @@ use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\wilayah;
+use App\Models\Wilayah;
+
+
+
 
 class ListWilayahs extends ListRecords
 {
@@ -37,12 +40,13 @@ class ListWilayahs extends ListRecords
                 })
                 ->openUrlInNewTab(),
             CreateAction::make()
-                ->model(wilayah::class)
                 ->label('Tambah Wilayah')
                 ->color('primary')
+                ->modal(Wilayah::class)
+                ->form(fn($form) => WilayahResource::form($form)->getComponents())
                 
                 ->icon('heroicon-o-plus-circle'),
         ];
     }
-   
+
 }
