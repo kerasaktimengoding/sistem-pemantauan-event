@@ -6,11 +6,10 @@ use App\Filament\Resources\Wilayahs\WilayahResource;
 
 use Filament\Resources\Pages\ListRecords;
 
-use App\Filament\Resources\Wilayahs\Widgets\WilayahWidget;
 use Filament\Actions\Action;
 use Filament\Actions\CreateAction;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\Wilayah;
+use App\Models\wilayah;
 
 class ListWilayahs extends ListRecords
 {
@@ -37,18 +36,13 @@ class ListWilayahs extends ListRecords
                     );
                 })
                 ->openUrlInNewTab(),
-            CreateAction::make()->
-                label('Tambah Wilayah')
-                ->model(Wilayah::class)
+            CreateAction::make()
+                ->model(wilayah::class)
+                ->label('Tambah Wilayah')
                 ->color('primary')
+                
                 ->icon('heroicon-o-plus-circle'),
         ];
     }
-    public function getHeaderWidgets(): array
-    {
-        return [
-            WilayahWidget::class,
-        ];
-
-    }
+   
 }

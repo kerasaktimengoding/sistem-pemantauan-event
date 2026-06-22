@@ -33,11 +33,14 @@ class ListJabatans extends ListRecords
                     );
                 })
                 ->openUrlInNewTab(),
-            CreateAction::make()->
-                label('Tambah Jabatan')
-                ->model(Jabatan::class)
+            CreateAction::make()
+                ->label('Tambah Jabatan')
                 ->color('primary')
-                ->icon('heroicon-o-plus-circle'),
+                ->icon('heroicon-o-plus-circle')
+                ->modal(Jabatan::class)
+                // Mengambil komponen form dari JabatanResource secara otomatis
+                ->form(fn($form) => JabatanResource::form($form)->getComponents())
+                ->modalWidth('lg'),
         ];
     }
 }

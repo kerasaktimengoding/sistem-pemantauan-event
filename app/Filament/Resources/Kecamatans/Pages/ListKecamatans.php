@@ -42,7 +42,8 @@ class ListKecamatans extends ListRecords
                 ->model(kecamatan::class)
                 ->label('Tambah Kecamatan')
                 ->icon('heroicon-o-plus-circle')
-                ->color('primary'),
+                ->color('primary')
+                ->modalWidth('full'),
         ];
     }
 }
