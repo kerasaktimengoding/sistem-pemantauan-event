@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Tempat;
 
 class ListTempats extends ListRecords
 {
@@ -34,6 +35,7 @@ class ListTempats extends ListRecords
                 ->openUrlInNewTab(),
             CreateAction::make()->
                 label('Tambah Tempat')
+                ->model(Tempat::class)
                 ->color('primary')
                 ->icon('heroicon-o-plus-circle'),
         ];

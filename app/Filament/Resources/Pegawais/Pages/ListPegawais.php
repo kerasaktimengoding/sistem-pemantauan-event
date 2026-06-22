@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Pegawai;
 
 class ListPegawais extends ListRecords
 {
@@ -34,6 +35,7 @@ class ListPegawais extends ListRecords
                 ->openUrlInNewTab(),
             CreateAction::make()->
                 label('Tambah Pegawai')
+                ->model(Pegawai::class)
                 ->color('primary')
                 ->icon('heroicon-o-plus-circle'),
         ];
