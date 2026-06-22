@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\kecamatan;
 
 class ListKecamatans extends ListRecords
 {
@@ -37,10 +38,11 @@ class ListKecamatans extends ListRecords
 
 
 
-            CreateAction::make()->
-                label('Tambah Kecamatan')
-                ->color('primary')
-                ->icon('heroicon-o-plus-circle'),
+            CreateAction::make()
+                ->model(kecamatan::class)
+                ->label('Tambah Kecamatan')
+                ->icon('heroicon-o-plus-circle')
+                ->color('primary'),
         ];
     }
 }

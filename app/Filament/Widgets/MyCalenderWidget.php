@@ -7,7 +7,6 @@ use Guava\Calendar\Enums\CalendarViewType;
 use Guava\Calendar\Filament\CalendarWidget;
 use Guava\Calendar\ValueObjects\FetchInfo;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\EventKegiatans\EventKegiatanResource;
 use Filament\Actions\Action;
 
 class MyCalenderWidget extends CalendarWidget
@@ -40,11 +39,11 @@ class MyCalenderWidget extends CalendarWidget
     public function getHeaderActions(): array
     {
         return [
-            Action::make('create')
+            \Guava\Calendar\Filament\Actions\CreateAction::make('create')
+                ->model(EventKegiatan::class)
                 ->label('Tambah Event Baru')
                 ->icon('heroicon-o-plus-circle')
-                ->color('primary')
-                ->url(EventKegiatanResource::getUrl('create')),
+                ->color('primary'),
         ];
     }
 
@@ -54,13 +53,6 @@ class MyCalenderWidget extends CalendarWidget
             ->extraModalFooterActions([
                 $this->editAction(),
             ]);
-    }
-
-    public function createAction(string $model, string|null $name = null): \Guava\Calendar\Filament\Actions\CreateAction
-    {
-        return \Guava\Calendar\Filament\Actions\CreateAction::make()
-            ->model($model)
-            ->name($name);
     }
 
     

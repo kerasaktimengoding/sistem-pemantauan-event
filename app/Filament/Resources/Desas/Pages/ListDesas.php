@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\desa;
 
 class ListDesas extends ListRecords
 {
@@ -32,8 +33,9 @@ class ListDesas extends ListRecords
                     );
                 })
                 ->openUrlInNewTab(),
-            CreateAction::make()->
-                label('Tambah Desa')
+            CreateAction::make()
+                ->model(desa::class)
+                ->label('Tambah Desa')
                 ->color('primary')
                 ->icon('heroicon-o-plus-circle'),
         ];
