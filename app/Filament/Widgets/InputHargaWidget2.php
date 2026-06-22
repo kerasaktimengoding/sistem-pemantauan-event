@@ -16,7 +16,7 @@ class InputHargaWidget2 extends ChartWidget
     // Trait ini yang bertugas menghubungkan state filter halaman utama ke dalam widget secara otomatis
     use InteractsWithPageFilters;
     
-    protected int|string|array $columnSpan = '3';
+    protected int|string|array $columnSpan = '6';
 
     // Tentukan nilai default filter lokal widget langsung di properti bawaan Filament
     public ?string $filter = 'month';

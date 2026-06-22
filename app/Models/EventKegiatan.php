@@ -30,10 +30,19 @@ class EventKegiatan extends Model implements Eventable
 
     public function toCalendarEvent(): CalendarEvent
     {
+        $colors = [
+            'Direncanakan' => '#3b82f6', // blue
+            'Berjalan' => '#f59e0b',     // amber
+            'Selesai' => '#10b981',      // green
+            'Dibatalkan' => '#ef4444',   // red
+        ];
+        
+        $color = $colors[$this->status_event] ?? '#3b82f6';
+
         return CalendarEvent::make($this)
             ->title($this->nama_event)
             ->start($this->tanggal_mulai)
             ->end($this->tanggal_selesai ?? $this->tanggal_mulai)
-            ->backgroundColor($this->status_event === 'Aktif' ? '#071f10ff' : '#2563eb');
+            ->backgroundColor($color);
     }
 }

@@ -18,7 +18,7 @@ class InputHargaWidget extends ChartWidget
     use InteractsWithPageFilters;
 
     use HasFiltersSchema;
-    protected int|string|array $columnSpan = '3';
+    protected int|string|array $columnSpan = '6';
     // protected ?string $maxHeight = '350px';
 
     // 1. DROPDOWN FILTER LOKAL DI KANAN ATAS WIDGET

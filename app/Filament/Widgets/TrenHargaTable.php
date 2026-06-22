@@ -64,7 +64,7 @@ class TrenHargaTable extends BaseWidget
                             ->orWhereHas('desa', fn($q) => $q->where('nama_desa', 'like', "%{$search}%"));
                     })
                     ->sortable()
-                    ->description(fn($record) => '📍 Wilayah: ' . ($record->desa->nama_desa ?? '-')),
+                    ->description(fn($record) => '📍 Wilayah: ' . ($record->wilayah->nama_desa ?? '-')),
 
                 // 4. Transformasi Finansial: Penggabungan Harga Awal & Harga Akhir
                 TextColumn::make('harga_akhir')

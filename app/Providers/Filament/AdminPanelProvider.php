@@ -57,6 +57,7 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 // Dashboard::class,
             ])
+            ->plugin(\Guava\Calendar\CalendarPlugin::make())
             //   ->spa(hasPrefetching: true)
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([

@@ -8,6 +8,7 @@ use Guava\Calendar\Filament\CalendarWidget;
 use Guava\Calendar\ValueObjects\FetchInfo;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\EventKegiatans\EventKegiatanResource;
+use Filament\Actions\Action;
 
 class MyCalenderWidget extends CalendarWidget
 {
@@ -19,23 +20,26 @@ class MyCalenderWidget extends CalendarWidget
 
 
 
-    protected function getEvents(FetchInfo $info): Builder
+
+    protected function getEvents(FetchInfo $info): array | \Illuminate\Support\Collection | Builder
     {
         return EventKegiatan::query()
             ->whereDate('tanggal_selesai', '>=', $info->start)
-            ->whereDate('tanggal_mulai', '<=', $info->end)
-            ->where('status_event', 'Direncakan');
-
+            ->whereDate('tanggal_mulai', '<=', $info->end);
     }
 
-    protected function getActions(): array
+   
+
+    public function getHeaderActions(): array
     {
         return [
-            \Filament\Actions\Action::make('create')
+            Action::make('create')
                 ->label('Tambah Event Baru')
                 ->icon('heroicon-o-plus-circle')
                 ->color('primary')
                 ->url(EventKegiatanResource::getUrl('create')),
         ];
     }
+
+    
 }
