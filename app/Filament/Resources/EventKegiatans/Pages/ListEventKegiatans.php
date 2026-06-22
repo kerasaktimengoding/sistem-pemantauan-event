@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\EventKegiatan;
 
 class ListEventKegiatans extends ListRecords
 {
@@ -35,7 +36,8 @@ class ListEventKegiatans extends ListRecords
             CreateAction::make()->
                 label('Tambah Event Kegiatan')
                 ->color('primary')
-                ->icon('heroicon-o-plus-circle'),
+                ->icon('heroicon-o-plus-circle')
+                ->modal(EventKegiatan::class),
         ];
     }
 }
