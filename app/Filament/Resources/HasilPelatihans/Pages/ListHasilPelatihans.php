@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\HasilPelatihan;
 
 class ListHasilPelatihans extends ListRecords
 {
@@ -35,7 +36,8 @@ class ListHasilPelatihans extends ListRecords
             CreateAction::make()->
                 label('Tambah Hasil Pelatihan')
                 ->color('primary')
-                ->icon('heroicon-o-plus-circle'),
+                ->icon('heroicon-o-plus-circle')
+                ->modal(HasilPelatihan::class),
         ];
     }
 }

@@ -8,6 +8,7 @@ use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\RekapHarga;
 
 class ListRekapHargas extends ListRecords
 {
@@ -36,7 +37,8 @@ class ListRekapHargas extends ListRecords
             CreateAction::make()->
                 label('Tambah Rekap Harga')
                 ->color('primary')
-                ->icon('heroicon-o-plus-circle'),
+                ->icon('heroicon-o-plus-circle')
+                ->modal(RekapHarga::class),
         ];
     }
 

@@ -7,6 +7,7 @@ use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\DetailEvent;
 
 class ListDetailEvents extends ListRecords
 {
@@ -35,7 +36,8 @@ class ListDetailEvents extends ListRecords
             CreateAction::make()->
                 label('Tambah Detail Event')
                 ->color('primary')
-                ->icon('heroicon-o-plus-circle'),
+                ->icon('heroicon-o-plus-circle')
+                ->modal(DetailEvent::class),
         ];
     }
 }
