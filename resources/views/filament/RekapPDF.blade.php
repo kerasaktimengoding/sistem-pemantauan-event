@@ -110,27 +110,27 @@
                     {{-- 2. Periode Rekapitulasi (Format: Bulan Tahun) --}}
                     <td>
                         <span class="periode-tag">
-                            📅 {{ $rekap->periode_rekap ? \Carbon\Carbon::parse($rekap->periode_rekap)->translatedFormat('F Y') : '-' }}
+                             {{ $rekap->periode_rekap ? \Carbon\Carbon::parse($rekap->periode_rekap)->translatedFormat('F Y') : '-' }}
                         </span>
                     </td>
 
                     {{-- 3. Nama Komoditas --}}
                     <td>
-                        <span class="komoditas-nama">🛍️ {{ $rekap->komoditas->nama_komoditas ?? '-' }}</span>
+                        <span class="komoditas-nama"> {{ $rekap->komoditas->nama_komoditas ?? '-' }}</span>
                     </td>
 
                     {{-- 4. Hierarki Wilayah (Kecamatan & Desa) --}}
                     <td>
-                        <span class="nama-wilayah">🏢 {{ $rekap->kecamatan->nama_kecamatan ?? '-' }}</span>
+                        <span class="nama-wilayah"> {{ $rekap->kecamatan->nama_kecamatan ?? '-' }}</span>
                         <span class="sub-info">
-                            {{ $rekap->desa ? '📍 Desa: ' . $rekap->desa->nama_desa : '📍 Seluruh Kecamatan' }}
+                            {{ $rekap->desa ? ' Desa: ' . $rekap->desa->nama_desa : ' Seluruh Kecamatan' }}
                         </span>
                     </td>
 
                     {{-- 5. Statistik Harga Rata-Rata & Selisih Spread --}}
                     <td class="text-right text-mono">
                         <span class="harga-rata">Rp {{ number_format($avg, 0, ',', '.') }}</span>
-                        <span class="sub-info" style="color: #6b7280;">
+                        <span class="sub-info" style="color: #353942ff;">
                             Selisih: Rp {{ number_format($spread, 0, ',', '.') }}
                         </span>
                     </td>

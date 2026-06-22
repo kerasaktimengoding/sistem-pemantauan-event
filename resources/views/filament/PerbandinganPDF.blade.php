@@ -95,9 +95,9 @@ use Illuminate\Support\Str;
 
                     // 3. Label text untuk kondisi cetak
                     $analisisLabel = match (true) {
-                        $selisih > 5000 => '🔴 DISPARITAS TINGGI',
-                        $selisih > 2000 => '🟡 DISPARITAS SEDANG',
-                        default         => '🟢 STABIL / NORMAL',
+                        $selisih > 5000 => ' DISPARITAS TINGGI',
+                        $selisih > 2000 => ' DISPARITAS SEDANG',
+                        default         => ' STABIL / NORMAL',
                     };
                 @endphp
                 <tr>
@@ -109,14 +109,14 @@ use Illuminate\Support\Str;
                     {{-- 2. Kode Transaksi & Nama Komoditas --}}
                     <td>
                         <span class="kode-box text-mono">{{ $data->kode_perbandingan ?? '-' }}</span>
-                        <span class="sub-info">📦 {{ $data->komoditas->nama_komoditas ?? '-' }}</span>
+                        <span class="sub-info"> {{ $data->komoditas->nama_komoditas ?? '-' }}</span>
                     </td>
 
                     {{-- 3. Penyatuan Dua Wilayah Komparasi (Desa 1 vs Desa 2) --}}
                     <td>
-                        <span class="titik-utama">🏡 {{ $data->desa1->nama_desa ?? '-' }}</span>
+                        <span class="titik-utama">{{ $data->desa1->nama_desa ?? '-' }}</span>
                         <span class="sub-info" style="font-weight: 500;">
-                            ⚔️ Dibandingkan dengan: {{ $data->desa2->nama_desa ?? '-' }}
+                             Dibandingkan dengan: {{ $data->desa2->nama_desa ?? '-' }}
                         </span>
                     </td>
 

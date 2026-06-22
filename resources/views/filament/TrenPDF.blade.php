@@ -43,7 +43,7 @@
         display: block;
         margin-bottom: 2px;
         font-size: 6px;
-        color: #9ca3af;
+        color: #41454aff;
     }
 
     .harga-akhir-style {
@@ -119,7 +119,7 @@
                 @endphp
                 <tr>
                     {{-- 1. Nomor Urut --}}
-                    <td class="text-center" style="color: #6b7280;">
+                    <td class="text-center" style="color: #41454eff;">
                         {{ $loop->iteration }}
                     </td>
 
@@ -130,8 +130,8 @@
 
                     {{-- 3. Komoditas & Wilayah (Smart Search) --}}
                     <td>
-                        <span class="komoditas-title">🛍️ {{ $tren->komoditas->nama_komoditas ?? '-' }}</span>
-                        <span class="sub-info">📍 Wilayah: {{ $tren->desa->nama_desa ?? '-' }}</span>
+                        <span class="komoditas-title"> {{ $tren->komoditas->nama_komoditas ?? '-' }}</span>
+                        <span class="sub-info"> Wilayah: {{ $tren->desa->nama_desa ?? '-' }}</span>
                     </td>
 
                     {{-- 4. Transformasi Finansial (Harga Awal vs Harga Akhir) --}}

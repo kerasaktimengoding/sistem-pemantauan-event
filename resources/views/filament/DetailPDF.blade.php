@@ -98,7 +98,7 @@ use Illuminate\Support\Str;
                     // 2. Logika Penanda Kuota Kritis (<= 20 Orang)
                     $kuota = (int) $detail->kuota_peserta;
                     $kuotaClass = $kuota <= 20 ? 'kuota-danger' : 'kuota-info';
-                    $kuotaIcon = $kuota <= 20 ? '⚠️ ' : '👥 ';
+                    $kuotaIcon = $kuota <= 20 ? ' ' : ' ';
                 @endphp
                 <tr>
                     {{-- 1. Nomor Urut --}}
@@ -108,7 +108,7 @@ use Illuminate\Support\Str;
 
                     {{-- 2. Gabungan Informasi Utama, Kode, dan Penyelenggara --}}
                     <td>
-                        <span class="nama-event">📢 {{ $detail->event?->nama_event ?? '-' }}</span>
+                        <span class="nama-event"> {{ $detail->event?->nama_event ?? '-' }}</span>
                         <span class="sub-info">
                             Kode: <span class="text-mono">{{ $detail->kode_detail_event ?? '-' }}</span> • Oleh: {{ $detail->penyelenggara ?? '-' }}
                         </span>
@@ -116,7 +116,7 @@ use Illuminate\Support\Str;
 
                     {{-- 3. Narasumber / Pemateri --}}
                     <td>
-                        <span class="narasumber-tag">👤 {{ $detail->narasumber ?? '-' }}</span>
+                        <span class="narasumber-tag"> {{ $detail->narasumber ?? '-' }}</span>
                     </td>
 
                     {{-- 4. Format Anggaran Finansial Rupiah (Sejajar Kanan) --}}

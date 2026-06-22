@@ -129,29 +129,29 @@ use Illuminate\Support\Str;
                 @endphp
                 <tr>
                     {{-- 1. Nomor Urut --}}
-                    <td class="text-center" style="color: #6b7280;">
+                    <td class="text-center" style="color: #0f1013ff;">
                         {{ $loop->iteration }}
                     </td>
 
                     {{-- 2. Profil & Identitas Peserta --}}
                     <td>
-                        <span class="nama-peserta">👤 {{ $hasil->pesertaevent->nama_peserta ?? '-' }}</span>
+                        <span class="nama-peserta"> {{ $hasil->pesertaevent->nama_peserta ?? '-' }}</span>
                         <span class="sub-info text-mono">ID Pelatihan: {{ $hasil->kode_hasil_pelatihan ?? '-' }}</span>
                     </td>
 
                     {{-- 3. Rekapitulasi Nilai Pre-Test --}}
                     <td class="text-center text-mono">
-                        <span class="sub-kkm" style="display: block;">Awal</span>
-                        <span style="color: #6b7280;">{{ number_format($pre, 2) }}</span>
+                        <span class="sub-kkm" style="display: block; color: #000000ff;">Awal</span>
+                        <span style="color: #0c0f15ff;">{{ number_format($pre, 2) }}</span>
                     </td>
 
                     {{-- 4. Rekapitulasi Nilai Post-Test & Tren Kenaikan --}}
                     <td class="text-center text-mono">
                         <span style="color: #2563eb; font-weight: 600;">{{ number_format($post, 2) }}</span>
                         @if($selisih >= 0)
-                            <span class="tren-naik">📈 Naik (+{{ number_format($selisih, 2) }})</span>
+                            <span class="tren-naik"> Naik (+{{ number_format($selisih, 2) }})</span>
                         @else
-                            <span class="tren-turun">📉 Turun ({{ number_format($selisih, 2) }})</span>
+                            <span class="tren-turun"> Turun ({{ number_format($selisih, 2) }})</span>
                         @endif
                     </td>
 
