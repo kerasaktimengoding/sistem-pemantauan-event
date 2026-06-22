@@ -34,4 +34,9 @@ class Pedagang extends Model
         return $this->belongsTo(desa::class, 'desa_id');
     }
 
+    public function tempat()
+    {
+         return $this->belongsTo(tempat::class, 'tempat_id');
+    }
+
 }
