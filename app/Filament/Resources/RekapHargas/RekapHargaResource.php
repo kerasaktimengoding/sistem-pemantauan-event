@@ -26,6 +26,8 @@ class RekapHargaResource extends Resource
     protected static ?string $recordTitleAttribute = 'id';
 
     protected static string | UnitEnum | null $navigationGroup = 'Laporan & Analisis Pasar';
+    protected static ?string $navigationLabel = 'Rekap Harga';
+    protected static ?string $pluralModelLabel = 'Rekap Harga';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Calculator;
 

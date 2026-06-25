@@ -26,6 +26,9 @@ class TrenHargaResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChartBarSquare;
       protected static string | UnitEnum | null $navigationGroup = 'Laporan & Analisis Pasar';
+
+      protected static ?string $navigationLabel = 'Tren Harga';
+    protected static ?string $pluralModelLabel = 'Tren Harga';
  protected static ?int $navigationSort = 16;
 
     public static function form(Schema $schema): Schema

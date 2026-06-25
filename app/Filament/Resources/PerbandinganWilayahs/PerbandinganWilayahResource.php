@@ -26,6 +26,8 @@ class PerbandinganWilayahResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ArrowsUpDown;
           protected static string | UnitEnum | null $navigationGroup = 'Laporan & Analisis Pasar';
+          protected static ?string $navigationLabel = 'Perbandingan Wilayah';
+    protected static ?string $pluralModelLabel = 'Perbandingan Wilayah';
  protected static ?int $navigationSort = 17;
 
     public static function form(Schema $schema): Schema

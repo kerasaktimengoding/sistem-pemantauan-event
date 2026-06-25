@@ -43,7 +43,7 @@ class TrenHargaTable extends BaseWidget
                 // 1. Nomor Urut Otomatis dengan Desain Minimalis
                 TextColumn::make('No')
                     ->rowIndex()
-                    ->label('s.')
+                    ->label('No.')
                     ->width('50px')
                     ->alignment(Alignment::Center),
 
@@ -64,8 +64,22 @@ class TrenHargaTable extends BaseWidget
                             ->orWhereHas('desa', fn($q) => $q->where('nama_desa', 'like', "%{$search}%"));
                     })
                     ->sortable()
-                    ->description(fn($record) => '📍 Wilayah: ' . ($record->wilayah->nama_desa ?? '-')),
-
+                    ->description(fn($record) => '📍 Wilayah: ' . ($record->kecamatan->nama_kecamatan ?? '-')),
+                TextColumn::make('kecamatan.nama_kecamatan')
+                    ->label('Cakupan Wilayah')
+                    ->sortable()
+                    // Fitur Pencarian Pintar: Cari berdasarkan nama kecamatan ATAU nama desa sekaligus
+                    ->searchable(query: function ($query, string $search) {
+                        $query->whereHas('kecamatan', function ($q) use ($search) {
+                            $q->where('nama_kecamatan', 'like', "%{$search}%");
+                        })->orWhereHas('desa', function ($q) use ($search) {
+                            $q->where('nama_desa', 'like', "%{$search}%");
+                        });
+                    })
+                    ->weight('medium')
+                    ->color('gray.800')
+                    // Menyusun visual hierarki: Kecamatan sebagai judul utama, Desa sebagai keterangan tipis di bawahnya
+                    ->description(fn($record) => $record->desa ? "📍 Desa: " . $record->desa->nama_desa : "🏢 Seluruh Kecamatan"),
                 // 4. Transformasi Finansial: Penggabungan Harga Awal & Harga Akhir
                 TextColumn::make('harga_akhir')
                     ->label('Informasi Harga')
@@ -115,10 +129,10 @@ class TrenHargaTable extends BaseWidget
             ->filters([
                 //
                 SelectFilter::make('arah_tren')
-               
-                
+
+
             ])
-             ->recordActions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
@@ -129,19 +143,19 @@ class TrenHargaTable extends BaseWidget
                 ]),
             ]);
 
-            /*
-            |--------------------------------------------------------------------------
-            | Pagination
-            |--------------------------------------------------------------------------
-            */
+        /*
+        |--------------------------------------------------------------------------
+        | Pagination
+        |--------------------------------------------------------------------------
+        */
 
-          
-            /*
-            |--------------------------------------------------------------------------
-            | Default Sort
-            |--------------------------------------------------------------------------
-            */
 
-           
+        /*
+        |--------------------------------------------------------------------------
+        | Default Sort
+        |--------------------------------------------------------------------------
+        */
+
+
     }
 }

@@ -32,6 +32,7 @@ class Dashboard extends BaseDashboard
 
                         Actions::make([
                             Action::make('reset_filters')
+                            
                                 ->label('Reset Filter')
                                 ->color('danger')
                                 ->icon('heroicon-m-arrow-path')

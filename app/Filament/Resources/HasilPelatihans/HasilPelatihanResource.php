@@ -26,6 +26,9 @@ class HasilPelatihanResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::AcademicCap;
     protected static string | UnitEnum | null $navigationGroup = 'Kegiatan & Pemberdayaan UMKM';
+
+    protected static ?string $navigationLabel = 'Hasil Pelatihan ';
+    protected static ?string $pluralModelLabel = 'Hasil Pelatihan ';
      protected static ?int $navigationSort = 15;
     public static function form(Schema $schema): Schema
     {

@@ -31,6 +31,9 @@ class KehadiranEventResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CheckBadge;
     protected static string | UnitEnum | null $navigationGroup = 'Kegiatan & Pemberdayaan UMKM';
+
+    protected static ?string $navigationLabel = 'Presensi Peserta';
+    protected static ?string $pluralModelLabel = 'Presensi Peserta';
      protected static ?int $navigationSort = 14;
 
     public static function infolist(Schema $schema): Schema

@@ -30,6 +30,8 @@ class PesertaEventResource extends Resource
         return PesertaEventForm::configure($schema);
     }
     protected static string | UnitEnum | null $navigationGroup = 'Kegiatan & Pemberdayaan UMKM';
+    protected static ?string $navigationLabel = 'Daftar Peserta';
+    protected static ?string $pluralModelLabel = 'Daftar Peserta';
      protected static ?int $navigationSort = 13;
 
      

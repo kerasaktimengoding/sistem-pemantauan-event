@@ -28,6 +28,8 @@ class EventKegiatanResource extends Resource
 
     
     protected static string | UnitEnum | null $navigationGroup = 'Kegiatan & Pemberdayaan UMKM';
+    protected static ?string $navigationLabel = 'Kegiatan Acara';
+    protected static ?string $pluralModelLabel = 'Kegiatan Acara';
      protected static ?int $navigationSort = 12;
     public static function form(Schema $schema): Schema
     {

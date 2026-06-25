@@ -32,6 +32,9 @@ class InputHargaResource extends Resource
 
     
     protected static string | UnitEnum | null $navigationGroup = 'Aktivitas Pemantauan Harga';
+
+    protected static ?string $navigationLabel = 'Input Harga';
+    protected static ?string $pluralModelLabel = 'Input Harga Kab Banjar';
     protected static ?int $navigationSort = 11;
     public static function infolist(Schema $schema): Schema
     {
