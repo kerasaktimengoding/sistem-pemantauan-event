@@ -124,7 +124,7 @@
                         <span class="jabatan-text">{{ $pegawai->jabatan->nama_jabatan ?? '-' }}</span>
                         <span class="sub-info">
                             {{ $pegawai->kecamatan->nama_kecamatan ?? '-' }}
-                            (Desa: {{ $pegawai->desa?->nama_desa ?? '-' }})
+                            {{ $pegawai->desa->jenis === 'kelurahan' ? 'Kel. ' . $pegawai->desa->nama_desa : 'Desa ' . $pegawai->desa->nama_desa ?? '-' }})
                         </span>
                     </td>
 

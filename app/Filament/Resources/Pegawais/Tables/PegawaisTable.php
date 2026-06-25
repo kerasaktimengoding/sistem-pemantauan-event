@@ -71,7 +71,7 @@ class PegawaisTable
                     ->weight(FontWeight::SemiBold)
                     ->color('gray')
                     // Menggabungkan informasi desa di bawah nama kecamatan menggunakan text helper
-                    ->description(fn($record) => "🏡 Desa: " . ($record->desa?->nama_desa ?? '-')),
+                   ->description(fn($record) => "🏡 " . ($record->desa?->jenis === 'kelurahan' ? "Kel. {$record->desa?->nama_desa}" : "Desa {$record->desa?->nama_desa}")),
                 // 5. PENGGABUNGAN DATA KONTAK: No. HP (Bisa di-copy/klik) + Sub-deskripsi Email (Bisa di-klik)
                 TextColumn::make('no_hp')
                     ->label('Kontak')
