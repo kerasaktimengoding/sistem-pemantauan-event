@@ -11,7 +11,7 @@ class Wilayah extends Model
     use HasFactory;
 
     protected $fillable = [
-        'kode_wilayah', 'kecamatan_id', 'desa_id', 'luas_wilayah', 'batas_utara', 'batas_selatan', 'jumlah_penduduk', 'potensi_ekonomi', 'keterangan_geografis', 'kode_pos'
+        'kode_wilayah', 'kecamatan_id', 'desa_id',  'luas_wilayah', 'batas_utara', 'batas_selatan', 'jumlah_penduduk', 'potensi_ekonomi', 'keterangan_geografis', 'kode_pos'
     ];
 
     public function kecamatan()
@@ -23,6 +23,8 @@ class Wilayah extends Model
     {
         return $this->belongsTo(desa::class, 'desa_id');
     }
+
+   
     // Relasi dengan komoditas
     public function komoditas()
     {

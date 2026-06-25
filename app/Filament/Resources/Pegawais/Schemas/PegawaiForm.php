@@ -93,8 +93,9 @@ class PegawaiForm
                             ->columnSpanFull(),
 
                        Select::make('desa_id')
-                            ->label('Pilih Desa')
+                            ->label('Pilih Desa / Kelurahan')
                             ->relationship('desa', 'nama_desa')
+                            ->getOptionLabelFromRecordUsing(fn($record) => $record->jenis === 'kelurahan' ? "Kel. {$record->nama_desa}" : "Desa {$record->nama_desa}")  
                             ->searchable()
                             ->preload()
                             ->required()
@@ -107,6 +108,8 @@ class PegawaiForm
                                     $set('kecamatan_id', $desa->kecamatan_id);
                                 }
                             }),
+
+                            // Luar Kabupaten Banjar isi alamat sendiri 
 
                         // 2. Kecamatan Terisi Otomatis
                         Select::make('kecamatan_id')

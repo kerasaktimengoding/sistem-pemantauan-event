@@ -2,22 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class desa extends Model
+class Kelurahan extends Model
 {
     //
     use HasFactory;
-
     protected $fillable = [
-        'kode_desa', 'nama_desa', 'jenis', 'kecamatan_id', 'nama_pembakal', 'alamat_kantor_desa', 'kode_pos', 'latitude', 'longitude', 'no_hp_pembakal', 'is_active'
+        'kode_kelurahan','nama_kelurahan', 'kecamatan_id', 'nama_lurah', 'alamat_kantor_kelurahan', 'kode_pos', 'luas_wilayah', 'no_hp_lurah', 'is_active'
     ];
 
-  public function kecamatan()
-{
-    return $this->belongsTo(kecamatan::class, 'kecamatan_id');
-}
+    public function kecamatan()
+    {
+        return $this->belongsTo(kecamatan::class, 'kecamatan_id');
+    }
 
     public function rekapHargas()
     {

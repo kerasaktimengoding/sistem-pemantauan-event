@@ -103,7 +103,7 @@
                     {{-- 3. Nama Desa & Kecamatan Induk --}}
                     <td>
                         <span class="nama-desa">
-                            {{ $desa->nama_desa ?? '-' }}
+                            {{ $desa->jenis === 'kelurahan' ? 'Kel. ' . $desa->nama_desa : 'Desa ' . $desa->nama_desa }}
                         </span>
                         <span class="sub-text">
                             Kecamatan: {{ $desa->kecamatan->nama_kecamatan ?? '-' }}
@@ -113,10 +113,10 @@
                     {{-- 4. Nama Pembakal & No HP --}}
                     <td>
                         <strong>
-                            {{ $desa->nama_pembakal ?? 'Belum Ada Pejabat' }}
+                            {{ $desa->jenis === 'kelurahan' ? 'Lurah' : 'Kepala Desa' }} : {{ $desa->nama_pembakal ?? 'Belum Ada Pejabat' }}
                         </strong>
                         <span class="sub-text">
-                            📞 {{ $desa->no_hp_pembakal ?? '-' }}
+                            {{ $desa->no_hp_pembakal ?? '-' }}
                         </span>
                     </td>
 

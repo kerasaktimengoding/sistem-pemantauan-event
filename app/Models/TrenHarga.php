@@ -11,7 +11,7 @@ class TrenHarga extends Model
     use HasFactory;
 
     protected $fillable = [
-        'kode_tren_harga', 'komoditas_id', 'wilayah_id', 'periode_tren', 'harga_awal', 'harga_akhir', 'arah_tren', 'persentase_perubahan'
+        'kode_tren_harga', 'komoditas_id', 'kecamatan_id', 'desa_id', 'periode_tren', 'harga_awal', 'harga_akhir', 'arah_tren', 'persentase_perubahan'
     ];
 
     // Relasi dengan komoditas
@@ -28,10 +28,12 @@ class TrenHarga extends Model
 
     public function desa()
     {
-        return $this->belongsTo(desa::class, 'wilayah_id', 'kecamatan_id');
+        return $this->belongsTo(desa::class, 'desa_id');
     }
+
     public function kecamatan()
     {
-        return $this->belongsTo(kecamatan::class, 'wilayah_id', 'kecamatan_id');
+        return $this->belongsTo(kecamatan::class, 'kecamatan_id');
     }
+
 }

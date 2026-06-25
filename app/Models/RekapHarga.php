@@ -36,6 +36,11 @@ class RekapHarga extends Model
     {
         return $this->belongsTo(Wilayah::class, 'wilayah_id');
     }
+    // Relasi dengan kelurahan
+    public function kelurahan()
+    {
+        return $this->belongsTo(Kelurahan::class, 'kelurahan_id');
+    }
 
     public function desa()
     {

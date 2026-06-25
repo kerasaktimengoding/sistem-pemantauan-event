@@ -132,7 +132,7 @@
                             {{ $wilayah->kecamatan->nama_kecamatan ?? '-' }}
                         </span>
                         <span class="sub-text">
-                            🏡 Desa: {{ $wilayah->desa->nama_desa ?? '-' }}
+                            {{ $wilayah->desa->jenis === 'kelurahan' ? 'Kel. ' . $wilayah->desa->nama_desa : 'Desa ' . $wilayah->desa->nama_desa }}
                         </span>
                     </td>
 

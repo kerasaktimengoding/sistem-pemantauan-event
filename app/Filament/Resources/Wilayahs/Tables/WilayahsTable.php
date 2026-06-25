@@ -49,7 +49,7 @@ class WilayahsTable
                     ->weight(FontWeight::SemiBold)
                     ->color('gray')
                     // Menggabungkan informasi desa di bawah nama kecamatan menggunakan text helper
-                    ->description(fn($record) => "🏡 Desa: " . ($record->desa?->nama_desa ?? '-')),
+                    ->description(fn($record) => "🏡 " . ($record->desa?->jenis === 'kelurahan' ? "Kel. {$record->desa?->nama_desa}" : "Desa {$record->desa?->nama_desa}")),
 
                 // 4. Luas Wilayah & Populasi (Dikelompokkan Berdampingan dengan Alignment Kanan)
                 TextColumn::make('luas_wilayah')

@@ -19,6 +19,7 @@ return new class extends Migration
             // --- HIRARKI ---
             $table->unsignedBigInteger('kecamatan_id')->nullable(); // 4. ID Induk Kecamatan
             $table->unsignedBigInteger('desa_id')->nullable();      // 5. ID Anak Desa
+                 // 5. ID Anak Desa
 
             // --- PROFIL FISIK ---
             $table->decimal('luas_wilayah', 10, 2)->nullable(); // 6. Luas dalam KM persegi

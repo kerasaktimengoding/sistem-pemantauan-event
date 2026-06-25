@@ -24,42 +24,41 @@ class DesasTable
             ->persistFiltersInSession()
             ->columns([
                 // 1. Nomor Urut (Row Index)
-                TextColumn::make('No')
-                    ->rowIndex()
-                    ->label('No.')
-                    ->alignment(Alignment::Center),
-
-                // 2. Kode Desa (Desain badge mini info)
                 TextColumn::make('kode_desa')
-                    ->label('Kode Desa')
+                    ->label(fn($record) => $record?->jenis === 'kelurahan' ? 'Kode Kelurahan' : 'Kode Desa')
                     ->searchable()
                     ->sortable()
                     ->fontFamily(FontFamily::Mono)
                     ->copyable()
-                    ->copyMessage('Kode Desa berhasil disalin')
+                    ->copyMessage(fn($record) => $record?->jenis === 'kelurahan' ? 'Kode Kelurahan berhasil disalin' : 'Kode Desa berhasil disalin')
                     ->color('gray'),
 
-                // 3. Nama Desa & Kecamatan Relasi (Digabung agar ringkas & informatif)
+                // 3. Nama Wilayah & Kecamatan Relasi (Dinamis)
                 TextColumn::make('nama_desa')
                     ->label('Informasi Wilayah')
                     ->searchable()
                     ->sortable()
                     ->weight(FontWeight::Bold)
                     ->color('primary')
+                    ->formatStateUsing(function ($state, $record) {
+                        $prefix = $record?->jenis === 'kelurahan' ? 'Kel. ' : 'Desa ';
+                        return $prefix . $state;
+                    })
                     ->description(fn($record) => "Kecamatan: " . ($record->kecamatan?->nama_kecamatan ?? '-')),
 
-                // 4. Nama Pembakal & No HP (Digabung menggunakan description + Ikon)
+                // 4. Nama Pimpinan & No HP (Dinamis: Pembakal / Lurah)
                 TextColumn::make('nama_pembakal')
-                    ->label('Pimpinan / Pembakal')
+                    ->label(fn($record) => $record?->jenis === 'kelurahan' ? 'Pimpinan / Lurah' : 'Pimpinan / Pembakal')
                     ->searchable()
-                    ->icon('heroicon-m-user')
+                    ->icon(fn($record) => $record?->jenis === 'kelurahan' ? 'heroicon-m-building-office-2' : 'heroicon-m-user')
                     ->iconColor('success')
                     ->weight(FontWeight::Medium)
+                    ->formatStateUsing(fn($state) => $state ?? '-')
                     ->description(fn($record) => "📞 " . ($record->no_hp_pembakal ?? '-')),
 
-                // 5. Alamat Kantor Desa (Dibatasi panjangnya + Tooltip)
+                // 5. Alamat Kantor (Dinamis)
                 TextColumn::make('alamat_kantor_desa')
-                    ->label('Alamat Kantor')
+                    ->label(fn($record) => $record?->jenis === 'kelurahan' ? 'Alamat Kantor Kelurahan' : 'Alamat Kantor Desa')
                     ->searchable()
                     ->limit(30)
                     ->tooltip(fn($record) => $record->alamat_kantor_desa)

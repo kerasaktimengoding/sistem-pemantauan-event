@@ -25,7 +25,7 @@ class TrenHargasTable
                     ->width('50px')
                     ->alignment(Alignment::Center),
 
-                 TextColumn::make('kode_tren')
+                TextColumn::make('kode_tren')
                     ->label('Kode Tren')
                     ->searchable()
                     ->sortable()
@@ -41,16 +41,30 @@ class TrenHargasTable
                     ->color('primary'),
 
                 // 3. Penyatuan Komoditas & Lokasi Wilayah (Smart Search)
-                TextColumn::make('komoditas.nama_komoditas')
-                    ->label('Komoditas & Wilayah')
-                    ->weight(FontWeight::Bold)
-                    ->searchable(query: function ($query, string $search) {
-                        $query->whereHas('komoditas', fn($q) => $q->where('nama_komoditas', 'like', "%{$search}%"))
-                            ->orWhereHas('desa', fn($q) => $q->where('nama_desa', 'like', "%{$search}%"));
-                    })
+                 TextColumn::make('komoditas.nama_komoditas')
+                    ->label('Komoditas')
+                    ->searchable()
                     ->sortable()
-                    ->description(fn($record) => '📍 Wilayah: ' . ($record->desa->nama_desa ?? '-')),
+                    ->weight('semibold')
+                    ->color('gray.700')
+                    ->icon('heroicon-m-shopping-bag')
+                    ->iconColor('primary'),
 
+                TextColumn::make('kecamatan.nama_kecamatan')
+                    ->label('Cakupan Wilayah')
+                    ->sortable()
+                    // Fitur Pencarian Pintar: Cari berdasarkan nama kecamatan ATAU nama desa sekaligus
+                    ->searchable(query: function ($query, string $search) {
+                        $query->whereHas('kecamatan', function ($q) use ($search) {
+                            $q->where('nama_kecamatan', 'like', "%{$search}%");
+                        })->orWhereHas('desa', function ($q) use ($search) {
+                            $q->where('nama_desa', 'like', "%{$search}%");
+                        });
+                    })
+                    ->weight('medium')
+                    ->color('gray.800')
+                    // Menyusun visual hierarki: Kecamatan sebagai judul utama, Desa sebagai keterangan tipis di bawahnya
+                    ->description(fn($record) => $record->desa ? "📍 Desa: " . $record->desa->nama_desa : "🏢 Seluruh Kecamatan"),
                 // 4. Transformasi Finansial: Penggabungan Harga Awal & Harga Akhir
                 TextColumn::make('harga_akhir')
                     ->label('Informasi Harga')

@@ -16,6 +16,7 @@ return new class extends Migration {
                 $table->string('nama_pasar', 100);
                 $table->unsignedBigInteger('kecamatan_id')->nullable(); // 4. ID Induk Kecamatan
                 $table->unsignedBigInteger('desa_id')->nullable();  
+                $table->enum('pengelola', ['perumda', 'desa'])->default('desa');
                // Default diset ke Kios jika tidak diisi
                     // 5. ID Anak Desa
                 $table->text('alamat_pasar');

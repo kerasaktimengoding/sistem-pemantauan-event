@@ -15,8 +15,9 @@ return new class extends Migration {
             // --- 10 KOLOM UTAMA ---
             $table->string('kode_desa', 20)->unique();          // 1. Kode wilayah
             $table->string('nama_desa', 100);                    // 2. Nama desa
+            $table->enum('jenis', ['desa', 'kelurahan'])->default('desa');      // 4. Nama Kepala Desa
             $table->unsignedBigInteger('kecamatan_id');
-            $table->string('nama_pembakal')->nullable();        // 4. Nama Kepala Desa
+            $table->string('nama_pembakal')->nullable();  
             $table->string('alamat_kantor_desa');               // 5. Lokasi kantor desa
             $table->char('kode_pos', 5);     
              $table->decimal('luas_wilayah', 10, 2)->nullable();                   // 6. Kode pos

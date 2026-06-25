@@ -26,8 +26,8 @@ class DesaResource extends Resource
     protected static string|UnitEnum|null $navigationGroup = 'Wilayah & Kepegawaian';
     protected static ?string $recordTitleAttribute = 'nama_desa';
 
-protected static ?string $navigationLabel = 'Desa Kab Banjar';
-protected static ?string $pluralModelLabel = 'Desa Kab Banjar';
+protected static ?string $navigationLabel = 'Kelurahan & Desa Kab Banjar';
+protected static ?string $pluralModelLabel = 'Kelurahan & Desa Kab Banjar';
 protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingOffice2;
     protected static ?int $navigationSort = 2;
 
