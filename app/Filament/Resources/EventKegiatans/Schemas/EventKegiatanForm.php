@@ -10,6 +10,8 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\Utilities\Get;
 
 class EventKegiatanForm
 {
@@ -17,7 +19,7 @@ class EventKegiatanForm
     {
         return $schema
             ->components([
-Section::make('Detail Kegiatan')
+                Section::make('Detail Kegiatan')
                     ->description('Informasi utama mengenai nama dan jenis kegiatan.')
                     ->schema([
                         Group::make([
@@ -26,7 +28,7 @@ Section::make('Detail Kegiatan')
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('event_kegiatans', 'kode_event', ignoreRecord: true)
-                                ->default(fn() => 'EVE-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
+                                ->default(fn() => 'EVE-' . date('d') . '.' . date('m') . '.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->validationMessages([
                                     'unique' => 'Kode event ini sudah terdaftar',
                                 ])
@@ -71,12 +73,40 @@ Section::make('Detail Kegiatan')
                         ])->columns(2),
 
                         Group::make([
-                            Select::make('wilayah_id')
-                                ->label('Wilayah (Kecamatan)')
-                                ->relationship('wilayah', 'nama_wilayah')
+                                Select::make('desa_id')
+                                ->label(function (Get $get) {
+                                    // Jika sudah dipilih, kita bisa cek tipenya untuk mempercantik label
+                                    $desaId = $get('desa_id');
+                                    if ($desaId) {
+                                        $desa = \App\Models\Desa::find($desaId);
+                                        return $desa && $desa->jenis === 'kelurahan' ? 'Kelurahan Terpilih' : 'Desa Terpilih';
+                                    }
+                                    return 'Pilih Desa / Kelurahan';
+                                })
+                                ->relationship(
+                                    name: 'desa',
+                                    titleAttribute: 'nama_desa',
+                                    // Opsi Tambahan: Menampilkan nama dengan format "Desa X" atau "Kel. Y" di dalam daftar pilihan
+                                    modifyQueryUsing: fn($query) => $query->orderBy('jenis', 'asc')->orderBy('nama_desa', 'asc')
+                                )
+                                // Menampilkan teks "Kel." atau "Desa" langsung di list dropdown agar user tidak bingung
+                                ->getOptionLabelFromRecordUsing(fn($record) => $record->jenis === 'kelurahan' ? "Kel. {$record->nama_desa}" : "Desa {$record->nama_desa}")
                                 ->searchable()
                                 ->preload()
-                                ->required(),
+                                ->required()
+                                ->live() // Memantau perubahan input secara real-time
+                                ->afterStateUpdated(function ($state, Set $set) {
+                                    if ($state) {
+                                        // Mencari data di tabel desas berdasarkan ID yang dipilih
+                                        $desa = \App\Models\Desa::find($state);
+                                        if ($desa) {
+                                            // Otomatis mengisi kolom kecamatan_id
+                                            $set('kecamatan_id', $desa->kecamatan_id);
+                                        }
+                                    } else {
+                                        $set('kecamatan_id', null);
+                                    }
+                                }),
 
                             TextInput::make('lokasi_event')
                                 ->label('Lokasi Spesifik')

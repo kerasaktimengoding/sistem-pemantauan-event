@@ -11,6 +11,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Group;
 use Filament\Forms\Components\ToggleButtons;
 use Illuminate\Support\Str;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 
 class JadwalMonitoringForm
 {
@@ -66,6 +68,43 @@ class JadwalMonitoringForm
                                 TextInput::make('lokasi_pasar')
                                     ->label('Alamat / Lokasi Pasar'),
                             ]),
+                        
+                        // jika nama pasar sudah di klik maka tertampil 
+                        // desa dan kecamatan
+                        Select::make('desa_id')
+                            ->label(function (Get $get) {
+                                // Jika sudah dipilih, kita bisa cek tipenya untuk mempercantik label
+                                $desaId = $get('desa_id');
+                                if ($desaId) {
+                                    $desa = \App\Models\Desa::find($desaId);
+                                    return $desa && $desa->jenis === 'kelurahan' ? 'Kelurahan Terpilih' : 'Desa Terpilih';
+                                }
+                                return 'Pilih Desa / Kelurahan';
+                            })
+                            ->relationship(
+                                name: 'desa',
+                                titleAttribute: 'nama_desa',
+                                // Opsi Tambahan: Menampilkan nama dengan format "Desa X" atau "Kel. Y" di dalam daftar pilihan
+                                modifyQueryUsing: fn($query) => $query->orderBy('jenis', 'asc')->orderBy('nama_desa', 'asc')
+                            )
+                            // Menampilkan teks "Kel." atau "Desa" langsung di list dropdown agar user tidak bingung
+                            ->getOptionLabelFromRecordUsing(fn($record) => $record->jenis === 'kelurahan' ? "Kel. {$record->nama_desa}" : "Desa {$record->nama_desa}")
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->live() // Memantau perubahan input secara real-time
+                            ->afterStateUpdated(function ($state, Set $set) {
+                                if ($state) {
+                                    // Mencari data di tabel desas berdasarkan ID yang dipilih
+                                    $desa = \App\Models\Desa::find($state);
+                                    if ($desa) {
+                                        // Otomatis mengisi kolom kecamatan_id
+                                        $set('kecamatan_id', $desa->kecamatan_id);
+                                    }
+                                } else {
+                                    $set('kecamatan_id', null);
+                                }
+                            }),
 
                         // Pilih Pegawai beserta form tambah cepat jika data belum ada
                         Select::make('pegawai_id')
