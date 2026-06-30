@@ -18,8 +18,6 @@ return new class extends Migration
             // Relasi menggunakan tipe data INT agar sinkron dengan draf skripsimu
             $table->integer('pasar_id');
             $table->integer('pegawai_id');
-            $table->integer('desa_id');
-            $table->integer('kecamatan_id');
             
             $table->date('tanggal_rencana');
             $table->string('nomor_surat_tugas', 100)->nullable();

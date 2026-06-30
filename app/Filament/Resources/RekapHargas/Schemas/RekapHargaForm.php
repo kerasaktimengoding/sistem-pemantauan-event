@@ -12,8 +12,42 @@ use Illuminate\Support\Str;
 
 class RekapHargaForm
 {
+
     public static function configure(Schema $schema): Schema
     {
+        // 1. Definisikan Fungsi Kalkulasi Otomatis di awal method
+        $hitungOtomatis = function (callable $get, callable $set) {
+            // Mendukung pembacaan field dengan atau tanpa prefix 'inputHarga.'
+            $komoditasId = $get('inputHarga.komoditas_id') ?? $get('komoditas_id');
+            $kecamatanId = $get('inputHarga.kecamatan_id') ?? $get('kecamatan_id');
+            $periode = $get('periode_rekap');
+
+            if ($komoditasId && $kecamatanId && $periode) {
+                try {
+                    $date = \Carbon\Carbon::parse($periode);
+
+                    // Mengambil nilai berdasarkan kolom 'harga' dari tabel input_hargas
+                    $stats = \App\Models\InputHarga::where('komoditas_id', $komoditasId)
+                        ->where('kecamatan_id', $kecamatanId)
+                        ->whereMonth('tanggal_input', $date->month)
+                        ->whereYear('tanggal_input', $date->year)
+                        ->selectRaw('AVG(harga) as rata_rata, MAX(harga) as maksimum, MIN(harga) as minimum')
+                        ->first();
+
+                    // Mengisi data hasil analisis (dibulatkan tanpa desimal panjang)
+                    $set('harga_rata_rata', round($stats->rata_rata ?? 0, 0));
+                    $set('harga_maksimum', $stats->maksimum ?? 0);
+                    $set('harga_minimum', $stats->minimum ?? 0);
+                } catch (\Exception $e) {
+                    // Mencegah crash jika format tanggal/data kosong
+                }
+            } else {
+                // Reset nilai ke null jika parameter belum lengkap
+                $set('harga_rata_rata', null);
+                $set('harga_maksimum', null);
+                $set('harga_minimum', null);
+            }
+        };
         return $schema
             ->components([
                 Section::make('Informasi Rekapitulasi')
@@ -36,77 +70,121 @@ class RekapHargaForm
                                 ->label('Periode Rekap')
                                 ->required()
                                 ->native(false)
-                                ->displayFormat('F Y'), // Menampilkan Nama Bulan dan Tahun
-                        ])->columns(2),
+                                ->displayFormat('F Y') // Menampilkan Nama Bulan dan Tahun
+                                ->live()
+                                ->afterStateUpdated(function (callable $get, callable $set) {
+                                    $komoditasId = $get('inputHarga.komoditas_id') ?? $get('komoditas_id');
+                                    $kecamatanId = $get('inputHarga.kecamatan_id') ?? $get('kecamatan_id');
+                                    $periode = $get('periode_rekap');
 
-                        Group::make([
-                            Select::make('komoditas_id')
-                                ->label('Komoditas')
-                                ->relationship('komoditas', 'nama_komoditas')
-                                ->searchable()
-                                ->preload()
-                                ->required(),
+                                    if ($komoditasId && $kecamatanId && $periode) {
+                                        try {
+                                            $date = \Carbon\Carbon::parse($periode);
+                                            $stats = \App\Models\InputHarga::where('komoditas_id', $komoditasId)
+                                                ->where('kecamatan_id', $kecamatanId)
+                                                ->whereMonth('tanggal_input', $date->month)
+                                                ->whereYear('tanggal_input', $date->year)
+                                                ->selectRaw('AVG(harga) as rata_rata, MAX(harga) as maksimum, MIN(harga) as minimum')
+                                                ->first();
 
-                            Select::make('desa_id')
-                                ->label('Pilih Desa')
-                                ->relationship('desa', 'nama_desa')
-                                ->searchable()
-                                ->preload()
-                                ->required()
-                                ->live() // Memantau perubahan input secara real-time
-                                ->afterStateUpdated(function ($state, callable $set) {
-                                    // Mencari data desa berdasarkan ID yang dipilih
-                                    $desa = \App\Models\Desa::find($state);
-                                    if ($desa) {
-                                        // Otomatis mengisi kolom kecamatan_id
-                                        $set('kecamatan_id', $desa->kecamatan_id);
+                                            $set('harga_rata_rata', round($stats->rata_rata ?? 0, 2));
+                                            $set('harga_maksimum', $stats->maksimum ?? 0);
+                                            $set('harga_minimum', $stats->minimum ?? 0);
+                                        } catch (\Exception $e) {
+                                        }
                                     }
                                 }),
-
-                            // 2. Kecamatan Terisi Otomatis
-                            Select::make('kecamatan_id')
-                                ->label('Kecamatan Induk')
-                                ->relationship('kecamatan', 'nama_kecamatan')
-                                ->searchable()
-                                ->preload()
-                                ->required()
-                                ->disabled() // Dimatikan agar tidak diubah manual (sesuai permintaan)
-                                ->dehydrated() // Tetap mengirim data ke database saat simpan
-                                ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
                         ])->columns(2),
 
-                        
-                                // BUAT AGAR BISA SELAIN DESA YAITU TEMPAT, PEDAGANG
-                                
-                        // Select::make('pasar_id')
-                        // ->label('Pilih Pasar')
-                        // ->options(function (callable $get) {
-                        //     // Ambil desa_id dari input "Pilih Desa"
-                        //     $desaId = $get('desa_id');
-                        //     $tempatId = $get('tempat_id');
+                        Select::make('inputHarga.komoditas_id')
+                            ->label('Komoditas')
+                            ->relationship('inputHarga.komoditas', 'nama_komoditas')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated($hitungOtomatis),
 
-                            
-                        //     // Jika tidak ada desa_id, kembalikan array kosong
-                        //     if (!$desaId) {
-                        //         return [];
-                        //     }
-                            
-                        //     // Ambil pasar berdasarkan desa_id
-                        //     return \App\Models\Pasar::where('desa_id', $desaId)
-                        //         ->pluck('nama_pasar', 'id')
-                        //         ->toArray();
-                        // })
-                        // ->required()
-                        // ->live(), // Tambahkan live() agar dropdown update saat desa berubah
+                        Select::make('inputHarga.desa_id')
+                            ->label('Pilih Desa')
+                            ->relationship(
+                                name: 'inputHarga.desa',
+                                titleAttribute: 'nama_desa',
+                                modifyQueryUsing: function (\Illuminate\Database\Eloquent\Builder $query, callable $get) {
+                                    // Ambil ID Komoditas yang sedang aktif di form
+                                    $komoditasId = $get('inputHarga.komoditas_id') ?? $get('komoditas_id');
+
+                                    if ($komoditasId) {
+                                        // Cari desa mana saja yang pernah menginput harga untuk komoditas ini
+                                        $desaIds = \App\Models\InputHarga::where('komoditas_id', $komoditasId)
+                                            ->pluck('desa_id')
+                                            ->toArray();
+
+                                        // Saring pilihan dropdown hanya pada desa-desa tersebut
+                                        $query->whereIn('id', $desaIds);
+                                    }
+                                }
+                            )
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function ($state, callable $set, callable $get) use ($hitungOtomatis) {
+                                $desa = \App\Models\Desa::find($state);
+                                if ($desa) {
+                                    $set('inputHarga.kecamatan_id', $desa->kecamatan_id);
+                                    $set('kecamatan_id', $desa->kecamatan_id);
+                                } else {
+                                    $set('inputHarga.kecamatan_id', null);
+                                    $set('kecamatan_id', null);
+                                }
+
+                                // Jalankan perhitungan setelah kecamatan ter-set otomatis
+                                $hitungOtomatis($get, $set);
+                            }),
+                        // 2. Kecamatan Terisi Otomatis
+                        Select::make('inputHarga.kecamatan_id')
+                            ->label('Kecamatan Induk')
+                            ->relationship('inputHarga.kecamatan', 'nama_kecamatan')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->disabled() // Dimatikan agar tidak diubah manual (sesuai permintaan)
+                            ->dehydrated() // Tetap mengirim data ke database saat simpan
+                            ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
+                    ])->columns(2),
 
 
-                
+                // BUAT AGAR BISA SELAIN DESA YAITU TEMPAT, PEDAGANG
+
+                // Select::make('pasar_id')
+                // ->label('Pilih Pasar')
+                // ->options(function (callable $get) {
+                //     // Ambil desa_id dari input "Pilih Desa"
+                //     $desaId = $get('desa_id');
+                //     $tempatId = $get('tempat_id');
+
+
+                //     // Jika tidak ada desa_id, kembalikan array kosong
+                //     if (!$desaId) {
+                //         return [];
+                //     }
+
+                //     // Ambil pasar berdasarkan desa_id
+                //     return \App\Models\Pasar::where('desa_id', $desaId)
+                //         ->pluck('nama_pasar', 'id')
+                //         ->toArray();
+                // })
+                // ->required()
+                // ->live(), // Tambahkan live() agar dropdown update saat desa berubah
 
 
 
 
 
-                    ]),
+
+
+
 
                 // Section 2: Hasil Analisis Statistik Harga
                 Section::make('Hasil Analisis Harga')
@@ -118,6 +196,7 @@ class RekapHargaForm
                                 ->numeric()
                                 ->prefix('Rp')
                                 ->required()
+                                ->readOnly()
                                 ->placeholder('0.00'),
 
                             TextInput::make('harga_maksimum')
@@ -125,6 +204,8 @@ class RekapHargaForm
                                 ->numeric()
                                 ->prefix('Rp')
                                 ->required()
+                                
+                                ->readOnly()
                                 ->placeholder('0.00'),
 
                             TextInput::make('harga_minimum')
@@ -132,6 +213,7 @@ class RekapHargaForm
                                 ->numeric()
                                 ->prefix('Rp')
                                 ->required()
+                                ->readOnly()
                                 ->placeholder('0.00'),
                         ])->columns(3),
                     ]),

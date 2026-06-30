@@ -58,6 +58,7 @@ class KomoditasTable
                     ->weight(FontWeight::SemiBold)
                     ->size('md')
                     ->color('gray.800')
+                    ->tooltip(fn($record) => $record->nama_komoditas . "\n" . $record->deskripsi)
                     // Baris Pertama Deskripsi: Kategori & Satuan dengan format Badge Mini teks
                     ->description(fn($record) => "📦 Kategori: " . ($record->kategori ?? '-') . " | ⚖️ Satuan: " . ($record->satuan ?? '-'), position: 'above')
                     // Baris Kedua Deskripsi: Deskripsi panjang dibatasi agar tidak merusak layout

@@ -37,6 +37,7 @@ class ListRekapHargas extends ListRecords
             CreateAction::make()->
                 label('Tambah Rekap Harga')
                 ->color('primary')
+                ->modalWidth('full')
                 ->icon('heroicon-o-plus-circle')
                 ->modal(RekapHarga::class),
         ];

@@ -24,6 +24,12 @@ class Pedagang extends Model
     // {
     //     return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
     // }
+
+    public function pasar()
+    {
+        return $this->belongsTo(pasar::class, 'pasar_id');
+    }
+    
      public function kecamatan()
     {
         return $this->belongsTo(kecamatan::class, 'kecamatan_id');

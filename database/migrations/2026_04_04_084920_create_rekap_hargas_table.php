@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('rekap_hargas', function (Blueprint $table) {
             $table->id();
             $table->string('kode_rekap_harga', 20);
+            $table->unsignedBigInteger('input_harga_id')->nullable();
             $table->unsignedBigInteger('komoditas_id');
             $table->unsignedBigInteger('kecamatan_id')->nullable(); // 4. ID Induk Kecamatan
             $table->unsignedBigInteger('desa_id')->nullable();     

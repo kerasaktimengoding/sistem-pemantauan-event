@@ -12,6 +12,7 @@ class RekapHarga extends Model
 
     protected $fillable = [
         'kode_rekap_harga',
+        'input_harga_id',
         'komoditas_id',
         'wilayah_id',
         'kecamatan_id',
@@ -26,6 +27,11 @@ class RekapHarga extends Model
     ];
 
     // Relasi dengan komoditas
+        public function inputHarga()
+    {
+        return $this->belongsTo(InputHarga::class, 'input_harga_id');
+    }
+
     public function komoditas()
     {
         return $this->belongsTo(Komoditas::class, 'komoditas_id');

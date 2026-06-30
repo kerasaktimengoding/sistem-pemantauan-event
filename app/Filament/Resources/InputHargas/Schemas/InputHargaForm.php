@@ -30,6 +30,8 @@ class InputHargaForm
                                 ->validationMessages([
                                     'unique' => 'Kode Input Harga ini sudah ada',
                                 ])
+                                ->disabled()
+                                ->dehydrated()
                                 ->placeholder('Contoh: TRK-20240301-01'),
 
                             DatePicker::make('tanggal_input')

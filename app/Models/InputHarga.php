@@ -10,6 +10,11 @@ class InputHarga extends Model
     //
      use HasFactory;
 
+        public function rekapHarga()
+    {
+        return $this->hasMany(RekapHarga::class);
+    }
+
     protected $fillable = [
         'kode_input_harga', 'komoditas_id', 'kecamatan_id', 'desa_id', 'pasar_id', 'pedagang_id', 'pegawai_id', 'harga', 'tanggal_input', 'sumber_data', 'keterangan'
     ];

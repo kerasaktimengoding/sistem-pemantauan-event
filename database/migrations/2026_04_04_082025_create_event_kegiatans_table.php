@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('kode_event', 20);
             $table->string('nama_event', 100);
             $table->string('jenis_event', 50);
-            $table->unsignedBigInteger('wilayah_id');
+            $table->integer('wilayah_id');
+            
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai');
             $table->string('lokasi_event', 150);

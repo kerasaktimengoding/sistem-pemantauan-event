@@ -10,7 +10,6 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
-use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\Utilities\Get;
 
 class EventKegiatanForm
@@ -73,7 +72,7 @@ class EventKegiatanForm
                         ])->columns(2),
 
                         Group::make([
-                                Select::make('desa_id')
+                            Select::make('wilayah_id')
                                 ->label(function (Get $get) {
                                     // Jika sudah dipilih, kita bisa cek tipenya untuk mempercantik label
                                     $desaId = $get('desa_id');
@@ -89,24 +88,13 @@ class EventKegiatanForm
                                     // Opsi Tambahan: Menampilkan nama dengan format "Desa X" atau "Kel. Y" di dalam daftar pilihan
                                     modifyQueryUsing: fn($query) => $query->orderBy('jenis', 'asc')->orderBy('nama_desa', 'asc')
                                 )
-                                // Menampilkan teks "Kel." atau "Desa" langsung di list dropdown agar user tidak bingung
-                                ->getOptionLabelFromRecordUsing(fn($record) => $record->jenis === 'kelurahan' ? "Kel. {$record->nama_desa}" : "Desa {$record->nama_desa}")
-                                ->searchable()
-                                ->preload()
+
+                                ->relationship(name: 'wilayah', titleAttribute: 'id')
+                                ->getOptionLabelFromRecordUsing(fn($record) => "{$record->desa->nama_desa}")
+
+
                                 ->required()
-                                ->live() // Memantau perubahan input secara real-time
-                                ->afterStateUpdated(function ($state, Set $set) {
-                                    if ($state) {
-                                        // Mencari data di tabel desas berdasarkan ID yang dipilih
-                                        $desa = \App\Models\Desa::find($state);
-                                        if ($desa) {
-                                            // Otomatis mengisi kolom kecamatan_id
-                                            $set('kecamatan_id', $desa->kecamatan_id);
-                                        }
-                                    } else {
-                                        $set('kecamatan_id', null);
-                                    }
-                                }),
+                                ->native(false),
 
                             TextInput::make('lokasi_event')
                                 ->label('Lokasi Spesifik')

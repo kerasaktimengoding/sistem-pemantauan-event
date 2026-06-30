@@ -51,6 +51,7 @@ class JabatansTable
                     ->color('gray')
                     ->icon('heroicon-m-briefcase')
                     ->iconColor('primary')
+                    ->tooltip(fn($record) => $record->nama_jabatan . "\n" . $record->tugas_pokok) // Muncul teks utuh saat hover kursor
                     // Menyisipkan potongan tugas pokok sebagai sub-informasi yang rapi
                     ->description(fn($record) => "📝 Tugas: " . Str::limit($record->tugas_pokok, 60, '...')),
 

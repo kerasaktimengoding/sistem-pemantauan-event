@@ -35,7 +35,7 @@ class RekapHargasTable
                     ->icon('heroicon-m-calendar-days'),
 
                 // 3. Komoditas (Standout Visual dengan Badge Atraktif)
-                TextColumn::make('komoditas.nama_komoditas')
+                TextColumn::make('inputHarga.komoditas.nama_komoditas')
                     ->label('Komoditas')
                     ->searchable()
                     ->sortable()
@@ -45,21 +45,21 @@ class RekapHargasTable
                     ->iconColor('primary'),
 
                 // 4. Integrasi Hierarki Wilayah Pintar (Kecamatan + Sub-Deskripsi Desa)
-                TextColumn::make('kecamatan.nama_kecamatan')
+                TextColumn::make('inputHarga.kecamatan.nama_kecamatan')
                     ->label('Cakupan Wilayah')
                     ->sortable()
                     // Fitur Pencarian Pintar: Cari berdasarkan nama kecamatan ATAU nama desa sekaligus
                     ->searchable(query: function ($query, string $search) {
-                        $query->whereHas('kecamatan', function ($q) use ($search) {
+                        $query->whereHas('inputHarga.kecamatan', function ($q) use ($search) {
                             $q->where('nama_kecamatan', 'like', "%{$search}%");
-                        })->orWhereHas('desa', function ($q) use ($search) {
+                        })->orWhereHas('inputHarga.desa', function ($q) use ($search) {
                             $q->where('nama_desa', 'like', "%{$search}%");
                         });
                     })
                     ->weight('medium')
                     ->color('gray.800')
                     // Menyusun visual hierarki: Kecamatan sebagai judul utama, Desa sebagai keterangan tipis di bawahnya
-                    ->description(fn($record) => $record->desa ? "📍 Desa: " . $record->desa->nama_desa : "🏢 Seluruh Kecamatan"),
+                    ->description(fn($record) => $record->inputHarga->desa ? "📍 Desa: " . $record->inputHarga->desa->nama_desa : "🏢 Seluruh Kecamatan"),
 
 
                 // TextColumn('pedagang.nama_pedagang')

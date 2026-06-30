@@ -62,18 +62,31 @@ class PedagangsTable
                     ->weight(FontWeight::SemiBold)
                     ->color('gray.800')
                     ->icon('heroicon-m-map-pin') // Ikon pin maps kecil di samping kecamatan
-                    ->iconColor('danger')
+                    ->iconColor('   danger')
                     // Baris Pertama Deskripsi: Nama Desa
-                    ->description(fn($record) => "🏡 Desa: " . ($record->desa?->nama_desa ?? '-'))
+                    ->description(fn($record) => "🏡 Desa: " . ($record->desa->nama_desa ?? '-')),
                     // Baris Kedua Deskripsi: Detail Alamat Jalan diletakkan tipis di bawahnya agar menghemat tempat
-                    ->description(fn($record) => $record->nama_pasar ? "Pasar " . str($record->nama_pasar)->limit(45) : 'Tidak ada detail alamat', position: 'above')
-                    ->description(fn($record) => $record->alamat ? "📍 " . str($record->alamat)->limit(45) : 'Tidak ada detail alamat', position: 'below'),
+                    // ->description(fn($record) => $record->nama_pasar ? "Pasar " . str($record->nama_pasar)->limit(45) : 'Tidak ada detail alamat 1 ', position: 'above')
+                    // ->description(fn($record) => $record->alamat ? "📍 " . str($record->alamat)->limit(45) : 'Tidak ada detail alamat', position: 'below'),
                 TextColumn::make('pasar.nama_pasar')
-                    ->label('Lokasi Pasar')
-                    ->searchable()
+                    ->label('Lokasi Pasar & Wilayah')
+                    // Memungkinkan pencarian global berdasarkan nama pasar ataupun nama wilayahnya
+                    ->searchable(query: function ($query, string $search) {
+                        $query->whereHas('pasar', function ($q) use ($search) {
+                            $q->where('nama_pasar', 'like', "%{$search}%");
+                        })->orWhereHas('wilayah', function ($q) use ($search) {
+                            $q->where('nama_wilayah', 'like', "%{$search}%");
+                        });
+                    })
                     ->sortable()
                     ->weight(FontWeight::SemiBold)
-                    ->description(fn($record) => "Wilayah: " . ($record->desa->nama_desa ?? '-')),    
+                    ->color('gray.800')
+                    ->icon('heroicon-m-map-pin') // Ikon pin maps kecil di samping kecamatan
+                    ->iconColor('danger')
+                    // Baris Pertama Deskripsi: Nama Desa
+                    ->description(fn($record) => "🏡 Desa: " . ($record->desa->nama_desa ?? '-'))
+                    // Baris Kedua Deskripsi: Detail Alamat Jalan diletakkan tipis di bawahnya agar menghemat tempat
+                    ->description(fn($record) => $record->pasar->alamat_pasar ? "📍 " . str($record->pasar->alamat_pasar)->limit(45) : 'Tidak ada detail alamat', position: 'below'),
                 // 4. No. WhatsApp Interaktif (Bisa Diklik Langsung Menuju Chat)
                 TextColumn::make('no_hp')
                     ->label('Kontak WhatsApp')

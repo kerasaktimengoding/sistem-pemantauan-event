@@ -61,7 +61,7 @@ class EventKegiatansTable
                         : 'Satu Hari Selesai'),
 
                 // 5. Lokasi & Wilayah (Digabungkan agar Menghemat Ruang Horizontal Tabel)
-                TextColumn::make('wilayah.nama_wilayah')
+                TextColumn::make('wilayah.desa.nama_desa')
                     ->label('Lokasi & Wilayah')
                     ->searchable()
                     ->sortable()
@@ -69,7 +69,12 @@ class EventKegiatansTable
                     ->icon('heroicon-m-map-pin')
                     ->iconColor('danger')
                     // Menampilkan alamat detail tepat di bawah nama wilayah
-                    ->description(fn($record) => "Detail: " . \Illuminate\Support\Str::limit($record->lokasi_event ?? '-', 35)),
+                    ->description(fn($record) => "Lokasi: " . ($record->lokasi_event ?? '-'), position: 'above')
+                    // ->description(fn($record) => "Detail: " . \Illuminate\Support\Str::limit($record->lokasi_event ?? '-', 35))
+                // Baris Bawah: NIK disembunyikan di bawah nama agar menghemat ruang horizontal, dilengkapi copyable instan
+                    ->description(fn($record) => "Kecamatan: " . $record->wilayah->kecamatan->nama_kecamatan . " desa " . $record->wilayah->desa->nama_desa, position: 'below'),
+
+                    
 
                
                 // 8. Status Event (Kode Anda Sudah Bagus, Kita Sempurnakan Konsistensinya)

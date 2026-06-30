@@ -78,6 +78,7 @@ class JadwalMonitoringsTable
                         });
                     }),
 
+
                 // 5. Petugas Lapangan - Penggabungan Nama Pelaksana, NIP, & Pencarian Mendalam
                 TextColumn::make('pegawai.nama_pegawai')
                     ->label('Petugas Lapangan')

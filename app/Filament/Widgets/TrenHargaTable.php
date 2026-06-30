@@ -53,9 +53,10 @@ class TrenHargaTable extends BaseWidget
                     ->date('M Y') // Menampilkan contoh: "Jun 2026"
                     ->sortable()
                     ->weight(FontWeight::Bold)
-                    ->color('gray'),
+                    ->color('gray')
+                    ->description(fn($record) => $record->komoditas->nama_komoditas),
 
-                // 3. Penyatuan Komoditas & Lokasi Wilayah (Smart Search)
+                // 3. Penyatuan Komoditas & Lokasi Wilayah (    Smart Search)
                 TextColumn::make('komoditas.nama_komoditas')
                     ->label('Komoditas & Wilayah')
                     ->weight(FontWeight::Bold)
