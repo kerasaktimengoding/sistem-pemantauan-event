@@ -16,6 +16,8 @@ class JadwalMonitoring extends Model
     protected $fillable = [
         'kode_jadwal',
         'pasar_id',
+        'desa_id',
+        'kecamatan_id',
         'pegawai_id',
         'tanggal_rencana',
         'nomor_surat_tugas',
@@ -26,6 +28,16 @@ class JadwalMonitoring extends Model
     protected $casts = [
         'tanggal_rencana' => 'date',
     ];
+
+    public function kecamatan()
+    {
+        return $this->belongsTo(Kecamatan::class);
+    }
+
+    public function desa()
+    {
+        return $this->belongsTo(Desa::class);
+    }
 
     public function pasar(): BelongsTo
     {

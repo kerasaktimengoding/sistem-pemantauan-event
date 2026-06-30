@@ -11,16 +11,13 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Group;
 use Filament\Forms\Components\ToggleButtons;
 use Illuminate\Support\Str;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\Utilities\Set;
-
 class JadwalMonitoringForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
-           ->components([
-                
+            ->components([
+
                 // SECTION 1: INFORMASI JADWAL
                 Section::make('Informasi Utama Jadwal')
                     ->description('Isi kode jadwal dan tentukan tanggal rencana monitoring.')
@@ -34,7 +31,7 @@ class JadwalMonitoringForm
                                 ->validationMessages([
                                     'unique' => 'Kode jadwal sudah terdaftar, gunakan kode lain.',
                                 ])
-                                ->default(fn() => 'JMW-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
+                                ->default(fn() => 'JMW-' . date('d') . '.' . date('m') . '.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->placeholder('Contoh: JMW-2026-001')
                                 ->columnSpan(2),
 
@@ -53,58 +50,59 @@ class JadwalMonitoringForm
                     ->description('Pilih pasar yang dipantau beserta pegawai yang bertugas.')
                     ->icon('heroicon-m-map-pin')
                     ->schema([
-                        // Pilih Pasar beserta form tambah cepat jika data belum ada
+                        // 1. Pilih Pasar (Pemicu Otomatis)
                         Select::make('pasar_id')
                             ->label('Pasar / Lokasi')
-                            ->relationship('pasar', 'nama_pasar') // Diubah ke nama_pasar agar user tidak bingung memilih ID
+                            ->relationship('pasar', 'nama_pasar')
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->columnSpan(2)
-                            ->createOptionForm([
-                                TextInput::make('nama_pasar')
-                                    ->label('Nama Pasar Baru')
-                                    ->required(),
-                                TextInput::make('lokasi_pasar')
-                                    ->label('Alamat / Lokasi Pasar'),
-                            ]),
-                        
-                        // jika nama pasar sudah di klik maka tertampil 
-                        // desa dan kecamatan
-                        Select::make('desa_id')
-                            ->label(function (Get $get) {
-                                // Jika sudah dipilih, kita bisa cek tipenya untuk mempercantik label
-                                $desaId = $get('desa_id');
-                                if ($desaId) {
-                                    $desa = \App\Models\Desa::find($desaId);
-                                    return $desa && $desa->jenis === 'kelurahan' ? 'Kelurahan Terpilih' : 'Desa Terpilih';
-                                }
-                                return 'Pilih Desa / Kelurahan';
-                            })
-                            ->relationship(
-                                name: 'desa',
-                                titleAttribute: 'nama_desa',
-                                // Opsi Tambahan: Menampilkan nama dengan format "Desa X" atau "Kel. Y" di dalam daftar pilihan
-                                modifyQueryUsing: fn($query) => $query->orderBy('jenis', 'asc')->orderBy('nama_desa', 'asc')
-                            )
-                            // Menampilkan teks "Kel." atau "Desa" langsung di list dropdown agar user tidak bingung
-                            ->getOptionLabelFromRecordUsing(fn($record) => $record->jenis === 'kelurahan' ? "Kel. {$record->nama_desa}" : "Desa {$record->nama_desa}")
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->live() // Memantau perubahan input secara real-time
-                            ->afterStateUpdated(function ($state, Set $set) {
-                                if ($state) {
-                                    // Mencari data di tabel desas berdasarkan ID yang dipilih
-                                    $desa = \App\Models\Desa::find($state);
-                                    if ($desa) {
-                                        // Otomatis mengisi kolom kecamatan_id
-                                        $set('kecamatan_id', $desa->kecamatan_id);
-                                    }
+                            ->live() // Wajib aktif agar form mendeteksi perubahan
+                            ->afterStateUpdated(function ($state, callable $set) {
+                                // Cari data pasar berdasarkan ID yang dipilih
+                                $pasar = \App\Models\Pasar::find($state);
+
+                                // Jika pasar ditemukan, otomatis set kecamatan, desa, dan alamat
+                                if ($pasar) {
+                                    $set('kecamatan_id', $pasar->kecamatan_id);
+                                    $set('desa_id', $pasar->desa_id);
+                                    $set('alamat_pasar', $pasar->alamat_pasar); // 🌟 Tembak data alamat di sini
                                 } else {
                                     $set('kecamatan_id', null);
+                                    $set('desa_id', null);
+                                    $set('alamat_pasar', null); // Kosongkan jika pasar dihapus/batal dipilih
                                 }
-                            }),
+                            })
+                            ->columnSpan(2),
+
+                        // 2. Kecamatan (Terisi Otomatis)
+                        Select::make('kecamatan_id')
+                            ->label('Kecamatan Induk')
+                            ->relationship('kecamatan', 'nama_kecamatan')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->disabled() // Dimatikan agar tidak bisa diubah manual
+                            ->dehydrated() // Tetap dikirim dan disimpan ke database
+                            ->columnSpan(1),
+
+                        // 3. Desa/Kelurahan (Terisi Otomatis)
+                        Select::make('desa_id')
+                            ->label('Desa / Kelurahan')
+                            ->relationship('desa', 'nama_desa')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->disabled()
+                            ->dehydrated()
+                            ->columnSpan(1),
+
+                        TextInput::make('alamat_pasar')
+                            ->label('Alamat Pasar')
+                            // ->relationship('pasar', 'nama_pasar')
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->placeholder('Otomatis terisi...'),
 
                         // Pilih Pegawai beserta form tambah cepat jika data belum ada
                         Select::make('pegawai_id')
