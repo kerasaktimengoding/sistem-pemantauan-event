@@ -35,7 +35,7 @@ class RekapHargasTable
                     ->icon('heroicon-m-calendar-days'),
 
                 // 3. Komoditas (Standout Visual dengan Badge Atraktif)
-                TextColumn::make('inputHarga.komoditas.nama_komoditas')
+                TextColumn::make('komoditas.nama_komoditas')
                     ->label('Komoditas')
                     ->searchable()
                     ->sortable()
@@ -45,21 +45,21 @@ class RekapHargasTable
                     ->iconColor('primary'),
 
                 // 4. Integrasi Hierarki Wilayah Pintar (Kecamatan + Sub-Deskripsi Desa)
-                TextColumn::make('inputHarga.kecamatan.nama_kecamatan')
+                TextColumn::make('kecamatan.nama_kecamatan')
                     ->label('Cakupan Wilayah')
                     ->sortable()
                     // Fitur Pencarian Pintar: Cari berdasarkan nama kecamatan ATAU nama desa sekaligus
                     ->searchable(query: function ($query, string $search) {
-                        $query->whereHas('inputHarga.kecamatan', function ($q) use ($search) {
+                        $query->whereHas('kecamatan', function ($q) use ($search) {
                             $q->where('nama_kecamatan', 'like', "%{$search}%");
-                        })->orWhereHas('inputHarga.desa', function ($q) use ($search) {
+                        })->orWhereHas('desa', function ($q) use ($search) {
                             $q->where('nama_desa', 'like', "%{$search}%");
                         });
                     })
                     ->weight('medium')
                     ->color('gray.800')
                     // Menyusun visual hierarki: Kecamatan sebagai judul utama, Desa sebagai keterangan tipis di bawahnya
-                    ->description(fn($record) => $record->inputHarga->desa ? "📍 Desa: " . $record->inputHarga->desa->nama_desa : "🏢 Seluruh Kecamatan"),
+                    ->description(fn($record) => $record->desa ? "📍 Desa: " . $record->inputHarga->desa->nama_desa : "🏢 Seluruh Kecamatan"),
 
 
                 // TextColumn('pedagang.nama_pedagang')
@@ -110,6 +110,24 @@ class RekapHargasTable
                     ->color('success')
                     ->description(fn() => "Batas Bawah", position: 'above'),
 
+
+                TextColumn::make('arah_tren')
+                    ->label('Kondisi')
+                    ->badge()
+                    ->alignment(Alignment::Center)
+                    ->color(fn(string $state): string => match ($state) {
+                        'Naik' => 'danger',
+                        'Turun' => 'success',
+                        'Stabil' => 'info',
+                        default => 'gray',
+                    })
+                    ->icon(fn(string $state): string => match ($state) {
+                        'Naik' => 'heroicon-m-arrow-trending-up',
+                        'Turun' => 'heroicon-m-arrow-trending-down',
+                        'Stabil' => 'heroicon-m-minus',
+                        default => 'heroicon-m-question-mark-circle',
+                    }),
+
                 // 8. Audit Log Waktu Sinkronisasi Sistem
                 TextColumn::make('updated_at')
                     ->label('Terakhir Sinkron')
@@ -121,7 +139,7 @@ class RekapHargasTable
             ->defaultSort('periode_rekap', 'desc')
             ->filters([
                 //
-                    
+
             ])
             ->recordActions([
                 ViewAction::make(),

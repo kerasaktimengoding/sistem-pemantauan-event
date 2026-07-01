@@ -129,6 +129,8 @@ class TrenHargaForm
                             ])
                             ->default('Stabil')
                             ->inline()
+                            ->disabled()
+                            ->dehydrated()
                             ->columnSpanFull(),
                     ]),
             ]);

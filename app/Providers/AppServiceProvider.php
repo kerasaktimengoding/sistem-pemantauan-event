@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        //
-    }
+{
+    \Carbon\Carbon::setLocale('id');
+}
 }

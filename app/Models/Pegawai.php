@@ -11,7 +11,7 @@ class Pegawai extends Model
      use HasFactory;
 
     protected $fillable = [
-        'nip', 'nik', 'nama_pegawai', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'no_hp', 'email', 'jabatan_id', 'kecamatan_id', 'desa_id', 'status_pegawai', 'tanggal_masuk'
+        'nip', 'nik', 'nama_pegawai', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'is_luar_kabupaten','alamat_luar', 'no_hp', 'email', 'jabatan_id', 'kecamatan_id', 'desa_id', 'status_pegawai', 'tanggal_masuk'
     ];
 
     // Relasi dengan jabatan

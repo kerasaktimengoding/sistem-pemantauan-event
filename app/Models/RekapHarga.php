@@ -23,7 +23,8 @@ class RekapHarga extends Model
         'periode_rekap',
         'harga_rata_rata',
         'harga_maksimum',
-        'harga_minimum'
+        'harga_minimum',
+        'arah_tren'
     ];
 
     // Relasi dengan komoditas

@@ -17,6 +17,8 @@ class MyCalenderWidget extends CalendarWidget
     // protected int|string|array $columnSpan = '6';
     protected int|string|array $columnSpan = '12';
 
+  
+
     protected string $view = 'filament.widgets.my-calendar-widget';
     protected bool $eventClickEnabled = true;
 

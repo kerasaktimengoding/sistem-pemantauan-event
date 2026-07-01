@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('tempat_lahir', 100);
             $table->date('tanggal_lahir');
             $table->text('alamat');
+            $table->text('is_luar_kabupaten')->nullable();
+            $table->string('alamat_luar')->nullable();
             $table->string('no_hp', 15);
             $table->string('email', 100);
             $table->unsignedBigInteger('jabatan_id');

@@ -24,8 +24,8 @@ class WilayahResource extends Resource
 
 protected static ?string $recordTitleAttribute = 'kode_wilayah';
 protected static string | UnitEnum | null $navigationGroup = 'Wilayah & Kepegawaian';
-protected static ?string $navigationLabel = 'Zonasi Wilayah Kab Banjar';
-protected static ?string $pluralModelLabel = 'Zonasi Wilayah Kab Banjar';
+protected static ?string $navigationLabel = 'Zonasi Pasar Kab Banjar';
+protected static ?string $pluralModelLabel = 'Zonasi Pasar Kab Banjar';
 
 protected static ?int $navigationSort = 3;
 

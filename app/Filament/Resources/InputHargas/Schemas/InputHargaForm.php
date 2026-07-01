@@ -26,7 +26,7 @@ class InputHargaForm
                                 ->required()
                                 ->maxLength(20)
                                 ->unique('input_hargas', 'kode_input_harga', ignoreRecord: true)
-                                ->default(fn() => 'TRK-' . date('d').'.' . date('m').'.' . date('Y') . '-' . strtoupper(Str::random(5)))
+                                ->default(fn() => 'TRK-' . date('d') . '.' . date('m') . '.' . date('Y') . '-' . strtoupper(Str::random(5)))
                                 ->validationMessages([
                                     'unique' => 'Kode Input Harga ini sudah ada',
                                 ])
@@ -49,51 +49,54 @@ class InputHargaForm
                                 ->preload()
                                 ->required(),
 
+                            // Untuk Pedagang
                             Select::make('pedagang_id')
                                 ->label('Responden / Pedagang')
                                 ->relationship('pedagang', 'nama_pedagang')
                                 ->searchable()
                                 ->preload()
-                                ->required(),
+                                ->required()
+                                // 🌟 Tambahkan ini agar pedagang dengan nama sama bisa dibedakan lewat kode/NIK
+                                ->getOptionLabelFromRecordUsing(fn($record) => "{$record->nama_pedagang} - {$record->kode_pedagang}"),
                         ])->columns(2),
 
+                        // --- SECTION PULL DATA OTOMATIS BERDASARKAN PASAR ---
                         Group::make([
                             Select::make('pasar_id')
                                 ->label('Lokasi Pasar')
                                 ->relationship('pasar', 'nama_pasar')
                                 ->searchable()
                                 ->preload()
-                                ->required(),
-
+                                ->required()
+                                // 🌟 Tambahkan ini untuk menampilkan kode pasar agar tidak bingung
+                                ->getOptionLabelFromRecordUsing(fn($record) => "{$record->nama_pasar} ({$record->kode_pasar})")
+                                ->live()
+                                ->afterStateUpdated(function ($state, callable $set) {
+                                    $pasar = \App\Models\Pasar::find($state);
+                                    $set('desa_id', $pasar?->desa_id);
+                                    $set('kecamatan_id', $pasar?->kecamatan_id);
+                                }),
                             Select::make('desa_id')
-                            ->label('Pilih Desa')
-                            ->relationship('desa', 'nama_desa')
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->live() // Memantau perubahan input secara real-time
-                            ->afterStateUpdated(function ($state, callable $set) {
-                                // Mencari data desa berdasarkan ID yang dipilih
-                                $desa = \App\Models\Desa::find($state);
-                                if ($desa) {
-                                    // Otomatis mengisi kolom kecamatan_id
-                                    $set('kecamatan_id', $desa->kecamatan_id);
-                                }
-                            }),
+                                ->label('Desa / Kelurahan')
+                                ->relationship('desa', 'nama_desa')
+                                ->searchable()
+                                ->preload()
+                                ->required()
+                                ->disabled() // Di-disable agar murni mengikuti pasar induknya
+                                ->dehydrated() // Tetap dikirim ke database saat simpan
+                                ->helperText('Otomatis mengikuti lokasi pasar yang dipilih.'),
 
-                        // 2. Kecamatan Terisi Otomatis
-                        Select::make('kecamatan_id')
-                            ->label('Kecamatan Induk')
-                            ->relationship('kecamatan', 'nama_kecamatan')
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->disabled() // Dimatikan agar tidak diubah manual (sesuai permintaan)
-                            ->dehydrated() // Tetap mengirim data ke database saat simpan
-                            ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
-                        ])->columns(2),
+                            Select::make('kecamatan_id')
+                                ->label('Kecamatan Induk')
+                                ->relationship('kecamatan', 'nama_kecamatan')
+                                ->searchable()
+                                ->preload()
+                                ->required()
+                                ->disabled()
+                                ->dehydrated()
+                                ->helperText('Otomatis mengikuti lokasi pasar yang dipilih.'),
+                        ])->columns(3), // Diubah ke 3 kolom agar Pasar, Desa, dan Kecamatan sejajar rapi
                     ]),
-
                 // Section 2: Detail Harga & Petugas
                 Section::make('Detail Harga & Sumber Data')
                     ->schema([

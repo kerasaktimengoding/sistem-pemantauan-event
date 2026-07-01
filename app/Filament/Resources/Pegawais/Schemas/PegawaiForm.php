@@ -12,6 +12,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Forms\Components\Toggle;
 
 class PegawaiForm
 {
@@ -72,7 +73,7 @@ class PegawaiForm
                         ])->columns(3),
                     ]),
 
-                // Section 2: Kontak & Domisili
+              // Section 2: Kontak & Domisili
                 Section::make('Kontak & Alamat')
                     ->description('Informasi cara menghubungi pegawai dan tempat tinggal.')
                     ->schema([
@@ -89,14 +90,28 @@ class PegawaiForm
                         ])->columns(2),
 
                         Textarea::make('alamat')
-                            ->label('Alamat Domisili')
+                            ->label('Alamat Domisili (Jalan/RT/RW)')
                             ->required()
                             ->rows(3)
                             ->columnSpanFull(),
 
+                        // 🌟 FITUR UTAMA: Sakelar penentu wilayah pegawai
+                        Toggle::make('is_luar_kabupaten')
+                            ->label('Pegawai Berasal dari Luar Kabupaten Banjar?')
+                            ->default(false)
+                            ->live() // Memantau perubahan secara real-time
+                            ->afterStateUpdated(function ($state, Set $set) {
+                                // Jika diaktifkan sebagai pegawai luar daerah, reset data wilayah internal
+                                if ($state === true) {
+                                    $set('desa_id', null);
+                                    $set('kecamatan_id', null);
+                                }
+                            })
+                            ->columnSpanFull(),
+
+                        // Dropdown Desa (Hanya muncul jika is_luar_kabupaten bernilai FALSE)
                         Select::make('desa_id')
                             ->label(function (Get $get) {
-                                // Jika sudah dipilih, kita bisa cek tipenya untuk mempercantik label
                                 $desaId = $get('desa_id');
                                 if ($desaId) {
                                     $desa = \App\Models\Desa::find($desaId);
@@ -107,21 +122,18 @@ class PegawaiForm
                             ->relationship(
                                 name: 'desa',
                                 titleAttribute: 'nama_desa',
-                                // Opsi Tambahan: Menampilkan nama dengan format "Desa X" atau "Kel. Y" di dalam daftar pilihan
                                 modifyQueryUsing: fn($query) => $query->orderBy('jenis', 'asc')->orderBy('nama_desa', 'asc')
                             )
-                            // Menampilkan teks "Kel." atau "Desa" langsung di list dropdown agar user tidak bingung
                             ->getOptionLabelFromRecordUsing(fn($record) => $record->jenis === 'kelurahan' ? "Kel. {$record->nama_desa}" : "Desa {$record->nama_desa}")
                             ->searchable()
                             ->preload()
-                            ->required()
-                            ->live() // Memantau perubahan input secara real-time
+                            ->live()
+                            ->visible(fn (Get $get) => ! $get('is_luar_kabupaten')) // Sembunyi jika luar kabupaten
+                            ->required(fn (Get $get) => ! $get('is_luar_kabupaten')) // Wajib diisi jika dalam kabupaten
                             ->afterStateUpdated(function ($state, Set $set) {
                                 if ($state) {
-                                    // Mencari data di tabel desas berdasarkan ID yang dipilih
                                     $desa = \App\Models\Desa::find($state);
                                     if ($desa) {
-                                        // Otomatis mengisi kolom kecamatan_id
                                         $set('kecamatan_id', $desa->kecamatan_id);
                                     }
                                 } else {
@@ -129,22 +141,31 @@ class PegawaiForm
                                 }
                             }),
 
-                        // Luar Kabupaten Banjar isi alamat sendiri 
-
-                        // 2. Kecamatan Terisi Otomatis
+                        // Dropdown Kecamatan (Hanya muncul jika is_luar_kabupaten bernilai FALSE)
                         Select::make('kecamatan_id')
                             ->label('Kecamatan Induk')
                             ->relationship('kecamatan', 'nama_kecamatan')
                             ->searchable()
                             ->preload()
-                            ->required()
-                            ->disabled() // Dimatikan agar tidak diubah manual (sesuai permintaan)
-                            ->dehydrated() // Tetap mengirim data ke database saat simpan
+                            ->disabled() 
+                            ->dehydrated() 
+                            ->visible(fn (Get $get) => ! $get('is_luar_kabupaten')) // Sembunyi jika luar kabupaten
+                            ->required(fn (Get $get) => ! $get('is_luar_kabupaten')) // Wajib diisi jika dalam kabupaten
                             ->helperText('Otomatis terisi berdasarkan desa yang dipilih.'),
 
+                        // Input Alamat Luar (Hanya muncul jika is_luar_kabupaten bernilai TRUE)
+                        Textarea::make('alamat_luar')
+                            ->label('Detail Wilayah Luar Kabupaten (Contoh: Kota Banjarbaru, Kalsel)')
+                            ->placeholder('Tuliskan nama Kabupaten/Kota dan Provinsi asal pegawai...')
+                            ->visible(fn (Get $get) => $get('is_luar_kabupaten')) // Tampil jika luar kabupaten
+                            ->required(fn (Get $get) => $get('is_luar_kabupaten')) // Wajib diisi jika luar kabupaten
+                            ->dehydrated(fn (Get $get) => $get('is_luar_kabupaten')) // Hanya kirim ke DB jika aktif
+                            ->rows(2)
+                            ->maxLength(255)
+                            ->columnSpanFull(),
                     ]),
 
-                // Section 3: Status Pekerjaan
+                // Section 3: Status Kepegawaian
                 Section::make('Informasi Kepegawaian')
                     ->description('Detail jabatan dan status aktif pegawai.')
                     ->schema([

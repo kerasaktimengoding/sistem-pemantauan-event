@@ -18,7 +18,7 @@ class PasarsTable
     public static function configure(Table $table): Table
     {
         return $table
-        ->persistColumnsInSession()
+            ->persistColumnsInSession()
             ->persistFiltersInSession()
             ->columns([
                 // 1. Nomor Urut Desain Minimalis
@@ -56,10 +56,11 @@ class PasarsTable
                     ->sortable()
                     ->weight(FontWeight::SemiBold)
                     ->color('gray')
+                // Menggabungkan informasi desa di bawah nama kecamatan menggunakan text helper
+                ->tooltip(fn($record) => $record->desa?->jenis === 'kelurahan' ? "Kel. {$record->desa?->nama_desa}" : "Desa {$record->desa?->nama_desa}")
                     // Menggabungkan informasi desa di bawah nama kecamatan menggunakan text helper
-                    ->description(fn($record) => "🏡 Desa: " . ($record->desa?->nama_desa ?? '-')),
-
-
+                    ->description(fn($record) => "🏡 " . ($record->desa?->jenis === 'kelurahan' ? "Kel. {$record->desa?->nama_desa}" : "Desa {$record->desa?->nama_desa}"
+                    )),
                 // 4. Status Operasional dengan Badge Solid Kontras & Ikon Heroicons v3
                 TextColumn::make('status_pasar')
                     ->label('Status Operasional')
@@ -91,13 +92,13 @@ class PasarsTable
             ->filters([
                 //
                 SelectFilter::make('status_pasar')
-                ->label('Status Pasar')
-                 ->options([
+                    ->label('Status Pasar')
+                    ->options([
                         'aktif' => 'Aktif',
                         'non-aktif' => 'Non-Aktif',
                         'renovasi' => 'Renovasi',
                     ]),
-                
+
             ])
             ->recordActions([
                 ViewAction::make(),

@@ -28,7 +28,7 @@ class InputHargasTable
                 // 2. Waktu & Kode Transaksi (Gabungan Informasi Waktu & Dokumen)
                 TextColumn::make('tanggal_input')
                     ->label('Waktu & Kode Transaksi')
-                    ->date('d M Y') // Format Indonesia: 04 Jun 2026
+                    ->date('l, d M Y') // Format Indonesia: 04 Jun 2026
                     ->sortable()
                     ->searchable()
                     ->weight(FontWeight::Bold)

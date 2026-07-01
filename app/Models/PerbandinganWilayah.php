@@ -11,7 +11,7 @@ class PerbandinganWilayah extends Model
      use HasFactory;
 
     protected $fillable = [
-        'kode_perbandingan', 'komoditas_id', 'wilayah_1_id', 'wilayah_2_id', 'harga_wilayah_1', 'harga_wilayah_2', 'selisih_harga', 'keterangan'
+        'kode_perbandingan', 'komoditas_id', 'input_harga_id', 'wilayah_1_id', 'wilayah_2_id', 'harga_wilayah_1', 'harga_wilayah_2', 'pasar_id', 'pasar_2_id', 'selisih_harga', 'keterangan'
     ];
 
     // Relasi dengan komoditas
@@ -30,6 +30,15 @@ class PerbandinganWilayah extends Model
     public function desa2()
     {
         return $this->belongsTo(desa::class, 'desa_2_id');
+    }
+    public function pasar1()
+    {
+        return $this->belongsTo(Pasar::class, 'pasar_id');
+    }
+
+    public function pasar2()
+    {
+        return $this->belongsTo(Pasar::class, 'pasar_2_id');
     }
     // public function wilayah1()
     // {

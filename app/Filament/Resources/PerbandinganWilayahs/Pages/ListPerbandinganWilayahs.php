@@ -34,8 +34,9 @@ class ListPerbandinganWilayahs extends ListRecords
                 })
                 ->openUrlInNewTab(),
             CreateAction::make()->
-                label('Tambah Perbandingan Wilayah')
+                label('Tambah Perbandingan Pasar')
                 ->color('primary')
+                ->modalWidth('75%')
                 ->icon('heroicon-o-plus-circle')
                 ->modal(PerbandinganWilayah::class),
         ];

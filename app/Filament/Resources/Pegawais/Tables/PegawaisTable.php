@@ -12,8 +12,6 @@ use Filament\Tables\Table;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Support\Enums\FontWeight;
-use Filament\Support\Enums\FontFamily;
-
 class PegawaisTable
 {
     public static function configure(Table $table): Table
@@ -37,7 +35,7 @@ class PegawaisTable
                     ->weight(FontWeight::Bold)
                     ->color('gray')
                     ->description(fn($record) => "🪪 NIP: " . ($record->nip ?? '-')),
-
+                
                 // 3. Jenis Kelamin (Badge Kompak dengan Ikon Gender)
                 TextColumn::make('jenis_kelamin')
                     ->label('L/P')
@@ -64,15 +62,34 @@ class PegawaisTable
                     ->iconColor('primary'),
                 // Menampilkan wilayah tugas tepat di bawah nama jabatan untuk menghemat kolom
                 // ->description(fn ($record) => "📍 " . ($record->wilayah->nama_wilayah ?? 'Belum Ditentukan')),
-                TextColumn::make('kecamatan.nama_kecamatan')
-                    ->label('Nama Wilayah')
-                    ->searchable()
-                    ->sortable()
+                // 5. 🌟 WILAYAH PENUGASAN/ASAL (Kombinasi Dalam & Luar Kabupaten)
+                TextColumn::make('wilayah_asal')
+                    ->label('Wilayah Asal')
+                    // Memodifikasi state tampilan berdasarkan status luar/dalam kabupaten
+                    ->getStateUsing(function ($record) {
+                        if ($record->is_luar_kabupaten) {
+                            return 'Luar Kabupaten Banjar';
+                        }
+                        return $record->kecamatan ? $record->kecamatan->nama_kecamatan : 'Belum Ditentukan';
+                    })
                     ->weight(FontWeight::SemiBold)
-                    ->color('gray')
-                    // Menggabungkan informasi desa di bawah nama kecamatan menggunakan text helper
-                   ->description(fn($record) => "🏡 " . ($record->desa?->jenis === 'kelurahan' ? "Kel. {$record->desa?->nama_desa}" : "Desa {$record->desa?->nama_desa}")),
-                // 5. PENGGABUNGAN DATA KONTAK: No. HP (Bisa di-copy/klik) + Sub-deskripsi Email (Bisa di-klik)
+                    ->color(fn($record) => $record->is_luar_kabupaten ? 'warning' : 'gray')
+                    ->icon(fn($record) => $record->is_luar_kabupaten ? 'heroicon-m-globe-alt' : 'heroicon-m-map-pin')
+                    ->description(function ($record) {
+                        // Deskripsi kondisional: Jika luar, tampilkan alamat luar. Jika dalam, tampilkan Desa/Kelurahan
+                        if ($record->is_luar_kabupaten) {
+                            return "📍 " . ($record->alamat_luar ?? '-');
+                        }
+
+                        if ($record->desa) {
+                            $tipe = $record->desa->jenis === 'kelurahan' ? 'Kel.' : 'Desa';
+                            return "🏡 {$tipe} {$record->desa->nama_desa}";
+                        }
+
+                        return '-';
+                    }),
+
+                // 6. Kontak (HP & Email)
                 TextColumn::make('no_hp')
                     ->label('Kontak')
                     ->searchable()
@@ -81,47 +98,34 @@ class PegawaisTable
                     ->icon('heroicon-m-phone')
                     ->iconColor('success')
                     ->weight(FontWeight::Medium)
-                    // Trik Interaktif: Jika diklik di desktop/HP akan langsung mengarah ke chat WhatsApp/panggilan
                     ->url(fn($record) => $record->no_hp ? "https://wa.me/" . preg_replace('/[^0-9]/', '', $record->no_hp) : null)
                     ->openUrlInNewTab()
-                    // Email diletakkan di bawah nomor HP sebagai teks sekunder yang juga bisa diklik langsung untuk kirim email
                     ->description(fn($record) => $record->email ? "✉️ " . $record->email : null)
                     ->extraAttributes([
                         'title' => 'Klik untuk chat WhatsApp'
                     ]),
 
-                // 6. Status Pegawai (Warna Kontras Tinggi + Ikon Penanda)
+                // 7. Status Pegawai
                 TextColumn::make('status_pegawai')
                     ->label('Status')
                     ->badge()
                     ->color(fn(string $state): string => match (strtolower(trim($state))) {
+                        'pns' => 'primary',
+                        'pppk' => 'info',
+                        'honorer' => 'warning',
                         'aktif' => 'success',
-                        'non-aktif', 'tidak aktif' => 'danger',
-                        'cuti' => 'warning',
+                        'cuti', 'non-aktif' => 'danger',
                         default => 'secondary',
-                    })
-                    ->icon(fn(string $state): string => match (strtolower(trim($state))) {
-                        'aktif' => 'heroicon-m-check-circle',
-                        'non-aktif', 'tidak aktif' => 'heroicon-m-x-circle',
-                        'cuti' => 'heroicon-m-clock',
-                        default => 'heroicon-m-minus-circle',
                     })
                     ->sortable()
                     ->alignment(Alignment::Center),
 
-                // 7. Tanggal Masuk Kerja (Format Kustom Indonesia)
+                // 8. Tanggal Masuk Kerja (Disembunyikan)
                 TextColumn::make('tanggal_masuk')
                     ->label('Mulai Bekerja')
-                    ->date('d F Y') // Contoh hasil: 04 Juni 2026
+                    ->date('d F Y')
                     ->sortable()
                     ->color('gray')
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                // 8. Data Rahasia/Audit (Disembunyikan secara default, bisa dibuka via kolom penyesuai)
-                TextColumn::make('nik')
-                    ->label('NIK')
-                    ->searchable()
-                    ->fontFamily(FontFamily::Mono)
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
