@@ -7,50 +7,50 @@ use Illuminate\Support\Facades\DB;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Carbon;
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Widgets\ChartWidget\Concerns\HasFiltersSchema;
 
 class InputHargaWidget2 extends ChartWidget
 {
     protected static ?int $sort = 5;
     protected ?string $heading = 'Grafik Tren Perubahan Harga Komoditas 2';
 
-    // Trait ini yang bertugas menghubungkan state filter halaman utama ke dalam widget secara otomatis
     use InteractsWithPageFilters;
+    use HasFiltersSchema;
     
     protected int|string|array $columnSpan = '6';
 
-    // Tentukan nilai default filter lokal widget langsung di properti bawaan Filament
-    public ?string $filter = 'month';
-
-    // 1. DROPDOWN FILTER LOKAL DI KANAN ATAS WIDGET
-    protected function getFilters(): ?array
+    public function filtersSchema(Schema $schema): Schema
     {
-        // Jika user menggunakan filter kustom dari Dashboard Utama, kunci tampilan lokal
-        if (($this->pageFilters['startDate'] ?? null) || ($this->pageFilters['endDate'] ?? null)) {
-            return [
-                'custom' => 'Rentang Tanggal Kustom',
-            ];
-        }
+        return $schema->components([
+            DatePicker::make('startDate')
+                ->label('Dari Tanggal')
+                ->native(false)
+                ->displayFormat('d/m/Y')
+                ->default(now()->subDays(60)),
+                
+            DatePicker::make('endDate')
+                ->label('Sampai Tanggal')
+                ->native(false)
+                ->displayFormat('d/m/Y')
+                ->default(now()),
 
-        $tahunSekarang = Carbon::now()->year;
-
-        return [
-            'month' => 'Bulan Ini',
-            'today' => 'Hari Ini',
-            'week' => 'Minggu Ini',
-            'year' => 'Tahun Ini',
-            ($tahunSekarang - 1) => 'Tahun ' . ($tahunSekarang - 1),
-            ($tahunSekarang - 2) => 'Tahun ' . ($tahunSekarang - 2),
-            ($tahunSekarang - 3) => 'Tahun ' . ($tahunSekarang - 3),
-        ];
+            Select::make('komoditas_id')
+                ->label('Komoditas')
+                ->placeholder('-- Semua Komoditas --')
+                ->options(\App\Models\Komoditas::pluck('nama_komoditas', 'id')->toArray())
+                ->native(false),
+        ]);
     }
 
     protected function getData(): array
     {
-        // Membaca filter global dari Dashboard
-        $startDate = $this->pageFilters['startDate'] ?? null;
-        $endDate = $this->pageFilters['endDate'] ?? null;
+        $startDate = $this->filters['startDate'] ?? null;
+        $endDate = $this->filters['endDate'] ?? null;
+        $komoditasId = $this->filters['komoditas_id'] ?? null;
 
-        // Tentukan filter aktif
         if ($startDate || $endDate) {
             $activeFilter = 'custom';
         } else {
@@ -76,26 +76,20 @@ class InputHargaWidget2 extends ChartWidget
                 break;
             case 'month':
             default:
-                if (is_numeric($activeFilter)) {
-                    $selectDateFormat = "DATE_FORMAT(input_hargas.tanggal_input, '%Y-%m')";
-                } else {
-                    $selectDateFormat = "DATE_FORMAT(input_hargas.tanggal_input, '%Y-%m')";
-                }
+                $selectDateFormat = "DATE_FORMAT(input_hargas.tanggal_input, '%Y-%m')";
                 $labelFormat = "";
                 break;
         }
 
-        // Ambil data harga pokok dari database
         $rows = DB::table('input_hargas')
             ->when($startDate, fn(Builder $query) => $query->whereDate('input_hargas.tanggal_input', '>=', $startDate))
             ->when($endDate, fn(Builder $query) => $query->whereDate('input_hargas.tanggal_input', '<=', $endDate))
+            ->when($komoditasId, fn(Builder $query) => $query->where('input_hargas.komoditas_id', $komoditasId))
 
             ->when($activeFilter === 'today', fn(Builder $query) => $query->whereDate('input_hargas.tanggal_input', Carbon::today()))
             ->when($activeFilter === 'week', fn(Builder $query) => $query->whereBetween('input_hargas.tanggal_input', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]))
             ->when($activeFilter === 'month', fn(Builder $query) => $query->whereMonth('input_hargas.tanggal_input', Carbon::now()->month)->whereYear('input_hargas.tanggal_input', Carbon::now()->year))
             ->when($activeFilter === 'year', fn(Builder $query) => $query->whereYear('input_hargas.tanggal_input', Carbon::now()->year))
-
-            ->when(is_numeric($activeFilter), fn(Builder $query) => $query->whereYear('input_hargas.tanggal_input', $activeFilter))
 
             ->join('komoditas', 'input_hargas.komoditas_id', '=', 'komoditas.id')
             ->selectRaw("
@@ -110,16 +104,13 @@ class InputHargaWidget2 extends ChartWidget
         $labels = $rows->pluck('periode')->unique()->values();
 
         $colors = [
-            '#2563EB',
-            '#DC2626',
-            '#16A34A',
-            '#7C3AED',
-            '#EA580C',
-            '#0891B2',
-            '#EC4899',
-            '#F59E0B',
-            '#10B981',
-            '#6366F1',
+            '#8b5cf6', // Violet
+            '#ec4899', // Pink
+            '#06b6d4', // Cyan
+            '#0ea5e9', // Sky
+            '#ef4444', // Red
+            '#10b981', // Emerald
+            '#f59e0b', // Amber
         ];
 
         $datasets = $rows
@@ -135,12 +126,12 @@ class InputHargaWidget2 extends ChartWidget
                         return $data ? round((float) $data->rata_harga, 0) : null;
                     })->toArray(),
                     'borderColor' => $color,
-                    'backgroundColor' => $color,
-                    'borderWidth' => 2,
-                    'tension' => 0.3,
-                    'fill' => false,
-                    'pointRadius' => 4,
-                    'pointHoverRadius' => 6,
+                    'backgroundColor' => $color . '15',
+                    'borderWidth' => 2.5,
+                    'tension' => 0.35,
+                    'fill' => true,
+                    'pointRadius' => 3,
+                    'pointHoverRadius' => 5,
                 ];
             })
             ->toArray();
@@ -153,6 +144,23 @@ class InputHargaWidget2 extends ChartWidget
 
     protected function getType(): string
     {
-        return 'bar';
+        return 'line';
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            'plugins' => [
+                'legend' => [
+                    'display' => true,
+                    'position' => 'top',
+                ],
+            ],
+            'scales' => [
+                'y' => [
+                    'beginAtZero' => false,
+                ]
+            ]
+        ];
     }
 }

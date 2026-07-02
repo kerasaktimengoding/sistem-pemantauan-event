@@ -32,7 +32,7 @@ class EventKegiatansTable
                     ->size('lg') // Ukuran teks diperbesar agar menjadi jangkar pandangan mata (Visual Anchor)
                     ->icon('heroicon-m-sparkles')
                     ->iconColor('primary')
-                    ->description(fn($record) => "Kode Event: " . ($record->kode_event ?? '-')),
+                    ->description(fn($record) => "Kode Event: " . ($record->kode_event ?? '-'), position: 'above'),
 
                 // 3. Jenis Event (Ditingkatkan dari Gray Polos menjadi Dinamis Berwarna)
                 TextColumn::make('jenis_event')
@@ -68,11 +68,12 @@ class EventKegiatansTable
                     ->weight('medium')
                     ->icon('heroicon-m-map-pin')
                     ->iconColor('danger')
+                    
                     // Menampilkan alamat detail tepat di bawah nama wilayah
                     ->description(fn($record) => "Lokasi: " . ($record->lokasi_event ?? '-'), position: 'above')
                     // ->description(fn($record) => "Detail: " . \Illuminate\Support\Str::limit($record->lokasi_event ?? '-', 35))
                 // Baris Bawah: NIK disembunyikan di bawah nama agar menghemat ruang horizontal, dilengkapi copyable instan
-                    ->description(fn($record) => "Kecamatan: " . $record->wilayah->kecamatan->nama_kecamatan . " desa " . $record->wilayah->desa->nama_desa, position: 'below'),
+                    ->description(fn($record) => "Kecamatan: " . $record->wilayah->kecamatan->nama_kecamatan . ", " . $record->wilayah->desa->nama_desa, position: 'below'),
 
                     
 

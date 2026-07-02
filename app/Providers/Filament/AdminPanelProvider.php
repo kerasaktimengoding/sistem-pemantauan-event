@@ -20,6 +20,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Widgets\MyCalenderWidget;
+use App\Filament\Widgets\JadwalMonitoringCalender;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -64,6 +65,7 @@ class AdminPanelProvider extends PanelProvider
                 // AccountWidget::class,
                 // FilamentInfoWidget::class,
                 MyCalenderWidget::class,
+                JadwalMonitoringCalender::class,
             ])
             ->middleware([
                 EncryptCookies::class,

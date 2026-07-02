@@ -15,6 +15,18 @@ class Dashboard extends BaseDashboard
 {
     use HasFiltersForm;
     protected static ?int $navigationSort = 3;
+    protected static ?string $navigationLabel = 'Dashboard';
+    protected string $view = 'filament.pages.dashboard';
+
+    public function getWidgets(): array
+    {
+        return [];
+    }
+
+    public function getHeading(): string
+    {
+        return '';
+    }
 
     // Mengubah parameter menjadi Schema sesuai permintaan error trace
     public function filtersForm(Schema $schema): Schema

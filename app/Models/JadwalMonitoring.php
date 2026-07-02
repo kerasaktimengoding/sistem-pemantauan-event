@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Guava\Calendar\Contracts\Eventable;
+use Guava\Calendar\ValueObjects\CalendarEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class JadwalMonitoring extends Model
+class JadwalMonitoring extends Model implements Eventable
 {
     //
     use HasFactory;
@@ -47,5 +49,27 @@ class JadwalMonitoring extends Model
     public function pegawai(): BelongsTo
     {
         return $this->belongsTo(Pegawai::class, 'pegawai_id');
+    }
+
+    public function toCalendarEvent(): CalendarEvent
+    {
+        $colors = [
+            'Pending' => '#f59e0b', // Amber
+            'Proses' => '#3b82f6',  // Blue
+            'Selesai' => '#10b981', // Green
+            'Batal' => '#ef4444',   // Red
+        ];
+        
+        $color = $colors[$this->status_monitoring] ?? '#f59e0b';
+        
+        // E.g. "Monitoring: Pasar Martapura (Selesai)"
+        $pasarNama = $this->pasar?->nama_pasar ?? 'Pasar/Lokasi';
+        $title = "Monitoring: " . $pasarNama;
+
+        return CalendarEvent::make($this)
+            ->title($title)
+            ->start($this->tanggal_rencana)
+            ->end($this->tanggal_rencana)
+            ->backgroundColor($color);
     }
 }

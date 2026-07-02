@@ -65,8 +65,9 @@ class InputHargasTable
                     ->color('success') // Hijau segar melambangkan angka komersial
                     ->weight(FontWeight::ExtraBold) // Ketebalan maksimal agar langsung memikat mata admin
                     ->fontFamily('mono')
-                    ->description(fn($record) => $record->pedagang ? " Pedagang: " . $record->pedagang->nama_pedagang : ""),
-                    
+                    ->description(fn($record) => $record->pedagang ? " Pedagang: " . $record->pedagang->nama_pedagang : "Tidak ada Pedagang", position: 'above')
+                    ->description(fn($record) => $record->pedagang ? " No. HP: " . $record->pedagang->no_hp : "", position: 'below'),
+
                     // Karakter angka sejajar vertikal memudahkan komparasi harga antar baris
 
                 // 5. Lokasi Pasar & Wilayah (Pencarian Lintas Relasi)

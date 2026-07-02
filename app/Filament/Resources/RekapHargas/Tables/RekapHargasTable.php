@@ -42,8 +42,10 @@ class RekapHargasTable
                     ->weight('semibold')
                     ->color('gray.700')
                     ->icon('heroicon-m-shopping-bag')
-                    ->iconColor('primary'),
-
+                    ->iconColor('primary')
+                     ->description(fn($record) => "📦 Kategori: " . ($record->komoditas->kategori ?? '-') . " | ⚖️ Satuan: " . ($record->komoditas->satuan ?? '-'), position: 'above')
+                    // Baris Kedua Deskripsi: Deskripsi panjang dibatasi agar tidak merusak layout
+                    ->description(fn($record) => $record->deskripsi ? '💡 ' . str($record->komoditas->deskripsi)->limit(70) : 'Tidak ada deskripsi tambahan', position: 'below'),
                 // 4. Integrasi Hierarki Wilayah Pintar (Kecamatan + Sub-Deskripsi Desa)
                 TextColumn::make('kecamatan.nama_kecamatan')
                     ->label('Cakupan Wilayah')

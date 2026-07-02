@@ -61,13 +61,13 @@ class PedagangsTable
                     ->sortable()
                     ->weight(FontWeight::SemiBold)
                     ->color('gray.800')
+
                     ->icon('heroicon-m-map-pin') // Ikon pin maps kecil di samping kecamatan
-                    ->iconColor('   danger')
-                    // Baris Pertama Deskripsi: Nama Desa
-                    ->description(fn($record) => "🏡 Desa: " . ($record->desa->nama_desa ?? '-')),
-                    // Baris Kedua Deskripsi: Detail Alamat Jalan diletakkan tipis di bawahnya agar menghemat tempat
-                    // ->description(fn($record) => $record->nama_pasar ? "Pasar " . str($record->nama_pasar)->limit(45) : 'Tidak ada detail alamat 1 ', position: 'above')
-                    // ->description(fn($record) => $record->alamat ? "📍 " . str($record->alamat)->limit(45) : 'Tidak ada detail alamat', position: 'below'),
+                    ->iconColor('   danger'),
+                    // Baris Pertama Deskripsi: Nama Desa,
+                // Baris Kedua Deskripsi: Detail Alamat Jalan diletakkan tipis di bawahnya agar menghemat tempat
+                // ->description(fn($record) => $record->nama_pasar ? "Pasar " . str($record->nama_pasar)->limit(45) : 'Tidak ada detail alamat 1 ', position: 'above')
+                // ->description(fn($record) => $record->alamat ? "📍 " . str($record->alamat)->limit(45) : 'Tidak ada detail alamat', position: 'below'),
                 TextColumn::make('pasar.nama_pasar')
                     ->label('Lokasi Pasar & Wilayah')
                     // Memungkinkan pencarian global berdasarkan nama pasar ataupun nama wilayahnya
@@ -78,15 +78,20 @@ class PedagangsTable
                             $q->where('nama_wilayah', 'like', "%{$search}%");
                         });
                     })
+                    ->tooltip(fn($record) => $record->desa?->jenis === 'kelurahan' ? "Kel. {$record->desa?->nama_desa}" : "Desa {$record->desa?->nama_desa}")
+                    // Menggabungkan informasi desa di bawah nama kecamatan menggunakan text helper
+                    ->description(fn($record) => "🏡 " . ($record->desa?->jenis === 'kelurahan' ? "Kel. {$record->desa?->nama_desa}" : "Desa {$record->desa?->nama_desa}"
+                    ))
                     ->sortable()
                     ->weight(FontWeight::SemiBold)
                     ->color('gray.800')
                     ->icon('heroicon-m-map-pin') // Ikon pin maps kecil di samping kecamatan
                     ->iconColor('danger')
                     // Baris Pertama Deskripsi: Nama Desa
-                    ->description(fn($record) => "🏡 Desa: " . ($record->desa->nama_desa ?? '-'))
+                   
                     // Baris Kedua Deskripsi: Detail Alamat Jalan diletakkan tipis di bawahnya agar menghemat tempat
-                    ->description(fn($record) => $record->pasar->alamat_pasar ? "📍 " . str($record->pasar->alamat_pasar)->limit(45) : 'Tidak ada detail alamat', position: 'below'),
+                     ->description(fn($record) => "🏡 " . ($record->desa?->jenis === 'kelurahan' ? "Kel. {$record->desa?->nama_desa}" : "Desa {$record->desa?->nama_desa}"
+                    )),
                 // 4. No. WhatsApp Interaktif (Bisa Diklik Langsung Menuju Chat)
                 TextColumn::make('no_hp')
                     ->label('Kontak WhatsApp')
@@ -104,8 +109,8 @@ class PedagangsTable
                         ? "https://wa.me/" . preg_replace('/[^0-9]/', '', $record->no_hp)
                         : null,
                         shouldOpenInNewTab: true
-                    )
-                    ->description(fn($record) => $record->tempat ? "Tempat: " . $record->tempat->nama_tempat : 'Tidak ada detail tempat', position: 'above'),
+                    ),
+                 
 
                 // 5. Status Akun dengan Badge Solid Kontras & Ikon Dinamis
 
@@ -121,7 +126,7 @@ class PedagangsTable
                     ->searchable()
                     ->description(fn($record) => $record->tempat->nomor_tempat ? "Nomor : " . $record->tempat->nomor_tempat : 'Tidak ada nomor tempat', position: 'above')
                     ->description(fn($record) => $record->tempat->jenis_tempat ? "Jenis Tempat: " . $record->tempat->jenis_tempat : 'Tidak ada jenis tempat', position: 'below'),
-               
+
                 TextColumn::make('status_pedagang')
                     ->label('Status')
                     ->badge()
