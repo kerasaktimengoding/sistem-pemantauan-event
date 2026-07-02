@@ -59,7 +59,7 @@ class RekapHargasTable
                     ->weight('medium')
                     ->color('gray.800')
                     // Menyusun visual hierarki: Kecamatan sebagai judul utama, Desa sebagai keterangan tipis di bawahnya
-                    ->description(fn($record) => $record->desa ? "📍 Desa: " . $record->inputHarga->desa->nama_desa : "🏢 Seluruh Kecamatan"),
+                    ->description(fn($record) => $record->desa ? "📍 Desa: " . $record->desa->nama_desa : "🏢 Seluruh Kecamatan"),
 
 
                 // TextColumn('pedagang.nama_pedagang')
